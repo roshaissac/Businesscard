@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       SETUP CHECKLIST — Edit these 4 things and you're live:
+
+       [1] Scroll to the ME object in <script> and fill in your details.
+       [2] Replace every [MD5_HASH] below with your Gravatar hash.
+            → Go to md5.io → type your email (lowercase) → copy the hash.
+       [3] Update <title> and apple-mobile-web-app-title with your name.
+       [4] Replace [FORMSPREE_ID] in the <form> action with your 8-char code.
+            → Free at formspree.io — create a form, copy the ID.
+  ═══════════════════════════════════════════════════════════════════════ -->
+
+  <title>Rosh Issac · Issac Realty Inc</title>
+  <meta name="description" content="Connect with Rosh Issac — Realtor® at Issac Realty Inc, Calgary, AB." />
+
+  <!-- Open Graph (WhatsApp / iMessage previews) -->
+  <meta property="og:title"       content="Rosh Issac · Issac Realty Inc" />
+  <meta property="og:description" content="Connect with Rosh Issac — Realtor® at Issac Realty Inc, Calgary, AB." />
+  <!-- [2] ↓ Replace [MD5_HASH] -->
+  <meta property="og:image"       content="https://www.gravatar.com/avatar/e4303df6c94628f8045585b0da670104?s=400&d=mp" />
+  <meta property="og:type"        content="profile" />
+  <meta name="twitter:card"       content="summary" />
+  <meta name="twitter:image"      content="https://www.gravatar.com/avatar/e4303df6c94628f8045585b0da670104?s=400&d=mp" />
+
+  <!-- iOS / PWA -->
+  <meta name="apple-mobile-web-app-capable"            content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style"   content="black-translucent" />
+  <meta name="apple-mobile-web-app-title"              content="Rosh Issac" />
+  <meta name="theme-color"                             content="#ff914d" />
+  <!-- [2] ↓ Replace [MD5_HASH] — shows your photo as the home-screen icon -->
+  <link rel="apple-touch-icon" href="https://www.gravatar.com/avatar/e4303df6c94628f8045585b0da670104?s=192&d=mp" />
+
+  <!-- ── External assets (CDN) ──────────────────────────────────────── -->
+  <!-- Tailwind CSS Play CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { DEFAULT: '#ff914d', dark: '#e67e3a', light: '#fff4ee' }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Inter typeface -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet" />
+
+  <!-- Font Awesome 6 (brand + solid icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+
+    /* Card elevation */
+    .card-shadow {
+      box-shadow:
+        0 1px 3px  rgba(0,0,0,.05),
+        0 4px 16px rgba(0,0,0,.07),
+        0 12px 32px rgba(0,0,0,.05);
+    }
+
+    /* Branded CTA button */
+    .btn-brand {
+      background: linear-gradient(135deg, #ff914d 0%, #ff7530 100%);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .btn-brand:hover  { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(255,145,77,.42); }
+    .btn-brand:active { transform: translateY(0);    box-shadow: none; }
+    .btn-brand:disabled { opacity: .7; pointer-events: none; }
+
+    /* Social icon hover lift */
+    .social-pill { transition: transform .18s ease; }
+    .social-pill:hover { transform: translateY(-3px); }
+
+    /* Avatar orange ring */
+    .avatar-ring {
+      background: linear-gradient(135deg, #ff914d, #ff7530);
+      padding: 3px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* Input focus glow */
+    input, textarea {
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #ff914d !important;
+      box-shadow: 0 0 0 3px rgba(255,145,77,.18);
+    }
+
+    /* Header SVG hatching — inline, zero HTTP requests */
+    .header-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.09'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* Page & card entrance animation */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .45s ease both; }
+    .fade-up-delay { animation: fadeUp .45s .12s ease both; }
+
+    /* Toast */
+    #toast { transition: opacity .3s ease, transform .3s ease; }
+
+    /* PWA tip */
+    #pwa-tip { transition: opacity .3s ease, max-height .3s ease; }
+  </style>
+</head>
+
+<body class="min-h-screen bg-slate-50 flex flex-col items-center justify-start py-8 px-4">
+
+  <div class="w-full max-w-sm">
+
+    <!-- ════════════════════════════════════════════════════════════
+         MAIN CARD
+    ════════════════════════════════════════════════════════════ -->
+    <div class="bg-white rounded-3xl card-shadow overflow-hidden fade-up">
+
+      <!-- Header banner -->
+      <div class="h-28 bg-gradient-to-br from-[#ff914d] to-[#ff7530] header-pattern relative overflow-hidden">
+        <!-- Decorative blobs -->
+        <div class="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-white/10"></div>
+        <div class="absolute top-10 -left-8 w-20 h-20 rounded-full bg-white/10"></div>
+        <div class="absolute -bottom-4 right-16 w-12 h-12 rounded-full bg-white/10"></div>
+        <!-- Company name watermark -->
+        <p class="absolute bottom-3 right-4 text-white/60 text-[10px] font-bold uppercase tracking-widest">
+          Issac Realty Inc
+        </p>
+      </div>
+
+      <div class="px-6 pb-8">
+
+        <!-- ── AVATAR ──────────────────────────────────────────── -->
+        <div class="flex justify-center -mt-14 mb-4">
+          <div class="avatar-ring">
+            <!-- [2] ↓ Replace [MD5_HASH] with your Gravatar hash -->
+            <img
+              src="https://www.gravatar.com/avatar/e4303df6c94628f8045585b0da670104?s=400&d=mp"
+              alt="Profile photo"
+              width="96" height="96"
+              class="w-24 h-24 rounded-full object-cover bg-slate-100 ring-4 ring-white"
+              onerror="this.src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&s=400'"
+            />
+          </div>
+        </div>
+
+        <!-- ── NAME & TITLE ────────────────────────────────────── -->
+        <div class="text-center mb-6">
+          <!-- [1] ↓ Populated from ME object via JS below -->
+          <h1 id="card-name"      class="text-2xl font-extrabold text-slate-900 tracking-tight leading-tight"></h1>
+          <p  id="card-title"     class="text-sm text-slate-500 mt-1 font-medium"></p>
+          <p  id="card-brokerage" class="text-[11px] text-slate-400 mt-0.5 italic"></p>
+          <p  id="card-city"      class="text-xs text-slate-400 mt-1.5 flex items-center justify-center gap-1.5"></p>
+
+          <!-- Quick-tap phone & email -->
+          <div class="flex items-center justify-center gap-4 mt-3 flex-wrap">
+            <a id="link-phone" href="#"
+               class="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-[#ff914d] transition-colors font-medium">
+              <i class="fa-solid fa-phone text-[9px]"></i>
+              <span id="label-phone"></span>
+            </a>
+            <span class="text-slate-200 text-xs">|</span>
+            <a id="link-email" href="#"
+               class="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-[#ff914d] transition-colors font-medium">
+              <i class="fa-solid fa-envelope text-[9px]"></i>
+              <span id="label-email"></span>
+            </a>
+          </div>
+        </div>
+
+        <!-- ── ADD TO CONTACTS ─────────────────────────────────── -->
+        <button
+          onclick="downloadVCF()"
+          class="btn-brand w-full py-3.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 mb-5"
+          aria-label="Download contact card"
+        >
+          <i class="fa-solid fa-address-card text-base"></i>
+          Add to Contacts
+        </button>
+
+        <!-- ── SOCIAL ROW ──────────────────────────────────────── -->
+        <div class="flex items-center justify-center gap-5 mb-7">
+
+          <!-- WhatsApp -->
+          <a id="link-wa" href="#" target="_blank" rel="noopener noreferrer"
+             class="social-pill flex flex-col items-center gap-1.5" aria-label="WhatsApp">
+            <div class="w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center
+                        text-white text-[22px] shadow-md shadow-green-200">
+              <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <span class="text-[11px] text-slate-500 font-medium">WhatsApp</span>
+          </a>
+
+          <!-- LinkedIn -->
+          <a id="link-li" href="#" target="_blank" rel="noopener noreferrer"
+             class="social-pill flex flex-col items-center gap-1.5" aria-label="LinkedIn">
+            <div class="w-14 h-14 rounded-full bg-[#0A66C2] flex items-center justify-center
+                        text-white text-[22px] shadow-md shadow-blue-200">
+              <i class="fa-brands fa-linkedin-in"></i>
+            </div>
+            <span class="text-[11px] text-slate-500 font-medium">LinkedIn</span>
+          </a>
+
+          <!-- Website -->
+          <a id="link-web" href="#" target="_blank" rel="noopener noreferrer"
+             class="social-pill flex flex-col items-center gap-1.5" aria-label="Website">
+            <div class="w-14 h-14 rounded-full bg-[#ff914d] flex items-center justify-center
+                        text-white text-[22px] shadow-md shadow-orange-200">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+            <span class="text-[11px] text-slate-500 font-medium">Website</span>
+          </a>
+
+        </div>
+
+        <!-- ── DIVIDER ─────────────────────────────────────────── -->
+        <div class="flex items-center gap-3 mb-5">
+          <div class="flex-1 h-px bg-slate-100"></div>
+          <span class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold whitespace-nowrap">
+            Exchange Details
+          </span>
+          <div class="flex-1 h-px bg-slate-100"></div>
+        </div>
+
+        <!-- ── EXCHANGE FORM ───────────────────────────────────── -->
+        <!--
+          [4] ↓ Replace [FORMSPREE_ID] with your code from formspree.io
+               Zapier will auto-detect: full_name · email_address · phone_number · message
+        -->
+        <form
+          id="exchangeForm"
+          action="https://formspree.io/f/mqejqgll"
+          method="POST"
+        >
+          <div class="space-y-3">
+
+            <div class="relative">
+              <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+              <input
+                type="text"
+                name="full_name"
+                placeholder="Your Full Name *"
+                required
+                autocomplete="name"
+                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                       text-sm text-slate-800 placeholder-slate-400"
+              />
+            </div>
+
+            <div class="relative">
+              <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+              <input
+                type="email"
+                name="email_address"
+                placeholder="Your Email Address *"
+                required
+                autocomplete="email"
+                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                       text-sm text-slate-800 placeholder-slate-400"
+              />
+            </div>
+
+            <div class="relative">
+              <i class="fa-solid fa-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+              <input
+                type="tel"
+                name="phone_number"
+                placeholder="Your Phone Number"
+                autocomplete="tel"
+                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                       text-sm text-slate-800 placeholder-slate-400"
+              />
+            </div>
+
+            <textarea
+              name="message"
+              placeholder="Quick note (optional) — e.g. interested in buying, selling, just browsing…"
+              rows="3"
+              class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                     text-sm text-slate-800 placeholder-slate-400 resize-none"
+            ></textarea>
+
+          </div>
+
+          <!-- Inline status banner (success / error) -->
+          <div id="formStatus" class="hidden mt-3 p-3 rounded-xl text-sm text-center font-medium"></div>
+
+          <button
+            type="submit"
+            id="submitBtn"
+            class="btn-brand w-full py-3.5 rounded-2xl text-white font-semibold text-sm mt-4
+                   flex items-center justify-center gap-2"
+          >
+            <i class="fa-solid fa-paper-plane"></i>
+            Send My Info
+          </button>
+
+          <p class="text-center text-[10px] text-slate-400 mt-2">
+            Your info goes directly to me — no spam, ever.
+          </p>
+        </form>
+
+      </div><!-- /px-6 -->
+    </div><!-- /card -->
+
+    <!-- ════════════════════════════════════════════════════════════
+         PWA "Add to Home Screen" TIP
+         Dismissed state is saved in localStorage — won't re-appear.
+    ════════════════════════════════════════════════════════════ -->
+    <div id="pwa-tip"
+         class="mt-4 bg-white rounded-2xl card-shadow p-4 flex items-center gap-3 fade-up-delay">
+      <div class="shrink-0 w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center">
+        <i class="fa-solid fa-mobile-screen-button text-[#ff914d] text-sm"></i>
+      </div>
+      <p class="flex-1 text-[11px] text-slate-500 leading-relaxed">
+        <strong class="text-slate-700">Save this card:</strong> tap the Share icon
+        <i class="fa-solid fa-arrow-up-from-bracket text-[#ff914d] text-[10px]"></i>
+        and select <strong class="text-slate-700">"Add to Home Screen"</strong>
+      </p>
+      <button
+        onclick="dismissPwaTip()"
+        aria-label="Dismiss tip"
+        class="shrink-0 w-6 h-6 flex items-center justify-center rounded-full
+               text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
+      >
+        <i class="fa-solid fa-xmark text-xs"></i>
+      </button>
+    </div>
+
+    <!-- Footer -->
+    <p class="text-center text-[11px] text-slate-400 mt-4 pb-6">
+      &copy; <span id="yr"></span>
+      <span class="text-[#ff914d] font-semibold">Issac Realty Inc</span>
+      &nbsp;·&nbsp; All rights reserved
+    </p>
+
+  </div><!-- /max-w-sm -->
+
+  <!-- ════════════════════════════════════════════════════════════
+       TOAST NOTIFICATION
+  ════════════════════════════════════════════════════════════ -->
+  <div
+    id="toast"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-8 left-1/2 -translate-x-1/2 translate-y-2
+           bg-slate-900 text-white text-[13px] font-medium
+           px-5 py-3 rounded-full shadow-xl
+           opacity-0 pointer-events-none z-50
+           flex items-center gap-2 whitespace-nowrap"
+  ></div>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       JAVASCRIPT
+  ════════════════════════════════════════════════════════════ -->
+  <script>
+  // ╔══════════════════════════════════════════════════════════════════╗
+  // ║  [1]  FILL IN YOUR DETAILS — this is the only section to edit   ║
+  // ╚══════════════════════════════════════════════════════════════════╝
+  const ME = {
+    firstName    : 'Rosh',
+    lastName     : 'Issac',
+    phone        : '+18254495083',
+    email        : 'rosh@issacrealty.com',
+    linkedin     : 'https://www.linkedin.com/in/roshissac',
+    website      : 'https://issacrealty.com',
+    whatsapp     : '18254495083',
+    title        : 'Realtor® | Issac Realty Team',
+    titleFull    : 'Realtor® | Issac Realty Team - Associates of Dreamhouse Realty Ltd.',
+    company      : 'Issac Realty Inc',
+    brokerage    : 'Dreamhouse Realty Ltd.',
+    city         : 'Calgary, AB',
+    address      : '2 - 2000 Pegasus Rd NE Unit 2, Calgary, AB T2E 8K7',
+    gravatarHash : 'e4303df6c94628f8045585b0da670104',
+  };
+  // ───────────────────────────────────────────────────────────────────
+
+
+  // ── Hydrate card with data from ME object ───────────────────────────
+  (function hydrate() {
+    document.getElementById('card-name').textContent =
+      `${ME.firstName} ${ME.lastName}`;
+
+    document.getElementById('card-title').innerHTML =
+      `${ME.title}&nbsp;&nbsp;·&nbsp;&nbsp;<span class="font-semibold text-[#ff914d]">${ME.company}</span>`;
+
+    document.getElementById('card-brokerage').textContent =
+      `Associates of ${ME.brokerage}`;
+
+    const cityEl = document.getElementById('card-city');
+    cityEl.innerHTML = `<i class="fa-solid fa-location-dot text-[#ff914d] text-[9px]"></i>${ME.city}`;
+
+    document.getElementById('label-phone').textContent = ME.phone;
+    document.getElementById('link-phone').href = `tel:${ME.phone}`;
+
+    document.getElementById('label-email').textContent = ME.email;
+    document.getElementById('link-email').href = `mailto:${ME.email}`;
+
+    document.getElementById('link-wa').href  = `https://wa.me/${ME.whatsapp}`;
+    document.getElementById('link-li').href  = ME.linkedin;
+    document.getElementById('link-web').href = ME.website;
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+  })();
+
+
+  // ── VCF / Contact card download ────────────────────────────────────
+  function downloadVCF() {
+    const photoUrl =
+      `https://www.gravatar.com/avatar/${ME.gravatarHash}?s=400&d=mp`;
+
+    const vcf = [
+      'BEGIN:VCARD',
+      'VERSION:3.0',
+      `FN:${ME.firstName} ${ME.lastName}`,
+      `N:${ME.lastName};${ME.firstName};;;`,
+      `TEL;TYPE=CELL,VOICE:${ME.phone}`,
+      `EMAIL;TYPE=INTERNET,PREF:${ME.email}`,
+      `URL;TYPE=LinkedIn:${ME.linkedin}`,
+      `URL;TYPE=Website:${ME.website}`,
+      `ORG:${ME.company}`,
+      `TITLE:${ME.titleFull}`,
+      `ADR;TYPE=WORK:;;${ME.address};;;;`,
+      `PHOTO;VALUE=URL:${photoUrl}`,
+      'END:VCARD'
+    ].join('\r\n');
+
+    const blob = new Blob([vcf], { type: 'text/vcard;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = Object.assign(document.createElement('a'), {
+      href     : url,
+      download : `${ME.firstName}_${ME.lastName}.vcf`
+    });
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('📇 Contact saved to your device!');
+  }
+
+
+  // ── Form submission (AJAX → Formspree → Zapier) ────────────────────
+  const form      = document.getElementById('exchangeForm');
+  const statusDiv = document.getElementById('formStatus');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML =
+      '<i class="fa-solid fa-circle-notch fa-spin"></i>&nbsp; Sending…';
+
+    try {
+      const res = await fetch(form.action, {
+        method  : 'POST',
+        body    : new FormData(form),
+        headers : { Accept: 'application/json' }
+      });
+
+      if (res.ok) {
+        statusDiv.className =
+          'mt-3 p-3 rounded-xl text-sm text-center font-medium ' +
+          'bg-green-50 text-green-700 border border-green-100';
+        statusDiv.textContent = '✓ Got it! I\'ll be in touch very soon.';
+        statusDiv.classList.remove('hidden');
+        form.reset();
+        showToast('Message sent — thanks!');
+        submitBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i>&nbsp; Sent!';
+        // Re-enable after 8 s in case they want to send again
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML =
+            '<i class="fa-solid fa-paper-plane"></i>&nbsp; Send My Info';
+        }, 8000);
+      } else {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Submission failed');
+      }
+    } catch {
+      statusDiv.className =
+        'mt-3 p-3 rounded-xl text-sm text-center font-medium ' +
+        'bg-red-50 text-red-600 border border-red-100';
+      statusDiv.textContent =
+        '✗ Something went wrong — please try again or contact me directly.';
+      statusDiv.classList.remove('hidden');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML =
+        '<i class="fa-solid fa-paper-plane"></i>&nbsp; Send My Info';
+    }
+  });
+
+
+  // ── PWA tip (dismiss + persist) ────────────────────────────────────
+  function dismissPwaTip() {
+    const tip = document.getElementById('pwa-tip');
+    tip.style.opacity = '0';
+    setTimeout(() => tip.remove(), 300);
+    try { localStorage.setItem('pwaTipDismissed', '1'); } catch {}
+  }
+  try {
+    if (localStorage.getItem('pwaTipDismissed')) {
+      document.getElementById('pwa-tip')?.remove();
+    }
+  } catch {}
+
+
+  // ── Toast ───────────────────────────────────────────────────────────
+  let _toastTimer;
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.opacity = '1';
+    t.style.transform = 'translateX(-50%) translateY(0)';
+    clearTimeout(_toastTimer);
+    _toastTimer = setTimeout(() => {
+      t.style.opacity = '0';
+      t.style.transform = 'translateX(-50%) translateY(8px)';
+    }, 3200);
+  }
+  </script>
+
+</body>
+</html>
