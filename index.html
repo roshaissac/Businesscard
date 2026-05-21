@@ -136,32 +136,27 @@
     <div class="bg-white rounded-3xl card-shadow overflow-hidden fade-up">
 
       <!-- Header banner -->
-      <div class="h-28 bg-gradient-to-br from-[#ff914d] to-[#ff7530] header-pattern relative overflow-hidden">
+      <div class="bg-gradient-to-br from-[#ff914d] to-[#ff7530] header-pattern relative overflow-hidden">
         <!-- Decorative blobs -->
         <div class="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-white/10"></div>
         <div class="absolute top-10 -left-8 w-20 h-20 rounded-full bg-white/10"></div>
         <div class="absolute -bottom-4 right-16 w-12 h-12 rounded-full bg-white/10"></div>
-        <!-- Company name watermark -->
-        <p class="absolute bottom-3 right-4 text-white/70 text-[9px] font-bold uppercase tracking-widest text-right leading-tight">
-          Issac Realty Team<br/>Dreamhouse Realty Ltd.
-        </p>
+        <!-- Avatar + company name -->
+        <div class="relative z-10 flex items-center gap-4 px-6 py-5">
+          <img
+            src="https://www.gravatar.com/avatar/e4303df6c94628f8045585b0da670104?s=400&d=mp"
+            alt="Profile photo"
+            width="80" height="80"
+            class="w-20 h-20 rounded-full object-cover ring-[3px] ring-white/80 shrink-0"
+            onerror="this.src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&s=400'"
+          />
+          <p class="text-white font-bold text-sm leading-snug">
+            Issac Realty Team,<br>Dreamhouse Realty Ltd.
+          </p>
+        </div>
       </div>
 
       <div class="px-6 pb-8">
-
-        <!-- ── AVATAR ──────────────────────────────────────────── -->
-        <div class="flex justify-center -mt-14 mb-4">
-          <div class="avatar-ring">
-            <!-- [2] ↓ Replace [MD5_HASH] with your Gravatar hash -->
-            <img
-              src="https://www.gravatar.com/avatar/e4303df6c94628f8045585b0da670104?s=400&d=mp"
-              alt="Profile photo"
-              width="96" height="96"
-              class="w-24 h-24 rounded-full object-cover bg-slate-100 ring-4 ring-white"
-              onerror="this.src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&s=400'"
-            />
-          </div>
-        </div>
 
         <!-- ── NAME & TITLE ────────────────────────────────────── -->
         <div class="text-center mb-6">
