@@ -468,7 +468,7 @@
           <p class="text-sm font-semibold text-slate-800 mb-1">
             <i class="fa-solid fa-camera text-[#ff914d] mr-2"></i>Scan Their Business Card
           </p>
-          <p class="text-xs text-slate-400 mb-4">Photo their card — name, email, phone, and company will pre-fill.</p>
+          <p class="text-xs text-slate-400 mb-4">Photo their card or QR code — fields fill automatically.</p>
           <label class="btn-brand w-full py-3 rounded-xl text-white font-semibold text-sm
                         flex items-center justify-center gap-2 cursor-pointer">
             <i class="fa-solid fa-camera"></i> Open Camera
@@ -981,11 +981,21 @@
     document.getElementById('cap-review').classList.remove('hidden');
   }
 
-  // Option A — Camera + Tesseract OCR
+  // Option A — Camera: QR first, Tesseract OCR fallback
   async function handleCardPhoto(e) {
     const file = e.target.files[0];
     if (!file) return;
     document.getElementById('ocr-status').classList.remove('hidden');
+
+    try {
+      const qrData = await detectQR(file);
+      if (qrData) {
+        handleQRData(qrData);
+        document.getElementById('ocr-status').classList.add('hidden');
+        return;
+      }
+    } catch (_) {}
+
     if (!window.Tesseract) {
       await new Promise((res, rej) => {
         const s = document.createElement('script');
@@ -1002,6 +1012,54 @@
     } finally {
       document.getElementById('ocr-status').classList.add('hidden');
     }
+  }
+
+  async function detectQR(file) {
+    if (!window.jsQR) {
+      await new Promise((res, rej) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+    return new Promise((resolve) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = function () {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width; canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const d = ctx.getImageData(0, 0, img.width, img.height);
+        URL.revokeObjectURL(url);
+        const code = jsQR(d.data, d.width, d.height);
+        resolve(code ? code.data : null);
+      };
+      img.onerror = () => resolve(null);
+      img.src = url;
+    });
+  }
+
+  function handleQRData(data) {
+    if (data.startsWith('BEGIN:VCARD')) {
+      prefillFromText(data);
+      return;
+    }
+    if (data.startsWith('MECARD:')) {
+      const get = (key) => { const m = data.match(new RegExp(key + ':([^;]+)')); return m ? m[1].trim() : ''; };
+      const raw = get('N'), parts = raw.split(',');
+      document.getElementById('cap_name').value    = parts.length > 1 ? `${parts[1].trim()} ${parts[0].trim()}` : raw;
+      document.getElementById('cap_email').value   = get('EMAIL');
+      document.getElementById('cap_phone').value   = get('TEL');
+      document.getElementById('cap_company').value = get('ORG');
+      showCapReview();
+      return;
+    }
+    // URL or unknown — drop into notes
+    document.getElementById('cap_notes').value = data;
+    showToast('QR link saved to notes');
+    showCapReview();
   }
 
   // Option B — vCard / plain text paste
