@@ -182,15 +182,27 @@
           </div>
         </div>
 
-        <!-- ── ADD TO CONTACTS ─────────────────────────────────── -->
-        <button
-          onclick="downloadVCF()"
-          class="btn-brand w-full py-3.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2 mb-5"
-          aria-label="Download contact card"
-        >
-          <i class="fa-solid fa-address-card text-base"></i>
-          Add to Contacts
-        </button>
+        <!-- ── ADD TO CONTACTS + SHARE ───────────────────────── -->
+        <div class="flex gap-2.5 mb-5">
+          <button
+            onclick="downloadVCF()"
+            class="btn-brand flex-1 py-3.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2"
+            aria-label="Download contact card"
+          >
+            <i class="fa-solid fa-address-card text-base"></i>
+            Add to Contacts
+          </button>
+          <button
+            onclick="openShare()"
+            class="flex-none px-4 py-3.5 rounded-2xl border-2 border-[#ff914d] text-[#ff914d]
+                   font-semibold text-sm flex items-center justify-center gap-2
+                   hover:bg-[#fff4ee] transition-colors"
+            aria-label="Share card"
+          >
+            <i class="fa-solid fa-share-nodes text-base"></i>
+            Share
+          </button>
+        </div>
 
         <!-- ── SOCIAL ROW ──────────────────────────────────────── -->
         <div class="flex items-center justify-center gap-5 mb-7">
@@ -576,6 +588,53 @@
     </div>
   </div>
 
+  <!-- ════════════════════════════════════════════════════════════
+       SHARE MODAL
+  ════════════════════════════════════════════════════════════ -->
+  <div id="share-overlay" class="hidden fixed inset-0 z-[300] flex items-end justify-center">
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeShare()"></div>
+    <div class="relative w-full max-w-sm bg-white rounded-t-3xl p-6 pb-10 z-10">
+
+      <div class="flex items-center justify-between mb-5">
+        <h2 class="text-base font-bold text-slate-800">Share My Card</h2>
+        <button onclick="closeShare()"
+                class="w-7 h-7 flex items-center justify-center rounded-full bg-slate-100 text-slate-500">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <!-- QR code -->
+      <div class="flex flex-col items-center mb-6">
+        <div id="qr-container"
+             class="w-44 h-44 flex items-center justify-center bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden">
+          <i class="fa-solid fa-spinner animate-spin text-slate-300 text-xl"></i>
+        </div>
+        <p class="text-xs text-slate-400 mt-2">Scan to open on any phone</p>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="space-y-2.5">
+        <button onclick="copyLink()" id="copy-btn"
+                class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50
+                       text-sm font-semibold text-slate-700 transition-colors hover:bg-orange-50">
+          <div class="w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-link text-[#ff914d] text-sm"></i>
+          </div>
+          Copy Link
+        </button>
+        <button onclick="nativeShare()"
+                class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50
+                       text-sm font-semibold text-slate-700 transition-colors hover:bg-orange-50">
+          <div class="w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
+            <i class="fa-solid fa-share-nodes text-[#ff914d] text-sm"></i>
+          </div>
+          AirDrop / Share
+        </button>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Floating tab switcher — Prospect / Professional -->
   <div id="floating-tabs"
        class="fixed bottom-14 left-1/2 -translate-x-1/2 z-[100]
@@ -782,6 +841,65 @@
     }
   });
 
+
+  // ── Share modal ──────────────────────────────────────────────────────
+  const CARD_URL = 'https://roshaissac.github.io/Businesscard';
+  let _qrReady = false;
+
+  function openShare() {
+    document.getElementById('share-overlay').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    if (!_qrReady) loadQR();
+  }
+
+  function closeShare() {
+    document.getElementById('share-overlay').classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function loadQR() {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
+    s.onload = function () {
+      const el = document.getElementById('qr-container');
+      el.innerHTML = '';
+      new QRCode(el, {
+        text: CARD_URL,
+        width: 160, height: 160,
+        colorDark: '#1e293b',
+        colorLight: '#f8fafc',
+        correctLevel: QRCode.CorrectLevel.M,
+      });
+      _qrReady = true;
+    };
+    document.head.appendChild(s);
+  }
+
+  function copyLink() {
+    navigator.clipboard.writeText(CARD_URL).then(function () {
+      const btn = document.getElementById('copy-btn');
+      btn.innerHTML =
+        '<div class="w-9 h-9 rounded-full bg-green-50 flex items-center justify-center shrink-0">' +
+        '<i class="fa-solid fa-check text-green-500 text-sm"></i></div> Copied!';
+      setTimeout(function () {
+        btn.innerHTML =
+          '<div class="w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center shrink-0">' +
+          '<i class="fa-solid fa-link text-[#ff914d] text-sm"></i></div> Copy Link';
+      }, 2000);
+    });
+  }
+
+  function nativeShare() {
+    if (navigator.share) {
+      navigator.share({
+        title: 'Rosh Issac — Realtor® | Issac Realty Team',
+        text: 'Connect with Rosh Issac, Realtor® at Issac Realty Team',
+        url: CARD_URL,
+      });
+    } else {
+      copyLink();
+    }
+  }
 
   // ── Tab switcher ─────────────────────────────────────────────────────
   function switchTab(tab) {
