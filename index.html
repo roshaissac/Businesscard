@@ -349,8 +349,8 @@
     <!-- Footer -->
     <p class="text-center text-[11px] text-slate-400 mt-4 pb-6">
       &copy; <span id="yr"></span>
-      <span class="text-[#ff914d] font-semibold">Issac Realty Team</span>
-      &nbsp;·&nbsp; Associates of <span class="font-semibold text-slate-600">Dreamhouse Realty Ltd.</span>
+      <span class="font-semibold text-slate-600">Issac Realty Inc.</span> - Rosh Issac, Realtor®
+      &nbsp;·&nbsp; Associate, <span class="font-semibold text-slate-600">Dreamhouse Realty Ltd. (Brokerage)</span>
     </p>
 
   </div><!-- /max-w-sm -->
@@ -429,7 +429,7 @@
       `${ME.firstName} ${ME.lastName}`;
 
     document.getElementById('card-title').innerHTML =
-      `${ME.title}&nbsp;&nbsp;·&nbsp;&nbsp;<span class="font-semibold text-[#ff914d]">${ME.company}</span>`;
+      `${ME.title}&nbsp;·<br><span class="font-semibold text-[#ff914d]">${ME.company}</span>`;
 
     document.getElementById('card-brokerage').textContent =
       `Associates of ${ME.brokerage}`;
