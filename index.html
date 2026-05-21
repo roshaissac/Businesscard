@@ -16,11 +16,11 @@
   ═══════════════════════════════════════════════════════════════════════ -->
 
   <title>Rosh Issac · Issac Realty Inc</title>
-  <meta name="description" content="Connect with Rosh Issac — Realtor® at Issac Realty Inc, Calgary, AB." />
+  <meta name="description" content="Connect with Rosh Issac — Realtor® | Issac Realty Team, Associates of Dreamhouse Realty Ltd., Calgary, AB." />
 
   <!-- Open Graph (WhatsApp / iMessage previews) -->
-  <meta property="og:title"       content="Rosh Issac · Issac Realty Inc" />
-  <meta property="og:description" content="Connect with Rosh Issac — Realtor® at Issac Realty Inc, Calgary, AB." />
+  <meta property="og:title"       content="Rosh Issac · Issac Realty Team | Dreamhouse Realty Ltd." />
+  <meta property="og:description" content="Connect with Rosh Issac — Realtor® | Issac Realty Team, Associates of Dreamhouse Realty Ltd., Calgary, AB." />
   <!-- [2] ↓ Replace [MD5_HASH] -->
   <meta property="og:image"       content="https://www.gravatar.com/avatar/e4303df6c94628f8045585b0da670104?s=400&d=mp" />
   <meta property="og:type"        content="profile" />
@@ -126,7 +126,7 @@
   </style>
 </head>
 
-<body class="min-h-screen bg-slate-50 flex flex-col items-center justify-start py-8 px-4">
+<body class="min-h-screen bg-slate-50 flex flex-col items-center justify-start py-8 px-4 pb-20">
 
   <div class="w-full max-w-sm">
 
@@ -142,8 +142,8 @@
         <div class="absolute top-10 -left-8 w-20 h-20 rounded-full bg-white/10"></div>
         <div class="absolute -bottom-4 right-16 w-12 h-12 rounded-full bg-white/10"></div>
         <!-- Company name watermark -->
-        <p class="absolute bottom-3 right-4 text-white/60 text-[10px] font-bold uppercase tracking-widest">
-          Issac Realty Inc
+        <p class="absolute bottom-3 right-4 text-white/70 text-[9px] font-bold uppercase tracking-widest text-right leading-tight">
+          Issac Realty Team<br/>Dreamhouse Realty Ltd.
         </p>
       </div>
 
@@ -168,7 +168,7 @@
           <!-- [1] ↓ Populated from ME object via JS below -->
           <h1 id="card-name"      class="text-2xl font-extrabold text-slate-900 tracking-tight leading-tight"></h1>
           <p  id="card-title"     class="text-sm text-slate-500 mt-1 font-medium"></p>
-          <p  id="card-brokerage" class="text-[11px] text-slate-400 mt-0.5 italic"></p>
+          <p  id="card-brokerage" class="text-[11px] text-slate-500 mt-1 font-semibold tracking-wide"></p>
           <p  id="card-city"      class="text-xs text-slate-400 mt-1.5 flex items-center justify-center gap-1.5"></p>
 
           <!-- Quick-tap phone & email -->
@@ -349,11 +349,38 @@
     <!-- Footer -->
     <p class="text-center text-[11px] text-slate-400 mt-4 pb-6">
       &copy; <span id="yr"></span>
-      <span class="text-[#ff914d] font-semibold">Issac Realty Inc</span>
-      &nbsp;·&nbsp; All rights reserved
+      <span class="text-[#ff914d] font-semibold">Issac Realty Team</span>
+      &nbsp;·&nbsp; Associates of <span class="font-semibold text-slate-600">Dreamhouse Realty Ltd.</span>
     </p>
 
   </div><!-- /max-w-sm -->
+
+  <!-- ════════════════════════════════════════════════════════════
+       FLOATING BROKERAGE BAR (RECA compliance)
+       Save the logo as dreamhouse-logo.png in this folder, then
+       commit it — the bar will appear automatically.
+  ════════════════════════════════════════════════════════════ -->
+  <div id="brokerage-bar"
+       class="fixed bottom-0 left-0 right-0 z-50
+              bg-white/95 backdrop-blur-sm
+              border-t border-slate-200
+              flex items-center justify-center gap-3
+              py-2 px-4 shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
+    <img
+      src="./dreamhouse-logo.png"
+      alt="Dreamhouse Realty Ltd."
+      class="h-8 w-auto object-contain"
+      onerror="this.style.display='none';document.getElementById('brokerage-text').classList.remove('hidden')"
+    />
+    <!-- Fallback text shown only if logo file is missing -->
+    <span id="brokerage-text"
+          class="hidden text-xs font-bold uppercase tracking-widest text-slate-700">
+      Dreamhouse Realty Ltd.
+    </span>
+    <span class="text-[10px] text-slate-400 border-l border-slate-200 pl-3">
+      Licensed Brokerage
+    </span>
+  </div>
 
   <!-- ════════════════════════════════════════════════════════════
        TOAST NOTIFICATION
