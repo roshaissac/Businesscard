@@ -232,161 +232,125 @@
 
         </div>
 
-        <!-- ── ROLE SELECTOR ──────────────────────────────────── -->
-        <div id="role-selector">
-          <p class="text-center text-xs text-slate-400 font-medium mb-3">How can I help you today?</p>
-          <div class="space-y-2.5">
-            <button
-              onclick="selectMode('professional')"
-              class="w-full py-3.5 rounded-2xl border-2 border-[#ff914d] text-[#ff914d]
-                     font-semibold text-sm flex items-center justify-center gap-2.5
-                     transition-all hover:bg-[#fff4ee] active:scale-[0.98]"
-            >
-              <i class="fa-solid fa-handshake text-base"></i>
-              I'm a Real Estate Professional
-            </button>
-            <button
-              onclick="selectMode('client')"
-              class="btn-brand w-full py-3.5 rounded-2xl text-white font-semibold text-sm
-                     flex items-center justify-center gap-2.5"
-            >
-              <i class="fa-solid fa-house text-base"></i>
-              I Need Real Estate Support
-            </button>
-          </div>
+        <!-- ── EXCHANGE FORM ──────────────────────────────────── -->
+        <div class="flex items-center gap-3 mb-5">
+          <div class="flex-1 h-px bg-slate-100"></div>
+          <span id="exchange-title"
+                class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold whitespace-nowrap">
+            Exchange Details
+          </span>
+          <div class="flex-1 h-px bg-slate-100"></div>
         </div>
 
-        <!-- ── EXCHANGE SECTION (revealed after role selection) ── -->
-        <div id="exchange-section" class="hidden">
+        <form id="exchangeForm" action="https://formspree.io/f/mqejqgll" method="POST">
 
-          <button
-            onclick="resetMode()"
-            class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-[#ff914d]
-                   transition-colors mb-4"
-          >
-            <i class="fa-solid fa-chevron-left text-[9px]"></i> Change selection
-          </button>
+          <input type="hidden" name="contact_type"   id="contact_type_field" value="client" />
+          <input type="hidden" name="contact_source" value="digital_card" />
 
-          <div class="flex items-center gap-3 mb-5">
-            <div class="flex-1 h-px bg-slate-100"></div>
-            <span id="exchange-title"
-                  class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold whitespace-nowrap">
-              Exchange Details
-            </span>
-            <div class="flex-1 h-px bg-slate-100"></div>
-          </div>
+          <div class="space-y-3">
 
-          <form id="exchangeForm" action="https://formspree.io/f/mqejqgll" method="POST">
-
-            <input type="hidden" name="contact_type"   id="contact_type_field" value="" />
-            <input type="hidden" name="contact_source" value="digital_card" />
-
-            <div class="space-y-3">
-
-              <!-- Industry dropdown — pro only -->
-              <div id="industry-row" class="relative hidden">
-                <i class="fa-solid fa-briefcase absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-                <select
-                  name="industry"
-                  id="industry-select"
-                  class="w-full pl-9 pr-8 py-3 rounded-xl border border-slate-200 bg-slate-50
-                         text-sm text-slate-800 appearance-none"
-                >
-                  <option value="" disabled selected>Your Industry *</option>
-                  <option>Realtor / Real Estate Agent</option>
-                  <option>Property Manager</option>
-                  <option>Mortgage Broker / Lender</option>
-                  <option>Real Estate Lawyer / Notary</option>
-                  <option>Home Inspector</option>
-                  <option>Photographer / Stager</option>
-                  <option>Trades (Plumber, Electrician, HVAC…)</option>
-                  <option>Developer / Builder</option>
-                  <option>Surveyor / Appraiser</option>
-                  <option>Other Professional</option>
-                </select>
-                <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-              </div>
-
-              <!-- Company — pro only -->
-              <div id="company-row" class="relative hidden">
-                <i class="fa-solid fa-building absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-                <input
-                  type="text"
-                  name="company"
-                  placeholder="Company / Brokerage"
-                  autocomplete="organization"
-                  class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                         text-sm text-slate-800 placeholder-slate-400"
-                />
-              </div>
-
-              <div class="relative">
-                <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-                <input
-                  type="text"
-                  name="full_name"
-                  placeholder="Your Full Name *"
-                  required
-                  autocomplete="name"
-                  class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                         text-sm text-slate-800 placeholder-slate-400"
-                />
-              </div>
-
-              <div class="relative">
-                <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-                <input
-                  type="email"
-                  name="email_address"
-                  placeholder="Your Email Address *"
-                  required
-                  autocomplete="email"
-                  class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                         text-sm text-slate-800 placeholder-slate-400"
-                />
-              </div>
-
-              <div class="relative">
-                <i class="fa-solid fa-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-                <input
-                  type="tel"
-                  name="phone_number"
-                  placeholder="Your Phone Number"
-                  autocomplete="tel"
-                  class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                         text-sm text-slate-800 placeholder-slate-400"
-                />
-              </div>
-
-              <textarea
-                id="message-field"
-                name="message"
-                placeholder="Quick note (optional)…"
-                rows="3"
-                class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                       text-sm text-slate-800 placeholder-slate-400 resize-none"
-              ></textarea>
-
+            <!-- Industry dropdown — pro only -->
+            <div id="industry-row" class="relative hidden">
+              <i class="fa-solid fa-briefcase absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+              <select
+                name="industry"
+                id="industry-select"
+                class="w-full pl-9 pr-8 py-3 rounded-xl border border-slate-200 bg-slate-50
+                       text-sm text-slate-800 appearance-none"
+              >
+                <option value="" disabled selected>Your Industry *</option>
+                <option>Realtor / Real Estate Agent</option>
+                <option>Property Manager</option>
+                <option>Mortgage Broker / Lender</option>
+                <option>Real Estate Lawyer / Notary</option>
+                <option>Home Inspector</option>
+                <option>Photographer / Stager</option>
+                <option>Trades (Plumber, Electrician, HVAC…)</option>
+                <option>Developer / Builder</option>
+                <option>Surveyor / Appraiser</option>
+                <option>Other Professional</option>
+              </select>
+              <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
             </div>
 
-            <div id="formStatus" class="hidden mt-3 p-3 rounded-xl text-sm text-center font-medium"></div>
+            <!-- Company — pro only -->
+            <div id="company-row" class="relative hidden">
+              <i class="fa-solid fa-building absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+              <input
+                type="text"
+                name="company"
+                placeholder="Company / Brokerage"
+                autocomplete="organization"
+                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                       text-sm text-slate-800 placeholder-slate-400"
+              />
+            </div>
 
-            <button
-              type="submit"
-              id="submitBtn"
-              class="btn-brand w-full py-3.5 rounded-2xl text-white font-semibold text-sm mt-4
-                     flex items-center justify-center gap-2"
-            >
-              <i class="fa-solid fa-paper-plane"></i>
-              Send My Info
-            </button>
+            <div class="relative">
+              <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+              <input
+                type="text"
+                name="full_name"
+                placeholder="Your Full Name *"
+                required
+                autocomplete="name"
+                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                       text-sm text-slate-800 placeholder-slate-400"
+              />
+            </div>
 
-            <p class="text-center text-[10px] text-slate-400 mt-2">
-              Your info goes directly to me — no spam, ever.
-            </p>
-          </form>
+            <div class="relative">
+              <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+              <input
+                type="email"
+                name="email_address"
+                placeholder="Your Email Address *"
+                required
+                autocomplete="email"
+                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                       text-sm text-slate-800 placeholder-slate-400"
+              />
+            </div>
 
-        </div><!-- /exchange-section -->
+            <div class="relative">
+              <i class="fa-solid fa-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+              <input
+                type="tel"
+                name="phone_number"
+                placeholder="Your Phone Number"
+                autocomplete="tel"
+                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                       text-sm text-slate-800 placeholder-slate-400"
+              />
+            </div>
+
+            <textarea
+              id="message-field"
+              name="message"
+              placeholder="Quick note — e.g. buying, selling, investing, just browsing…"
+              rows="3"
+              class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                     text-sm text-slate-800 placeholder-slate-400 resize-none"
+            ></textarea>
+
+          </div>
+
+          <div id="formStatus" class="hidden mt-3 p-3 rounded-xl text-sm text-center font-medium"></div>
+
+          <button
+            type="submit"
+            id="submitBtn"
+            class="btn-brand w-full py-3.5 rounded-2xl text-white font-semibold text-sm mt-4
+                   flex items-center justify-center gap-2"
+          >
+            <i class="fa-solid fa-paper-plane"></i>
+            Send My Info
+          </button>
+
+          <p class="text-center text-[10px] text-slate-400 mt-2">
+            Your info goes directly to me — no spam, ever.
+          </p>
+        </form>
 
       </div><!-- /px-6 -->
     </div><!-- /card -->
@@ -617,9 +581,25 @@
     </div>
   </div>
 
+  <!-- Floating tab switcher — Prospect / Professional -->
+  <div id="floating-tabs"
+       class="fixed bottom-14 left-1/2 -translate-x-1/2 z-[100]
+              bg-white rounded-full shadow-lg border border-slate-100 p-1.5 flex gap-1">
+    <button id="tab-btn-prospect" onclick="switchTab('prospect')"
+            class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold
+                   transition-all bg-[#ff914d] text-white shadow-sm">
+      <i class="fa-solid fa-house"></i>Prospect
+    </button>
+    <button id="tab-btn-pro" onclick="switchTab('pro')"
+            class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold
+                   transition-all text-slate-500 hover:text-slate-700">
+      <i class="fa-solid fa-handshake"></i>Professional
+    </button>
+  </div>
+
   <!-- Capture FAB — only Rosh uses this -->
   <button onclick="openCapture()" aria-label="Capture a contact"
-          class="fixed bottom-14 right-4 z-[150] w-12 h-12 btn-brand rounded-full
+          class="fixed bottom-28 right-4 z-[150] w-12 h-12 btn-brand rounded-full
                  flex items-center justify-center shadow-lg shadow-orange-200">
     <i class="fa-solid fa-user-plus text-white"></i>
   </button>
@@ -808,37 +788,39 @@
   });
 
 
-  // ── Role selector ───────────────────────────────────────────────────
-  function selectMode(mode) {
-    const isPro = mode === 'professional';
+  // ── Tab switcher ─────────────────────────────────────────────────────
+  function switchTab(tab) {
+    const isPro = tab === 'pro';
 
-    document.getElementById('role-selector').classList.add('hidden');
-    const section = document.getElementById('exchange-section');
-    section.classList.remove('hidden');
-    section.style.animation = 'fadeUp .3s ease both';
+    // Active / inactive button styles
+    const activeClasses   = ['bg-[#ff914d]', 'text-white', 'shadow-sm'];
+    const inactiveClasses = ['text-slate-500', 'hover:text-slate-700'];
 
-    document.getElementById('contact_type_field').value = mode;
+    const btnProspect = document.getElementById('tab-btn-prospect');
+    const btnPro      = document.getElementById('tab-btn-pro');
 
+    [btnProspect, btnPro].forEach(b => {
+      b.classList.remove(...activeClasses, ...inactiveClasses);
+    });
+    const activeBtn   = isPro ? btnPro      : btnProspect;
+    const inactiveBtn = isPro ? btnProspect : btnPro;
+    activeBtn.classList.add(...activeClasses);
+    inactiveBtn.classList.add(...inactiveClasses);
+
+    // Show / hide pro-only fields
     document.getElementById('industry-row').classList.toggle('hidden', !isPro);
     document.getElementById('company-row').classList.toggle('hidden', !isPro);
     document.getElementById('industry-select').required = isPro;
 
+    // Update hidden contact_type value
+    document.getElementById('contact_type_field').value = isPro ? 'professional' : 'client';
+
+    // Update divider label and message placeholder
     document.getElementById('exchange-title').textContent =
       isPro ? "LET'S NETWORK" : 'EXCHANGE DETAILS';
-
     document.getElementById('message-field').placeholder = isPro
       ? 'How can we collaborate? (optional)'
       : 'Quick note — e.g. buying, selling, investing, just browsing…';
-  }
-
-  function resetMode() {
-    document.getElementById('exchange-section').classList.add('hidden');
-    document.getElementById('role-selector').classList.remove('hidden');
-    document.getElementById('exchangeForm').reset();
-    document.getElementById('formStatus').classList.add('hidden');
-    const btn = document.getElementById('submitBtn');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>&nbsp; Send My Info';
   }
 
   // ── Capture Mode ────────────────────────────────────────────────────
