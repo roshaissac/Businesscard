@@ -425,6 +425,206 @@
   </div><!-- /max-w-sm -->
 
   <!-- ════════════════════════════════════════════════════════════
+       CAPTURE MODE OVERLAY  (Rosh-only — via FAB or ?cap URL)
+  ════════════════════════════════════════════════════════════ -->
+  <div id="capture-overlay"
+       class="hidden fixed inset-0 bg-slate-50 z-[200] overflow-y-auto">
+    <div class="max-w-sm mx-auto px-4 py-6 pb-24">
+
+      <!-- Header -->
+      <div class="flex items-center gap-3 mb-6">
+        <button onclick="closeCapture()"
+                class="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center
+                       text-slate-500 hover:text-[#ff914d] transition-colors">
+          <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <h2 class="text-lg font-bold text-slate-900">Capture a Contact</h2>
+      </div>
+
+      <!-- Step 1: Choose method -->
+      <div id="cap-method-select">
+        <p class="text-xs text-slate-400 font-medium mb-4">How are they sharing their info?</p>
+        <div class="space-y-3">
+
+          <button onclick="showCaptureMethod('scan')"
+                  class="w-full bg-white rounded-2xl p-4 flex items-center gap-4
+                         border border-slate-200 hover:border-[#ff914d] hover:bg-orange-50
+                         transition-all text-left shadow-sm">
+            <div class="w-11 h-11 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-camera text-[#ff914d] text-lg"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-800 text-sm">Scan Business Card</p>
+              <p class="text-xs text-slate-400 mt-0.5">Point camera — fields fill automatically</p>
+            </div>
+          </button>
+
+          <button onclick="showCaptureMethod('paste')"
+                  class="w-full bg-white rounded-2xl p-4 flex items-center gap-4
+                         border border-slate-200 hover:border-[#ff914d] hover:bg-orange-50
+                         transition-all text-left shadow-sm">
+            <div class="w-11 h-11 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-paste text-[#ff914d] text-lg"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-800 text-sm">Paste vCard / NFC Data</p>
+              <p class="text-xs text-slate-400 mt-0.5">From Haystack, digital card, or NFC tap</p>
+            </div>
+          </button>
+
+          <button onclick="showCaptureMethod('manual')"
+                  class="w-full bg-white rounded-2xl p-4 flex items-center gap-4
+                         border border-slate-200 hover:border-[#ff914d] hover:bg-orange-50
+                         transition-all text-left shadow-sm">
+            <div class="w-11 h-11 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
+              <i class="fa-solid fa-pen text-[#ff914d] text-lg"></i>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-800 text-sm">Enter Manually</p>
+              <p class="text-xs text-slate-400 mt-0.5">Type in their details yourself</p>
+            </div>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- Step 2A: Camera scan -->
+      <div id="cap-scan" class="hidden">
+        <button onclick="backToCapMethods()" class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-[#ff914d] transition-colors mb-4">
+          <i class="fa-solid fa-chevron-left text-[9px]"></i> Back
+        </button>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+          <p class="text-sm font-semibold text-slate-800 mb-1">
+            <i class="fa-solid fa-camera text-[#ff914d] mr-2"></i>Scan Their Business Card
+          </p>
+          <p class="text-xs text-slate-400 mb-4">Photo their card — name, email, phone, and company will pre-fill.</p>
+          <label class="btn-brand w-full py-3 rounded-xl text-white font-semibold text-sm
+                        flex items-center justify-center gap-2 cursor-pointer">
+            <i class="fa-solid fa-camera"></i> Open Camera
+            <input type="file" accept="image/*" capture="environment"
+                   id="cardPhotoInput" class="hidden" onchange="handleCardPhoto(event)" />
+          </label>
+        </div>
+        <div id="ocr-status" class="hidden text-center text-sm text-slate-500 py-4">
+          <i class="fa-solid fa-circle-notch fa-spin mr-2 text-[#ff914d]"></i>Reading card…
+        </div>
+      </div>
+
+      <!-- Step 2B: vCard paste -->
+      <div id="cap-paste" class="hidden">
+        <button onclick="backToCapMethods()" class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-[#ff914d] transition-colors mb-4">
+          <i class="fa-solid fa-chevron-left text-[9px]"></i> Back
+        </button>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+          <p class="text-sm font-semibold text-slate-800 mb-1">
+            <i class="fa-solid fa-paste text-[#ff914d] mr-2"></i>Paste Their Card Data
+          </p>
+          <p class="text-xs text-slate-400 mb-3">From a Haystack link, NFC tap, or any vCard format.</p>
+          <textarea id="vcardInput" rows="5"
+                    placeholder="Paste vCard text (BEGIN:VCARD…) or any contact text…"
+                    class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50
+                           text-xs text-slate-700 placeholder-slate-400 resize-none font-mono mb-3"
+          ></textarea>
+          <button onclick="parseAndFill()"
+                  class="btn-brand w-full py-3 rounded-xl text-white font-semibold text-sm
+                         flex items-center justify-center gap-2">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> Parse &amp; Fill Fields
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Review & tag (all methods land here) -->
+      <div id="cap-review" class="hidden">
+        <button onclick="backToCapMethods()" class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-[#ff914d] transition-colors mb-4">
+          <i class="fa-solid fa-chevron-left text-[9px]"></i> Start over
+        </button>
+
+        <p class="text-xs text-slate-400 font-medium mb-3">Review &amp; tag before saving</p>
+
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3 mb-4">
+          <div class="relative">
+            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+            <input type="text" id="cap_name" placeholder="Full Name *"
+                   class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400" />
+          </div>
+          <div class="relative">
+            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+            <input type="email" id="cap_email" placeholder="Email"
+                   class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400" />
+          </div>
+          <div class="relative">
+            <i class="fa-solid fa-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+            <input type="tel" id="cap_phone" placeholder="Phone"
+                   class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400" />
+          </div>
+          <div class="relative">
+            <i class="fa-solid fa-building absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+            <input type="text" id="cap_company" placeholder="Company / Brokerage"
+                   class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400" />
+          </div>
+        </div>
+
+        <!-- Tag buttons -->
+        <p class="text-xs text-slate-400 font-medium mb-2">Tag this contact as:</p>
+        <div class="grid grid-cols-2 gap-2 mb-3">
+          <button id="tag-client" onclick="setCapTag('client')"
+                  class="py-3 rounded-xl border-2 border-slate-200 text-sm font-semibold
+                         text-slate-500 transition-all">
+            <i class="fa-solid fa-house mr-1.5"></i>Client
+          </button>
+          <button id="tag-pro" onclick="setCapTag('professional')"
+                  class="py-3 rounded-xl border-2 border-slate-200 text-sm font-semibold
+                         text-slate-500 transition-all">
+            <i class="fa-solid fa-handshake mr-1.5"></i>Professional
+          </button>
+        </div>
+
+        <!-- Industry (pro only) -->
+        <div id="cap-industry-row" class="relative hidden mb-3">
+          <i class="fa-solid fa-briefcase absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+          <select id="cap_industry"
+                  class="w-full pl-9 pr-8 py-3 rounded-xl border border-slate-200 bg-slate-50
+                         text-sm text-slate-800 appearance-none">
+            <option value="" disabled selected>Their Industry</option>
+            <option>Realtor / Real Estate Agent</option>
+            <option>Property Manager</option>
+            <option>Mortgage Broker / Lender</option>
+            <option>Real Estate Lawyer / Notary</option>
+            <option>Home Inspector</option>
+            <option>Photographer / Stager</option>
+            <option>Trades (Plumber, Electrician, HVAC…)</option>
+            <option>Developer / Builder</option>
+            <option>Surveyor / Appraiser</option>
+            <option>Other Professional</option>
+          </select>
+          <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
+        </div>
+
+        <textarea id="cap_notes" placeholder="Notes (optional)" rows="2"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50
+                         text-sm text-slate-800 placeholder-slate-400 resize-none mb-4"
+        ></textarea>
+
+        <div id="captureStatus" class="hidden mt-1 mb-3 p-3 rounded-xl text-sm text-center font-medium"></div>
+
+        <button onclick="saveCapture()" id="saveCaptureBtn"
+                class="btn-brand w-full py-3.5 rounded-2xl text-white font-semibold text-sm
+                       flex items-center justify-center gap-2">
+          <i class="fa-solid fa-floppy-disk"></i> Save to CRM
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Capture FAB — only Rosh uses this -->
+  <button onclick="openCapture()" aria-label="Capture a contact"
+          class="fixed bottom-14 right-4 z-[150] w-12 h-12 btn-brand rounded-full
+                 flex items-center justify-center shadow-lg shadow-orange-200">
+    <i class="fa-solid fa-user-plus text-white"></i>
+  </button>
+
+  <!-- ════════════════════════════════════════════════════════════
        FLOATING BROKERAGE BAR (RECA compliance)
        Save the logo as dreamhouse-logo.png in this folder, then
        commit it — the bar will appear automatically.
@@ -639,6 +839,175 @@
     const btn = document.getElementById('submitBtn');
     btn.disabled = false;
     btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i>&nbsp; Send My Info';
+  }
+
+  // ── Capture Mode ────────────────────────────────────────────────────
+  let _capTag = null;
+
+  // Auto-open if ?cap is in URL
+  (function() {
+    if (new URLSearchParams(window.location.search).has('cap')) openCapture();
+  })();
+
+  function openCapture() {
+    document.getElementById('capture-overlay').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeCapture() {
+    document.getElementById('capture-overlay').classList.add('hidden');
+    document.body.style.overflow = '';
+    backToCapMethods();
+  }
+
+  function showCaptureMethod(method) {
+    document.getElementById('cap-method-select').classList.add('hidden');
+    if (method === 'scan')   document.getElementById('cap-scan').classList.remove('hidden');
+    if (method === 'paste')  document.getElementById('cap-paste').classList.remove('hidden');
+    if (method === 'manual') showCapReview();
+  }
+
+  function backToCapMethods() {
+    ['cap-scan','cap-paste','cap-review'].forEach(id =>
+      document.getElementById(id).classList.add('hidden'));
+    document.getElementById('cap-method-select').classList.remove('hidden');
+    ['cap_name','cap_email','cap_phone','cap_company','cap_notes'].forEach(id =>
+      { const el = document.getElementById(id); if (el) el.value = ''; });
+    document.getElementById('vcardInput').value = '';
+    document.getElementById('captureStatus').classList.add('hidden');
+    const btn = document.getElementById('saveCaptureBtn');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>&nbsp; Save to CRM';
+    _capTag = null;
+    resetCapTags();
+  }
+
+  function showCapReview() {
+    document.getElementById('cap-review').classList.remove('hidden');
+  }
+
+  // Option A — Camera + Tesseract OCR
+  async function handleCardPhoto(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    document.getElementById('ocr-status').classList.remove('hidden');
+    if (!window.Tesseract) {
+      await new Promise((res, rej) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+    try {
+      const { data: { text } } = await Tesseract.recognize(file, 'eng');
+      prefillFromText(text);
+    } catch {
+      showToast('Scan unclear — try paste or manual entry');
+    } finally {
+      document.getElementById('ocr-status').classList.add('hidden');
+    }
+  }
+
+  // Option B — vCard / plain text paste
+  function parseAndFill() {
+    const text = document.getElementById('vcardInput').value.trim();
+    if (!text) return;
+    prefillFromText(text);
+    showCapReview();
+  }
+
+  // Shared parser: vCard structured + regex fallback
+  function prefillFromText(text) {
+    const isVcard = text.includes('BEGIN:VCARD');
+    const getField = (field) => {
+      const m = text.match(new RegExp(field + '[^:\\r\\n]*:([^\\r\\n]+)'));
+      return m ? m[1].trim() : '';
+    };
+
+    let name    = isVcard ? getField('FN')    : '';
+    let email   = isVcard ? getField('EMAIL') : '';
+    let phone   = isVcard ? getField('TEL')   : '';
+    let company = isVcard ? getField('ORG')   : '';
+
+    if (!email) {
+      const m = text.match(/[\w.+\-]+@[\w.\-]+\.\w{2,}/);
+      if (m) email = m[0];
+    }
+    if (!phone) {
+      const m = text.match(/[\+]?1?[\s\-.]?\(?[0-9]{3}\)?[\s\-.]?[0-9]{3}[\s\-.]?[0-9]{4}/);
+      if (m) phone = m[0].trim();
+    }
+    if (!name) {
+      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      name = lines.find(l => !l.includes('@') && !/\d{7,}/.test(l) && !l.startsWith('http')) || '';
+    }
+    if (!company) {
+      const lines = text.split(/\r?\n/).map(l => l.trim());
+      company = lines.find(l => /Inc\b|Ltd\b|LLC|Corp|Realty|Group|Team|Agency/i.test(l) && !l.includes('@')) || '';
+    }
+
+    document.getElementById('cap_name').value    = name;
+    document.getElementById('cap_email').value   = email;
+    document.getElementById('cap_phone').value   = phone;
+    document.getElementById('cap_company').value = company;
+    showCapReview();
+  }
+
+  // Tag selection
+  function setCapTag(tag) {
+    _capTag = tag;
+    resetCapTags();
+    document.getElementById(`tag-${tag === 'professional' ? 'pro' : tag}`)
+      .classList.add('border-[#ff914d]','text-[#ff914d]','bg-[#fff4ee]');
+    document.getElementById('cap-industry-row').classList.toggle('hidden', tag !== 'professional');
+  }
+
+  function resetCapTags() {
+    ['tag-client','tag-pro'].forEach(id => {
+      document.getElementById(id)
+        .classList.remove('border-[#ff914d]','text-[#ff914d]','bg-[#fff4ee]');
+    });
+    document.getElementById('cap-industry-row').classList.add('hidden');
+  }
+
+  // Save to CRM via Formspree → Zapier
+  async function saveCapture() {
+    const name = document.getElementById('cap_name').value.trim();
+    if (!name) { showToast('Name is required'); return; }
+
+    const btn = document.getElementById('saveCaptureBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>&nbsp; Saving…';
+
+    const data = new FormData();
+    data.append('full_name',     name);
+    data.append('email_address', document.getElementById('cap_email').value);
+    data.append('phone_number',  document.getElementById('cap_phone').value);
+    data.append('company',       document.getElementById('cap_company').value);
+    data.append('message',       document.getElementById('cap_notes').value);
+    data.append('contact_type',  _capTag || 'untagged');
+    data.append('industry',      document.getElementById('cap_industry').value || '');
+    data.append('contact_source','capture_mode');
+
+    try {
+      const res = await fetch('https://formspree.io/f/mqejqgll', {
+        method: 'POST', body: data, headers: { Accept: 'application/json' }
+      });
+      if (res.ok) {
+        const st = document.getElementById('captureStatus');
+        st.className = 'mt-1 mb-3 p-3 rounded-xl text-sm text-center font-medium bg-green-50 text-green-700 border border-green-100';
+        st.textContent = `✓ ${name} saved to CRM!`;
+        st.classList.remove('hidden');
+        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i>&nbsp; Saved!';
+        showToast(`${name} saved!`);
+        setTimeout(closeCapture, 2000);
+      } else { throw new Error(); }
+    } catch {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>&nbsp; Save to CRM';
+      showToast('Save failed — check connection');
+    }
   }
 
   // ── PWA tip (dismiss + persist) ────────────────────────────────────
