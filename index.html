@@ -183,24 +183,34 @@
         </div>
 
         <!-- ── ADD TO CONTACTS + SHARE ───────────────────────── -->
-        <div class="flex gap-2.5 mb-5">
+        <div class="space-y-2 mb-5">
+          <div class="flex gap-2.5">
+            <button
+              onclick="downloadVCF()"
+              class="btn-brand flex-1 py-3.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2"
+              aria-label="Save contact card"
+            >
+              <i class="fa-solid fa-address-card text-base"></i>
+              Save Rosh's Card
+            </button>
+            <button
+              onclick="openShare()"
+              class="flex-none w-12 py-3.5 rounded-2xl border-2 border-[#ff914d] text-[#ff914d]
+                     flex items-center justify-center hover:bg-[#fff4ee] transition-colors"
+              aria-label="Share card"
+            >
+              <i class="fa-solid fa-share-nodes text-base"></i>
+            </button>
+          </div>
           <button
-            onclick="downloadVCF()"
-            class="btn-brand flex-1 py-3.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2"
-            aria-label="Download contact card"
-          >
-            <i class="fa-solid fa-address-card text-base"></i>
-            Add to Contacts
-          </button>
-          <button
-            onclick="openShare()"
-            class="flex-none px-4 py-3.5 rounded-2xl border-2 border-[#ff914d] text-[#ff914d]
+            onclick="saveAndShare()"
+            class="w-full py-3.5 rounded-2xl border-2 border-[#ff914d] text-[#ff914d]
                    font-semibold text-sm flex items-center justify-center gap-2
                    hover:bg-[#fff4ee] transition-colors"
-            aria-label="Share card"
           >
-            <i class="fa-solid fa-share-nodes text-base"></i>
-            Share
+            <i class="fa-solid fa-address-card text-base"></i>
+            Save &amp; Share Yours with Rosh
+            <i class="fa-solid fa-arrow-right text-xs"></i>
           </button>
         </div>
 
@@ -841,6 +851,22 @@
     }
   });
 
+
+  // ── Save & Share ─────────────────────────────────────────────────────
+  function saveAndShare() {
+    downloadVCF();
+    setTimeout(function () {
+      document.getElementById('exchangeForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const title = document.getElementById('exchange-title');
+      const prev  = title.textContent;
+      title.textContent = 'NOW SHARE YOURS WITH ROSH';
+      title.style.color = '#ff914d';
+      setTimeout(function () {
+        title.textContent = prev;
+        title.style.color = '';
+      }, 3000);
+    }, 400);
+  }
 
   // ── Share modal ──────────────────────────────────────────────────────
   const CARD_URL = 'https://roshaissac.github.io/Businesscard';
