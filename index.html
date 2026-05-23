@@ -264,6 +264,18 @@
           <input type="hidden" name="contact_type"   id="contact_type_field" value="client" />
           <input type="hidden" name="contact_source" value="digital_card" />
 
+          <!-- Contact Picker — revealed by JS only if browser supports it -->
+          <div id="contact-picker-row" class="hidden mb-3">
+            <button type="button" onclick="pickContact()" id="pick-btn"
+                    class="w-full py-3.5 rounded-2xl bg-slate-50 border border-slate-200
+                           text-sm font-semibold text-slate-700 flex items-center justify-center gap-2
+                           hover:bg-[#fff4ee] hover:border-[#ff914d] hover:text-[#ff914d] transition-colors">
+              <i class="fa-solid fa-address-book text-[#ff914d]"></i>
+              Pick from My Contacts
+            </button>
+            <p class="text-center text-[10px] text-slate-400 mt-1.5">One tap to pre-fill your details</p>
+          </div>
+
           <div class="space-y-3">
 
             <!-- Industry dropdown — pro only -->
@@ -851,6 +863,30 @@
     }
   });
 
+
+  // ── Contact Picker API ───────────────────────────────────────────────
+  (function () {
+    if ('contacts' in navigator && 'ContactsManager' in window) {
+      document.getElementById('contact-picker-row').classList.remove('hidden');
+    }
+  })();
+
+  async function pickContact() {
+    try {
+      const contacts = await navigator.contacts.select(['name', 'email', 'tel'], { multiple: false });
+      if (!contacts.length) return;
+      const c = contacts[0];
+      if (c.name  && c.name[0])  document.querySelector('[name="full_name"]').value     = c.name[0];
+      if (c.email && c.email[0]) document.querySelector('[name="email_address"]').value  = c.email[0];
+      if (c.tel   && c.tel[0])   document.querySelector('[name="phone_number"]').value   = c.tel[0];
+      const btn = document.getElementById('pick-btn');
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Filled from your contacts';
+      btn.className = btn.className
+        .replace('bg-slate-50','bg-green-50')
+        .replace('border-slate-200','border-green-200')
+        .replace('text-slate-700','text-green-700');
+    } catch (_) {}
+  }
 
   // ── Save & Share ─────────────────────────────────────────────────────
   function saveAndShare() {
