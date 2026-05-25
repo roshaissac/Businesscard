@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rental Viewing — Sign In</title>
   <style>
-    /* ── Print optimised: half-letter (5.5" × 8.5") landscape or full letter portrait ── */
     @page {
       size: letter portrait;
       margin: 0.5in;
@@ -15,7 +14,7 @@
 
     body {
       font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
-      background: #fff;
+      background: #f5f5f5;
       color: #000;
       display: flex;
       justify-content: center;
@@ -29,50 +28,63 @@
       border-radius: 18px;
       overflow: hidden;
       text-align: center;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.12);
       background: #fff;
     }
 
-    /* ── Orange header bar ── */
+    /* ── Orange header: Issac Realty Team branding ── */
     .header {
       background: #E8470A;
-      padding: 22px 24px 16px;
+      padding: 24px 24px 20px;
     }
 
-    .header img.logo {
-      height: 52px;
-      object-fit: contain;
-      filter: brightness(0) invert(1);
-    }
-
-    /* ── Property line ── */
-    .property-bar {
-      background: #000;
+    .header-team {
+      font-size: 30px;
+      font-weight: 800;
       color: #fff;
-      padding: 10px 20px;
-      font-size: 13px;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
     }
 
-    .property-bar .address { font-weight: 700; font-size: 14px; }
-    .property-bar .details { margin-top: 2px; opacity: 0.80; font-size: 12px; }
+    .header-assoc {
+      font-size: 14px;
+      font-style: italic;
+      color: rgba(255,255,255,0.88);
+      margin-top: 4px;
+      font-weight: 400;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Black band: Dreamhouse logo ── */
+    .brand-bar {
+      background: #000;
+      padding: 10px 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-bar .logo-pill {
+      background: #fff;
+      border-radius: 8px;
+      padding: 6px 18px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .brand-bar .logo-pill img {
+      height: 36px;
+      object-fit: contain;
+      display: block;
+    }
 
     /* ── Body ── */
     .body {
-      padding: 28px 32px 24px;
-    }
-
-    .scan-label {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #E8470A;
-      margin-bottom: 6px;
+      padding: 26px 32px 22px;
     }
 
     h1 {
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 800;
       color: #000;
       line-height: 1.1;
@@ -150,26 +162,15 @@
       display: flex;
       justify-content: center;
       gap: 32px;
-      font-size: 12px;
-      color: #444;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
 
-    .agent-name { font-weight: 700; font-size: 13px; color: #000; }
     .agent-title { color: #777; font-size: 11px; margin-bottom: 2px; }
-    .agent-phone { color: #E8470A; font-weight: 600; }
+    .agent-name  { font-weight: 700; font-size: 13px; color: #000; }
+    .agent-phone { color: #E8470A; font-weight: 600; font-size: 12px; }
 
-    .brokerage {
-      font-size: 10px;
-      color: #999;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      padding-bottom: 4px;
-    }
-
-    /* ── Print: hide browser chrome ── */
     @media print {
-      body { min-height: unset; }
+      body { min-height: unset; background: #fff; }
       .card { box-shadow: none; }
     }
   </style>
@@ -178,30 +179,28 @@
 
 <div class="card">
 
-  <!-- Header -->
+  <!-- Orange header -->
   <div class="header">
-    <img class="logo"
-         src="dreamhouse-logo.png"
-         alt="Issac Realty">
+    <div class="header-team">Issac Realty Team</div>
+    <div class="header-assoc">Associates of</div>
   </div>
 
-  <!-- Property bar -->
-  <div class="property-bar">
-    <div class="address">123 Example Street NW, Unit 4B, Calgary, AB T2N 1A1</div>
-    <div class="details">$1,950/mo &nbsp;·&nbsp; 2 Bed &nbsp;·&nbsp; 1 Bath</div>
+  <!-- Black band with Dreamhouse logo -->
+  <div class="brand-bar">
+    <div class="logo-pill">
+      <img src="dreamhouse-logo.png" alt="Dreamhouse Realty Ltd.">
+    </div>
   </div>
 
   <!-- Body -->
   <div class="body">
 
-    <div class="scan-label">Step 1 of 1</div>
     <h1>Scan to Sign In</h1>
-    <p class="subtitle">Point your phone camera at the code below — no app needed</p>
+    <p class="subtitle">Point your phone camera at the code — no app needed</p>
 
     <!-- QR Code -->
     <div class="qr-wrap">
-      <img src="rental-signin-qr.png"
-           alt="Scan to sign in">
+      <img src="rental-signin-qr.png" alt="Scan to sign in">
     </div>
 
     <!-- Steps -->
@@ -235,8 +234,6 @@
         <div class="agent-phone">(825) 449-5083</div>
       </div>
     </div>
-
-    <div class="brokerage">Dreamhouse Realty Ltd.</div>
 
   </div><!-- /body -->
 
