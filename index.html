@@ -823,7 +823,7 @@
         <h2>Share My Card</h2>
         <button class="iconbtn" style="width:30px;height:30px;box-shadow:none;background:var(--field)" onclick="closeShare()" aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button>
       </div>
-      <div class="qrbox" id="qr-container"><span class="spin" style="color:var(--muted-2)"></span></div>
+      <div class="qrbox" id="qr-container"><svg width="156" height="156" viewBox="0 0 33 33" shape-rendering="crispEdges" role="img" aria-label="QR code linking to the card"><path stroke="#0f0f0f" d="M2 2.5h7m3 0h2m2 0h1m1 0h5m1 0h7M2 3.5h1m5 0h1m3 0h2m1 0h1m1 0h2m1 0h1m3 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m1 0h2m4 0h1m3 0h1m1 0h1m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h1m1 0h8m2 0h1m1 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h2m6 0h1m2 0h2m1 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h2m3 0h1m1 0h2m3 0h1m1 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h3m3 0h3M2 10.5h1m1 0h5m2 0h1m2 0h4m1 0h1m1 0h1m2 0h5M2 11.5h1m1 0h3m3 0h1m2 0h2m3 0h1m1 0h7m3 0h1M3 12.5h2m1 0h4m1 0h1m5 0h1m1 0h2m1 0h2m2 0h1M2 13.5h3m1 0h2m2 0h1m1 0h1m3 0h1m1 0h1m1 0h3m4 0h1m1 0h1M3 14.5h1m3 0h2m1 0h1m2 0h4m2 0h2m6 0h2M2 15.5h1m2 0h1m5 0h4m1 0h1m1 0h9m3 0h1M2 16.5h1m2 0h7m3 0h1m1 0h3m3 0h3m1 0h2M3 17.5h3m1 0h1m1 0h2m1 0h1m4 0h1m2 0h3m3 0h1m2 0h1M2 18.5h1m1 0h1m3 0h4m3 0h2m2 0h1m1 0h1m3 0h1m1 0h2M2 19.5h2m2 0h2m1 0h2m3 0h1m3 0h4m2 0h3m1 0h1m1 0h1M2 20.5h1m1 0h1m3 0h3m1 0h1m1 0h1m1 0h3m1 0h1m1 0h2m1 0h1m2 0h1M2 21.5h1m2 0h3m1 0h2m1 0h1m1 0h1m6 0h1m2 0h2m3 0h1M2 22.5h1m2 0h1m2 0h1m1 0h2m1 0h1m3 0h3m2 0h5m1 0h3M10 23.5h1m2 0h3m2 0h3m1 0h1m3 0h5M2 24.5h7m2 0h1m1 0h7m1 0h2m1 0h1m1 0h3M2 25.5h1m5 0h1m1 0h2m2 0h2m1 0h2m2 0h2m3 0h1M2 26.5h1m1 0h3m1 0h1m1 0h4m2 0h5m1 0h5m1 0h3M2 27.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h4m5 0h4M2 28.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h1m1 0h1m4 0h6M2 29.5h1m5 0h1m2 0h2m1 0h3m5 0h2m3 0h1m1 0h1M2 30.5h7m1 0h1m4 0h1m1 0h1m3 0h1m2 0h1m1 0h3"/></svg></div>
       <p class="qr-cap">Scan to open on any phone</p>
       <button class="row-btn" id="copy-btn" onclick="copyLink()">
         <span class="ri"><svg class="ic"><use href="#i-link"/></svg></span> Copy Link
@@ -996,21 +996,9 @@
   }
 
   // ── Share modal ─────────────────────────────────────────────────────
-  let _qrReady = false;
-  function openShare() { haptic(); $('share-overlay').classList.remove('hidden'); document.body.style.overflow = 'hidden'; if (!_qrReady) loadQR(); }
+  // QR is a static inline SVG baked into the markup — no library, no CDN.
+  function openShare() { haptic(); $('share-overlay').classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
   function closeShare() { $('share-overlay').classList.add('hidden'); document.body.style.overflow = ''; }
-
-  function loadQR() {
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
-    s.onload = () => {
-      const el = $('qr-container'); el.innerHTML = '';
-      new QRCode(el, { text: ME.cardUrl, width: 156, height: 156, colorDark: '#0f0f0f', colorLight: '#f7f4ef', correctLevel: QRCode.CorrectLevel.M });
-      _qrReady = true;
-    };
-    s.onerror = () => { $('qr-container').innerHTML = '<span style="font-size:11px;color:var(--muted)">QR unavailable offline</span>'; };
-    document.head.appendChild(s);
-  }
 
   function copyLink() {
     navigator.clipboard.writeText(ME.cardUrl).then(() => {
