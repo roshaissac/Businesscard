@@ -843,8 +843,11 @@
 
   <!-- Brokerage bar (RECA compliance) -->
   <div class="brokerage">
-    <img src="./dreamhouse-logo.png" alt="Dreamhouse Realty Ltd."
-         onerror="this.style.display='none';document.getElementById('brokerage-text').classList.remove('hidden')" />
+    <picture>
+      <source srcset="./dreamhouse-logo.webp" type="image/webp" />
+      <img src="./dreamhouse-logo.png" alt="Dreamhouse Realty Ltd."
+           onerror="this.closest('picture').style.display='none';document.getElementById('brokerage-text').classList.remove('hidden')" />
+    </picture>
     <span id="brokerage-text" class="txt hidden">Dreamhouse Realty Ltd.</span>
     <span class="lic">Licensed Brokerage</span>
   </div>

@@ -1,9 +1,9 @@
 /* Rosh Issac digital card — service worker
    Strategy: network-first for the page (always fresh when online),
    cache fallback for offline. Bump CACHE to force an update. */
-const CACHE = 'rosh-card-v2';
+const CACHE = 'rosh-card-v3';
 const SHELL = ['./', './index.html', './manifest.json', './icon.svg',
-  './portrait.webp', './portrait.jpg', './dreamhouse-logo.png'];
+  './portrait.webp', './portrait.jpg', './dreamhouse-logo.webp'];
 
 self.addEventListener('install', e => {
   self.skipWaiting();
