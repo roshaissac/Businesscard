@@ -7,8 +7,8 @@
   <!-- ═══════════════════════════════════════════════════════════════════════
        SETUP — Edit these and you're live:
        [1] Scroll to the ME object in <script> and fill in your details.
-       [2] Drop a portrait.jpg (square, ~600px) in this folder for a self-hosted
-           photo — otherwise Gravatar (set ME.gravatarHash) is used.
+       [2] Photo is self-hosted (portrait.jpg / portrait.webp). To replace it,
+           swap those two files (square) — the vCard photo is the PHOTO_B64 const.
        [3] Replace [FORMSPREE_ID] in ME.formspreeId with your 8-char code.
        No build step. No CDN for first paint. Edit, commit, done.
   ═══════════════════════════════════════════════════════════════════════ -->
@@ -19,17 +19,17 @@
   <!-- Open Graph (WhatsApp / iMessage previews) -->
   <meta property="og:title"       content="Rosh Issac · Issac Realty Team | Dreamhouse Realty Ltd." />
   <meta property="og:description" content="Connect with Rosh Issac — Realtor® | Issac Realty Team, Associates of Dreamhouse Realty Ltd., Calgary, AB." />
-  <meta property="og:image"       content="https://www.gravatar.com/avatar/6b6ad47534b601e7c284fe67ebdb7921?s=400&d=mp" />
+  <meta property="og:image"       content="https://roshaissac.github.io/Businesscard/portrait.jpg" />
   <meta property="og:type"        content="profile" />
   <meta name="twitter:card"       content="summary" />
-  <meta name="twitter:image"      content="https://www.gravatar.com/avatar/6b6ad47534b601e7c284fe67ebdb7921?s=400&d=mp" />
+  <meta name="twitter:image"      content="https://roshaissac.github.io/Businesscard/portrait.jpg" />
 
   <!-- iOS / PWA -->
   <meta name="apple-mobile-web-app-capable"          content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title"            content="Rosh Issac" />
   <meta name="theme-color"                           content="#0f0f0f" />
-  <link rel="apple-touch-icon" href="https://www.gravatar.com/avatar/6b6ad47534b601e7c284fe67ebdb7921?s=180&d=mp" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f0f0f'/%3E%3Ctext x='50%25' y='53%25' font-family='Georgia,serif' font-size='30' fill='%23f6f3ee' text-anchor='middle' dominant-baseline='middle'%3ER%3Ctspan fill='%23ee8a4e'%3EI%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
 
@@ -550,10 +550,10 @@
       <!-- Header -->
       <div class="header">
         <span class="avatar-ring">
-          <img id="avatar" class="avatar" alt="Rosh Issac"
-               src="https://www.gravatar.com/avatar/6b6ad47534b601e7c284fe67ebdb7921?s=240&d=mp"
-               width="72" height="72"
-               onerror="this.onerror=null;this.src='https://www.gravatar.com/avatar/0?s=240&d=mp'" />
+          <picture>
+            <source srcset="./portrait.webp" type="image/webp" />
+            <img id="avatar" class="avatar" alt="Rosh Issac" src="./portrait.jpg" width="72" height="72" />
+          </picture>
         </span>
         <div class="header-org">
           <div class="ey">Issac Realty Team</div>
@@ -865,7 +865,6 @@
     brokerage    : 'Dreamhouse Realty Ltd.',
     city         : 'Calgary, AB',
     address      : '2 - 2000 Pegasus Rd NE Unit 2, Calgary, AB T2E 8K7',
-    gravatarHash : '6b6ad47534b601e7c284fe67ebdb7921',
     formspreeId  : 'mqejqgll',
     cardUrl      : 'https://roshaissac.github.io/Businesscard',
   };
@@ -895,8 +894,11 @@
   })();
 
   // ── vCard ───────────────────────────────────────────────────────────
+  // Photo is embedded (base64) so the saved contact shows the face reliably,
+  // offline, with no network call. Generated from the self-hosted portrait.
+  const PHOTO_B64 = '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';
+
   function buildVCF() {
-    const photo = `https://www.gravatar.com/avatar/${ME.gravatarHash}?s=400&d=mp`;
     return [
       'BEGIN:VCARD',
       'VERSION:3.0',
@@ -912,7 +914,7 @@
       `item2.URL:${ME.linkedin}`,
       'item2.X-ABLabel:LinkedIn',
       `ADR;TYPE=WORK:;;${ME.address};;;;`,
-      `PHOTO;VALUE=URI:${photo}`,
+      `PHOTO;ENCODING=b;TYPE=JPEG:${PHOTO_B64}`,
       'END:VCARD'
     ].join('\r\n');
   }
