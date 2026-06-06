@@ -5,289 +5,644 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
   <!-- ═══════════════════════════════════════════════════════════════════════
-       SETUP CHECKLIST — Edit these 4 things and you're live:
-
+       SETUP — Edit these and you're live:
        [1] Scroll to the ME object in <script> and fill in your details.
-       [2] Replace every [MD5_HASH] below with your Gravatar hash.
-            → Go to md5.io → type your email (lowercase) → copy the hash.
-       [3] Update <title> and apple-mobile-web-app-title with your name.
-       [4] Replace [FORMSPREE_ID] in the <form> action with your 8-char code.
-            → Free at formspree.io — create a form, copy the ID.
+       [2] Photo is self-hosted (portrait.jpg / portrait.webp). To replace it,
+           swap those two files (square) — the vCard photo is the PHOTO_B64 const.
+       [3] Replace [FORMSPREE_ID] in ME.formspreeId with your 8-char code.
+       No build step. No CDN for first paint. Edit, commit, done.
   ═══════════════════════════════════════════════════════════════════════ -->
 
-  <title>Rosh Issac · Issac Realty Inc</title>
+  <title>Rosh Issac · Issac Realty Team</title>
   <meta name="description" content="Connect with Rosh Issac — Realtor® | Issac Realty Team, Associates of Dreamhouse Realty Ltd., Calgary, AB." />
 
   <!-- Open Graph (WhatsApp / iMessage previews) -->
   <meta property="og:title"       content="Rosh Issac · Issac Realty Team | Dreamhouse Realty Ltd." />
   <meta property="og:description" content="Connect with Rosh Issac — Realtor® | Issac Realty Team, Associates of Dreamhouse Realty Ltd., Calgary, AB." />
-  <!-- [2] ↓ Replace [MD5_HASH] -->
-  <meta property="og:image"       content="https://www.gravatar.com/avatar/6b6ad47534b601e7c284fe67ebdb7921?s=400&d=mp" />
+  <meta property="og:image"       content="https://roshaissac.github.io/Businesscard/og.jpg" />
+  <meta property="og:image:type"   content="image/jpeg" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt"    content="Rosh Issac — Realtor®, Issac Realty Team" />
   <meta property="og:type"        content="profile" />
-  <meta name="twitter:card"       content="summary" />
-  <meta name="twitter:image"      content="https://www.gravatar.com/avatar/6b6ad47534b601e7c284fe67ebdb7921?s=400&d=mp" />
+  <meta name="twitter:card"       content="summary_large_image" />
+  <meta name="twitter:image"      content="https://roshaissac.github.io/Businesscard/og.jpg" />
 
   <!-- iOS / PWA -->
-  <meta name="apple-mobile-web-app-capable"            content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style"   content="black-translucent" />
-  <meta name="apple-mobile-web-app-title"              content="Rosh Issac" />
-  <meta name="theme-color"                             content="#ff914d" />
-  <!-- [2] ↓ Replace [MD5_HASH] — shows your photo as the home-screen icon -->
-  <link rel="apple-touch-icon" href="https://www.gravatar.com/avatar/6b6ad47534b601e7c284fe67ebdb7921?s=192&d=mp" />
-
-  <!-- ── External assets (CDN) ──────────────────────────────────────── -->
-  <!-- Tailwind CSS Play CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: { DEFAULT: '#ff914d', dark: '#e67e3a', light: '#fff4ee' }
-          },
-          fontFamily: {
-            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- Inter typeface -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800&display=swap" rel="stylesheet" />
-
-  <!-- Font Awesome 6 (brand + solid icons) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <meta name="apple-mobile-web-app-capable"          content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title"            content="Rosh Issac" />
+  <meta name="theme-color"                           content="#0f0f0f" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f0f0f'/%3E%3Ctext x='50%25' y='53%25' font-family='Georgia,serif' font-size='30' fill='%23f6f3ee' text-anchor='middle' dominant-baseline='middle'%3ER%3Ctspan fill='%23ee8a4e'%3EI%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
 
   <style>
-    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+  /* ═══ DESIGN TOKENS — tweak the brand here ═══════════════════════════ */
+  :root {
+    --ink:        #0f0f0f;   /* deep black — dominant brand color   */
+    --ink-soft:   #232323;   /* hover / pressed black               */
+    --paper:      #f3efe9;   /* warm ivory page background          */
+    --card:       #ffffff;   /* card surface                        */
+    --field:      #f7f4ef;   /* input fill                          */
+    --line:       #e7e1d6;   /* warm hairline                       */
+    --muted:      #8a8378;   /* warm grey secondary text            */
+    --muted-2:    #aaa193;   /* warm grey tertiary text             */
+    --accent:     #ee8a4e;   /* brand light orange — jewel accent   */
+    --accent-deep:#d96f30;   /* orange for text on light (AA)       */
+    --accent-soft:#fbeee3;   /* orange tint surfaces                */
+    --ok:         #2f7d52;
+    --ok-soft:    #e9f4ee;
+    --err:        #b4452f;
+    --err-soft:   #f8ece8;
 
-    /* Card elevation */
-    .card-shadow {
-      box-shadow:
-        0 1px 3px  rgba(0,0,0,.05),
-        0 4px 16px rgba(0,0,0,.07),
-        0 12px 32px rgba(0,0,0,.05);
-    }
+    --radius:     20px;
+    --radius-md:  14px;
+    --radius-sm:  11px;
+    --shadow:     0 1px 2px rgba(28,22,14,.05), 0 10px 34px rgba(28,22,14,.07);
+    --shadow-pop: 0 10px 40px rgba(28,22,14,.18);
 
-    /* Branded CTA button */
-    .btn-brand {
-      background: linear-gradient(135deg, #ff914d 0%, #ff7530 100%);
-      transition: transform .18s ease, box-shadow .18s ease;
-    }
-    .btn-brand:hover  { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(255,145,77,.42); }
-    .btn-brand:active { transform: translateY(0);    box-shadow: none; }
-    .btn-brand:disabled { opacity: .7; pointer-events: none; }
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif;
+    --serif: ui-serif, Georgia, "Times New Roman", Cambria, serif;
 
-    /* Social icon hover lift */
-    .social-pill { transition: transform .18s ease; }
-    .social-pill:hover { transform: translateY(-3px); }
+    --safe-t: env(safe-area-inset-top, 0px);
+    --safe-b: env(safe-area-inset-bottom, 0px);
+  }
 
-    /* Avatar orange ring */
-    .avatar-ring {
-      background: linear-gradient(135deg, #ff914d, #ff7530);
-      padding: 3px;
-      border-radius: 50%;
-      display: inline-block;
-    }
+  /* ═══ RESET ═══════════════════════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 18px calc(96px + var(--safe-b));
+  }
+  img { display: block; max-width: 100%; }
+  button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  input, textarea, select { font: inherit; color: inherit; }
+  a { color: inherit; text-decoration: none; }
 
-    /* Input focus glow */
-    input, textarea {
-      transition: border-color .15s ease, box-shadow .15s ease;
-    }
-    input:focus, textarea:focus {
-      outline: none;
-      border-color: #ff914d !important;
-      box-shadow: 0 0 0 3px rgba(255,145,77,.18);
-    }
+  /* Inline SVG icon sizing */
+  .ic { width: 1em; height: 1em; flex: none; vertical-align: -0.125em; }
+  .ic-stroke { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-    /* Header SVG hatching — inline, zero HTTP requests */
-    .header-pattern {
-      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.09'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E");
-    }
+  /* ═══ LAYOUT ══════════════════════════════════════════════════════════ */
+  .shell { width: 100%; max-width: 384px; }
 
-    /* Page & card entrance animation */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .fade-up { animation: fadeUp .45s ease both; }
-    .fade-up-delay { animation: fadeUp .45s .12s ease both; }
+  /* ═══ CARD ════════════════════════════════════════════════════════════ */
+  .card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
 
-    /* Toast */
-    #toast { transition: opacity .3s ease, transform .3s ease; }
+  /* Header — deep black, ivory text */
+  .header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: calc(22px + var(--safe-t)) 26px 22px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    position: relative;
+  }
+  .header::after {                 /* thin orange baseline accent */
+    content: "";
+    position: absolute; left: 0; right: 0; bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent 70%);
+  }
+  .avatar-ring {
+    flex: none;
+    padding: 2.5px;
+    border-radius: 50%;
+    background: linear-gradient(140deg, var(--accent), #b8541f);
+  }
+  .avatar {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #2a2a2a;
+    display: block;
+  }
+  .header-org { min-width: 0; }
+  .header-org .ey {
+    font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700;
+  }
+  .header-org .nm {
+    font-family: var(--serif);
+    font-size: 17px; line-height: 1.25; margin-top: 4px;
+    color: var(--paper); font-weight: 600;
+  }
 
-    /* PWA tip */
-    #pwa-tip { transition: opacity .3s ease, max-height .3s ease; }
+  /* Identity block */
+  .body { padding: 24px 26px 28px; }
+  .identity { text-align: center; }
+  .identity .name {
+    font-family: var(--serif);
+    font-size: 30px; font-weight: 600; letter-spacing: .01em;
+    line-height: 1.1; color: var(--ink);
+  }
+  .identity .title {
+    margin-top: 9px;
+    font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--muted); font-weight: 600;
+  }
+  .identity .title b { color: var(--accent-deep); font-weight: 700; }
+  .identity .brokerage {
+    margin-top: 6px; font-size: 11px; color: var(--muted-2); letter-spacing: .02em;
+  }
+  .identity .city {
+    margin-top: 10px;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--muted);
+  }
+  .identity .city .ic { color: var(--accent); font-size: 12px; }
+
+  /* Quick links */
+  .quick {
+    display: flex; align-items: center; justify-content: center; gap: 14px;
+    margin-top: 14px; flex-wrap: wrap;
+  }
+  .quick a {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; color: var(--muted); font-weight: 500;
+    transition: color .15s ease;
+  }
+  .quick a .ic { font-size: 11px; color: var(--muted-2); transition: color .15s ease; }
+  .quick a:hover, .quick a:active { color: var(--accent-deep); }
+  .quick a:hover .ic, .quick a:active .ic { color: var(--accent); }
+  .quick .sep { width: 1px; height: 12px; background: var(--line); }
+
+  /* ═══ BUTTONS ═════════════════════════════════════════════════════════ */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    width: 100%; padding: 15px 18px;
+    border-radius: var(--radius-md);
+    font-size: 14px; font-weight: 600; letter-spacing: .01em;
+    transition: transform .14s ease, background .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active { transform: scale(.978); }
+  .btn .ic { font-size: 16px; }
+
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: var(--ink-soft); }
+  .btn-primary:disabled { opacity: .6; pointer-events: none; }
+
+  .btn-outline {
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--ink);
+  }
+  .btn-outline:hover { background: var(--ink); color: var(--paper); }
+
+  .btn-ghost {
+    background: var(--field); color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent-deep); background: var(--accent-soft); }
+
+  .btn-icon {
+    width: 52px; flex: none; padding: 15px 0;
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius-md);
+  }
+  .btn-icon:hover { background: var(--ink); color: var(--paper); }
+
+  .actions { display: flex; gap: 10px; margin-bottom: 22px; }
+  .actions .btn { flex: 1; }
+
+  /* ═══ SOCIAL ROW — brand colors ═══════════════════════════════════════ */
+  .social {
+    display: flex; align-items: flex-start; justify-content: center; gap: 26px;
+    margin-bottom: 26px;
+  }
+  .social a { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .social .dot {
+    width: 54px; height: 54px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 23px;
+    box-shadow: 0 6px 16px rgba(28,22,14,.12);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .social a:hover .dot, .social a:active .dot { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(28,22,14,.18); }
+  .social .lbl { font-size: 11px; color: var(--muted); font-weight: 500; }
+  .dot-wa  { background: #25D366; }
+  .dot-li  { background: #0A66C2; }
+  .dot-web { background: var(--accent); }
+
+  /* ═══ DIVIDER WITH LABEL ══════════════════════════════════════════════ */
+  .divider { display: flex; align-items: center; gap: 14px; margin: 4px 0 18px; }
+  .divider .ln { flex: 1; height: 1px; background: var(--line); }
+  .divider .tx {
+    font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--muted-2); font-weight: 700; white-space: nowrap;
+    transition: color .25s ease;
+  }
+
+  /* ═══ SEGMENTED TOGGLE (Prospect / Professional) ══════════════════════ */
+  .segment {
+    display: flex; gap: 4px; padding: 4px;
+    background: var(--field); border: 1px solid var(--line);
+    border-radius: 999px; margin-bottom: 16px;
+  }
+  .segment button {
+    flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 9px 8px; border-radius: 999px;
+    font-size: 12.5px; font-weight: 600; color: var(--muted);
+    transition: background .2s ease, color .2s ease, box-shadow .2s ease;
+  }
+  .segment button .ic { font-size: 13px; }
+  .segment button.active {
+    background: var(--ink); color: var(--paper);
+    box-shadow: 0 2px 8px rgba(28,22,14,.18);
+  }
+
+  /* ═══ FORM FIELDS ═════════════════════════════════════════════════════ */
+  .field { margin-bottom: 13px; }
+  .field > label {
+    display: block; margin: 0 0 6px 2px;
+    font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--muted); font-weight: 700;
+  }
+  .field .ctrl { position: relative; }
+  .field .ctrl > .ic {
+    position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--muted-2); font-size: 13px; pointer-events: none;
+  }
+  .input, .select, .textarea {
+    width: 100%;
+    background: var(--field);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 13px 14px 13px 38px;
+    font-size: 14px; color: var(--ink);
+    transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  }
+  .textarea { padding-left: 14px; resize: none; min-height: 78px; }
+  .input::placeholder, .textarea::placeholder { color: var(--muted-2); }
+  .input:focus, .select:focus, .textarea:focus {
+    outline: none; background: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  /* gentle inline validation — only after the user has interacted */
+  .input:user-invalid, .select:user-invalid {
+    border-color: var(--err);
+    box-shadow: 0 0 0 3px var(--err-soft);
+  }
+  .select {
+    -webkit-appearance: none; appearance: none;
+    padding-right: 38px; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23aaa193' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 14px center;
+  }
+  .hint { text-align: center; font-size: 10.5px; color: var(--muted-2); margin-top: 10px; }
+  .pickbtn { margin-bottom: 13px; }
+
+  /* status banner */
+  .status {
+    margin-top: 13px; padding: 12px 14px; border-radius: var(--radius-sm);
+    font-size: 13px; text-align: center; font-weight: 500;
+  }
+  .status.ok  { background: var(--ok-soft);  color: var(--ok);  border: 1px solid #cfe6da; }
+  .status.bad { background: var(--err-soft); color: var(--err); border: 1px solid #eccfc7; }
+
+  .consent { display: flex; gap: 8px; align-items: flex-start; margin-top: 12px; }
+  .consent input { margin-top: 2px; accent-color: var(--accent-deep); width: 15px; height: 15px; flex: none; }
+  .consent label { font-size: 10.5px; color: var(--muted); line-height: 1.45; }
+
+  .hidden { display: none !important; }
+
+  /* ═══ PWA TIP ═════════════════════════════════════════════════════════ */
+  .tip {
+    margin-top: 16px; background: var(--card); border-radius: var(--radius-md);
+    box-shadow: var(--shadow); padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    transition: opacity .3s ease;
+  }
+  .tip .badge {
+    flex: none; width: 36px; height: 36px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent-deep);
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .tip p { flex: 1; font-size: 11px; color: var(--muted); line-height: 1.5; }
+  .tip p b { color: var(--ink); font-weight: 600; }
+  .tip .x {
+    flex: none; width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted-2); font-size: 12px; transition: background .15s, color .15s;
+  }
+  .tip .x:hover { background: var(--field); color: var(--ink); }
+
+  /* ═══ FOOTER ══════════════════════════════════════════════════════════ */
+  .foot {
+    text-align: center; font-size: 10.5px; color: var(--muted-2);
+    line-height: 1.7; margin-top: 16px; padding: 0 6px;
+  }
+  .foot b { color: var(--muted); font-weight: 600; }
+  .foot .a { color: var(--accent-deep); font-weight: 600; }
+
+  /* ═══ BROKERAGE BAR (RECA compliance) ═════════════════════════════════ */
+  .brokerage {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    background: rgba(255,255,255,.94);
+    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    padding: 10px 16px calc(10px + var(--safe-b));
+    box-shadow: 0 -2px 14px rgba(28,22,14,.05);
+  }
+  .brokerage img { height: 30px; width: auto; object-fit: contain; }
+  .brokerage .txt { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--ink); }
+  .brokerage .lic { font-size: 9.5px; color: var(--muted); border-left: 1px solid var(--line); padding-left: 12px; letter-spacing: .04em; }
+
+  /* ═══ CAPTURE FAB (Rosh only) ═════════════════════════════════════════ */
+  .fab {
+    position: fixed; right: 16px; z-index: 60;
+    bottom: calc(64px + var(--safe-b));
+    width: 50px; height: 50px; border-radius: 50%;
+    background: var(--ink); color: var(--paper);
+    display: flex; align-items: center; justify-content: center; font-size: 19px;
+    box-shadow: var(--shadow-pop);
+    transition: transform .15s ease;
+  }
+  .fab:active { transform: scale(.92); }
+  .fab::after {
+    content: ""; position: absolute; inset: -3px; border-radius: 50%;
+    border: 2px solid var(--accent); opacity: .0; transition: opacity .2s;
+  }
+  .fab:hover::after { opacity: 1; }
+
+  /* ═══ OVERLAYS (capture + share) ══════════════════════════════════════ */
+  .overlay { position: fixed; inset: 0; z-index: 200; }
+  .capture { background: var(--paper); overflow-y: auto; }
+  .capture .wrap { max-width: 384px; margin: 0 auto; padding: calc(20px + var(--safe-t)) 18px calc(40px + var(--safe-b)); }
+
+  .cap-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .cap-head h2 { font-family: var(--serif); font-size: 21px; font-weight: 600; }
+  .iconbtn {
+    width: 38px; height: 38px; border-radius: 50%;
+    background: var(--card); box-shadow: var(--shadow);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); font-size: 14px; transition: color .15s;
+  }
+  .iconbtn:hover { color: var(--accent-deep); }
+
+  .lede { font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 14px; }
+
+  .method {
+    width: 100%; background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius-md); padding: 16px;
+    display: flex; align-items: center; gap: 15px; text-align: left;
+    box-shadow: var(--shadow); margin-bottom: 12px;
+    transition: border-color .18s, transform .14s;
+  }
+  .method:hover { border-color: var(--accent); }
+  .method:active { transform: scale(.99); }
+  .method .mi {
+    flex: none; width: 44px; height: 44px; border-radius: var(--radius-sm);
+    background: var(--accent-soft); color: var(--accent-deep);
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+  }
+  .method .mt { font-size: 14px; font-weight: 600; }
+  .method .ms { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 16px; box-shadow: var(--shadow); }
+  .back { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-bottom: 14px; transition: color .15s; }
+  .back:hover { color: var(--accent-deep); }
+
+  .tags { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .tag {
+    padding: 12px; border-radius: var(--radius-sm); border: 1.5px solid var(--line);
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    transition: border-color .15s, color .15s, background .15s;
+  }
+  .tag.on { border-color: var(--accent); color: var(--accent-deep); background: var(--accent-soft); }
+
+  /* ═══ SHARE MODAL (bottom sheet) ══════════════════════════════════════ */
+  .sheet-overlay { display: flex; align-items: flex-end; justify-content: center; }
+  .scrim { position: absolute; inset: 0; background: rgba(15,15,15,.45); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); }
+  .sheet {
+    position: relative; z-index: 1; width: 100%; max-width: 384px;
+    background: var(--card); border-radius: var(--radius) var(--radius) 0 0;
+    padding: 22px 24px calc(30px + var(--safe-b));
+    animation: sheetUp .3s cubic-bezier(.2,.8,.2,1) both;
+  }
+  @keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+  .sheet-head h2 { font-family: var(--serif); font-size: 19px; font-weight: 600; }
+  .qrbox {
+    width: 176px; height: 176px; margin: 0 auto 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--field); border: 1px solid var(--line); border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+  .qrbox img, .qrbox canvas { width: 156px; height: 156px; }
+  .qr-cap { text-align: center; font-size: 11px; color: var(--muted); margin-bottom: 18px; }
+  .row-btn {
+    width: 100%; display: flex; align-items: center; gap: 12px;
+    padding: 13px 14px; border-radius: var(--radius-md);
+    border: 1px solid var(--line); background: var(--field);
+    font-size: 13.5px; font-weight: 600; margin-bottom: 10px;
+    transition: background .15s, border-color .15s;
+  }
+  .row-btn:hover { background: var(--accent-soft); border-color: var(--accent); }
+  .row-btn .ri {
+    flex: none; width: 34px; height: 34px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent-deep);
+    display: flex; align-items: center; justify-content: center; font-size: 14px;
+  }
+
+  /* ═══ TOAST ═══════════════════════════════════════════════════════════ */
+  #toast {
+    position: fixed; left: 50%; bottom: calc(78px + var(--safe-b));
+    transform: translateX(-50%) translateY(8px);
+    background: var(--ink); color: var(--paper);
+    font-size: 13px; font-weight: 500;
+    padding: 12px 20px; border-radius: 999px;
+    box-shadow: var(--shadow-pop);
+    opacity: 0; pointer-events: none; z-index: 300;
+    display: flex; align-items: center; gap: 8px; white-space: nowrap;
+    transition: opacity .3s ease, transform .3s ease;
+  }
+
+  /* ═══ SPINNER ═════════════════════════════════════════════════════════ */
+  .spin {
+    width: 1em; height: 1em; display: inline-block;
+    border: 2px solid currentColor; border-right-color: transparent;
+    border-radius: 50%; animation: spin .6s linear infinite; vertical-align: -.15em;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ═══ ENTRANCE ANIMATIONS ═════════════════════════════════════════════ */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; animation: fadeUp .5s cubic-bezier(.2,.7,.2,1) forwards; }
+  .reveal.d1 { animation-delay: .06s; }
+  .reveal.d2 { animation-delay: .14s; }
+  .reveal.d3 { animation-delay: .22s; }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0 !important; transition-duration: .001ms !important; }
+    .reveal { opacity: 1; }
+  }
+
+  /* ═══ SMALL SCREENS (iPhone SE ≈ 375px) ═══════════════════════════════ */
+  @media (max-width: 360px) {
+    .body { padding: 20px 20px 24px; }
+    .identity .name { font-size: 26px; }
+    .social { gap: 20px; }
+    .social .dot { width: 50px; height: 50px; font-size: 21px; }
+  }
   </style>
 </head>
 
-<body class="min-h-screen bg-slate-50 flex flex-col items-center justify-start py-8 px-4 pb-20">
+<body>
 
-  <div class="w-full max-w-sm">
+  <!-- ═══ INLINE SVG ICON SPRITE (zero requests, no icon font) ═══════════ -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-phone" viewBox="0 0 24 24"><path class="ic-stroke" d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+      <symbol id="i-mail" viewBox="0 0 24 24"><rect class="ic-stroke" x="2" y="4" width="20" height="16" rx="2"/><path class="ic-stroke" d="M22 7l-10 6L2 7"/></symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24"><path class="ic-stroke" d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0 1 18 0z"/><circle class="ic-stroke" cx="12" cy="10" r="3"/></symbol>
+      <symbol id="i-card" viewBox="0 0 24 24"><rect class="ic-stroke" x="3" y="4" width="18" height="16" rx="2"/><circle class="ic-stroke" cx="9" cy="10" r="2"/><path class="ic-stroke" d="M5.5 17c.6-1.8 2-2.5 3.5-2.5s2.9.7 3.5 2.5M15 9h4M15 13h3"/></symbol>
+      <symbol id="i-share" viewBox="0 0 24 24"><circle class="ic-stroke" cx="18" cy="5" r="3"/><circle class="ic-stroke" cx="6" cy="12" r="3"/><circle class="ic-stroke" cx="18" cy="19" r="3"/><path class="ic-stroke" d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></symbol>
+      <symbol id="i-arrow-left" viewBox="0 0 24 24"><path class="ic-stroke" d="M19 12H5M11 18l-6-6 6-6"/></symbol>
+      <symbol id="i-chevron-left" viewBox="0 0 24 24"><path class="ic-stroke" d="M15 18l-6-6 6-6"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle class="ic-stroke" cx="12" cy="12" r="9"/><path class="ic-stroke" d="M3 12h18M12 3a15 15 0 0 1 4 9 15 15 0 0 1-4 9 15 15 0 0 1-4-9 15 15 0 0 1 4-9z"/></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle class="ic-stroke" cx="12" cy="8" r="4"/><path class="ic-stroke" d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></symbol>
+      <symbol id="i-user-plus" viewBox="0 0 24 24"><circle class="ic-stroke" cx="9" cy="8" r="4"/><path class="ic-stroke" d="M3 21c0-4 3-6 6-6s6 2 6 6M19 8v6M16 11h6"/></symbol>
+      <symbol id="i-building" viewBox="0 0 24 24"><rect class="ic-stroke" x="5" y="3" width="14" height="18" rx="1.5"/><path class="ic-stroke" d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/></symbol>
+      <symbol id="i-briefcase" viewBox="0 0 24 24"><rect class="ic-stroke" x="3" y="7" width="18" height="13" rx="2"/><path class="ic-stroke" d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+      <symbol id="i-send" viewBox="0 0 24 24"><path class="ic-stroke" d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></symbol>
+      <symbol id="i-home" viewBox="0 0 24 24"><path class="ic-stroke" d="M3 10l9-7 9 7v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path class="ic-stroke" d="M9 21v-7h6v7"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><circle class="ic-stroke" cx="9" cy="8" r="3.5"/><path class="ic-stroke" d="M2.5 21c0-3.6 3-5.5 6.5-5.5s6.5 1.9 6.5 5.5M16 5.2A3.5 3.5 0 0 1 16 12M18 15.5c2.6.4 4.5 2 4.5 5"/></symbol>
+      <symbol id="i-smartphone" viewBox="0 0 24 24"><rect class="ic-stroke" x="6" y="2" width="12" height="20" rx="2.5"/><path class="ic-stroke" d="M11 18h2"/></symbol>
+      <symbol id="i-x" viewBox="0 0 24 24"><path class="ic-stroke" d="M18 6L6 18M6 6l12 12"/></symbol>
+      <symbol id="i-share-ios" viewBox="0 0 24 24"><path class="ic-stroke" d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path class="ic-stroke" d="M16 6l-4-4-4 4M12 2v13"/></symbol>
+      <symbol id="i-link" viewBox="0 0 24 24"><path class="ic-stroke" d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5"/></symbol>
+      <symbol id="i-camera" viewBox="0 0 24 24"><path class="ic-stroke" d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L19 6h0a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><circle class="ic-stroke" cx="12" cy="13" r="3.5"/></symbol>
+      <symbol id="i-clipboard" viewBox="0 0 24 24"><rect class="ic-stroke" x="5" y="4" width="14" height="17" rx="2"/><path class="ic-stroke" d="M9 4V3h6v1"/><path class="ic-stroke" d="M9 4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1"/></symbol>
+      <symbol id="i-pencil" viewBox="0 0 24 24"><path class="ic-stroke" d="M16 3l5 5L8 21H3v-5L16 3z"/></symbol>
+      <symbol id="i-save" viewBox="0 0 24 24"><path class="ic-stroke" d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path class="ic-stroke" d="M8 3v5h7M8 21v-6h8v6"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24"><path class="ic-stroke" d="M12 3l1.8 4.7L18.5 9.5 13.8 11.3 12 16l-1.8-4.7L5.5 9.5l4.7-1.8L12 3zM19 14l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path class="ic-stroke" d="M5 12l5 5L20 7"/></symbol>
+      <symbol id="i-check-circle" viewBox="0 0 24 24"><circle class="ic-stroke" cx="12" cy="12" r="9"/><path class="ic-stroke" d="M8 12l3 3 5-5"/></symbol>
+      <!-- Brand glyphs (filled) -->
+      <symbol id="i-whatsapp" viewBox="0 0 24 24"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37s-1.04 1.02-1.04 2.48 1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.89 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05.16C5.5.16.16 5.49.16 12.05c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.49-8.42"/></symbol>
+      <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zm1.78 13.02H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></symbol>
+    </defs>
+  </svg>
 
-    <!-- ════════════════════════════════════════════════════════════
-         MAIN CARD
-    ════════════════════════════════════════════════════════════ -->
-    <div class="bg-white rounded-3xl card-shadow overflow-hidden fade-up">
+  <div class="shell">
 
-      <!-- Header banner -->
-      <div class="bg-gradient-to-br from-[#ff914d] to-[#ff7530] header-pattern relative overflow-hidden">
-        <!-- Decorative blobs -->
-        <div class="absolute -top-6 -right-6 w-28 h-28 rounded-full bg-white/10"></div>
-        <div class="absolute top-10 -left-8 w-20 h-20 rounded-full bg-white/10"></div>
-        <div class="absolute -bottom-4 right-16 w-12 h-12 rounded-full bg-white/10"></div>
-        <!-- Avatar + company name -->
-        <div class="relative z-10 flex items-center gap-4 px-6 py-5">
-          <img
-            src="https://www.gravatar.com/avatar/6b6ad47534b601e7c284fe67ebdb7921?s=400&d=mp"
-            alt="Profile photo"
-            width="80" height="80"
-            class="w-20 h-20 rounded-full object-cover ring-[3px] ring-white/80 shrink-0"
-            onerror="this.src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&s=400'"
-          />
-          <p class="text-white font-bold text-sm leading-snug">
-            Issac Realty Team,<br>Dreamhouse Realty Ltd.
-          </p>
+    <!-- ═══ MAIN CARD ═════════════════════════════════════════════════ -->
+    <div class="card reveal">
+
+      <!-- Header -->
+      <div class="header">
+        <span class="avatar-ring">
+          <picture>
+            <source srcset="./portrait.webp" type="image/webp" />
+            <img id="avatar" class="avatar" alt="Rosh Issac" src="./portrait.jpg" width="72" height="72" />
+          </picture>
+        </span>
+        <div class="header-org">
+          <div class="ey">Issac Realty Team</div>
+          <div class="nm">Associates of<br>Dreamhouse Realty Ltd.</div>
         </div>
       </div>
 
-      <div class="px-6 pb-8">
+      <div class="body">
 
-        <!-- ── NAME & TITLE ────────────────────────────────────── -->
-        <div class="text-center mb-6">
-          <!-- [1] ↓ Populated from ME object via JS below -->
-          <h1 id="card-name"      class="text-2xl font-extrabold text-slate-900 tracking-tight leading-tight"></h1>
-          <p  id="card-title"     class="text-sm text-slate-500 mt-1 font-medium"></p>
-          <p  id="card-brokerage" class="text-[11px] text-slate-500 mt-1 font-semibold tracking-wide"></p>
-          <p  id="card-city"      class="text-xs text-slate-400 mt-1.5 flex items-center justify-center gap-1.5"></p>
+        <!-- Identity -->
+        <div class="identity">
+          <h1 class="name" id="card-name"></h1>
+          <p class="title" id="card-title"></p>
+          <p class="brokerage" id="card-brokerage"></p>
+          <p class="city" id="card-city"></p>
 
-          <!-- Quick-tap phone & email -->
-          <div class="flex items-center justify-center gap-4 mt-3 flex-wrap">
-            <a id="link-phone" href="#"
-               class="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-[#ff914d] transition-colors font-medium">
-              <i class="fa-solid fa-phone text-[9px]"></i>
-              <span id="label-phone"></span>
-            </a>
-            <span class="text-slate-200 text-xs">|</span>
-            <a id="link-email" href="#"
-               class="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-[#ff914d] transition-colors font-medium">
-              <i class="fa-solid fa-envelope text-[9px]"></i>
-              <span id="label-email"></span>
-            </a>
+          <div class="quick">
+            <a id="link-phone" href="#"><svg class="ic"><use href="#i-phone"/></svg><span id="label-phone"></span></a>
+            <span class="sep"></span>
+            <a id="link-email" href="#"><svg class="ic"><use href="#i-mail"/></svg><span id="label-email"></span></a>
           </div>
         </div>
 
-        <!-- ── ADD TO CONTACTS + SHARE ───────────────────────── -->
-        <div class="space-y-2 mb-5">
-          <div class="flex gap-2.5">
-            <button
-              onclick="downloadVCF()"
-              class="btn-brand flex-1 py-3.5 rounded-2xl text-white font-semibold text-sm flex items-center justify-center gap-2"
-              aria-label="Save contact card"
-            >
-              <i class="fa-solid fa-address-card text-base"></i>
-              Save Rosh's Card
-            </button>
-            <button
-              onclick="openShare()"
-              class="flex-none w-12 py-3.5 rounded-2xl border-2 border-[#ff914d] text-[#ff914d]
-                     flex items-center justify-center hover:bg-[#fff4ee] transition-colors"
-              aria-label="Share card"
-            >
-              <i class="fa-solid fa-share-nodes text-base"></i>
-            </button>
-          </div>
-          <button
-            onclick="saveAndShare()"
-            class="w-full py-3.5 rounded-2xl border-2 border-[#ff914d] text-[#ff914d]
-                   font-semibold text-sm flex items-center justify-center gap-2
-                   hover:bg-[#fff4ee] transition-colors"
-          >
-            <i class="fa-solid fa-address-card text-base"></i>
-            Save &amp; Share Yours with Rosh
-            <i class="fa-solid fa-arrow-right text-xs"></i>
+        <!-- Primary actions -->
+        <div class="actions" style="margin-top:22px">
+          <button class="btn btn-primary" onclick="downloadVCF()" aria-label="Save contact">
+            <svg class="ic"><use href="#i-card"/></svg> Save My Contact
+          </button>
+          <button class="btn btn-icon" onclick="openShare()" aria-label="Share card">
+            <svg class="ic"><use href="#i-share"/></svg>
           </button>
         </div>
 
-        <!-- ── SOCIAL ROW ──────────────────────────────────────── -->
-        <div class="flex items-center justify-center gap-5 mb-7">
-
-          <!-- WhatsApp -->
-          <a id="link-wa" href="#" target="_blank" rel="noopener noreferrer"
-             class="social-pill flex flex-col items-center gap-1.5" aria-label="WhatsApp">
-            <div class="w-14 h-14 rounded-full bg-[#25D366] flex items-center justify-center
-                        text-white text-[22px] shadow-md shadow-green-200">
-              <i class="fa-brands fa-whatsapp"></i>
-            </div>
-            <span class="text-[11px] text-slate-500 font-medium">WhatsApp</span>
+        <!-- Social -->
+        <div class="social">
+          <a id="link-wa" href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <span class="dot dot-wa"><svg class="ic"><use href="#i-whatsapp"/></svg></span>
+            <span class="lbl">WhatsApp</span>
           </a>
-
-          <!-- LinkedIn -->
-          <a id="link-li" href="#" target="_blank" rel="noopener noreferrer"
-             class="social-pill flex flex-col items-center gap-1.5" aria-label="LinkedIn">
-            <div class="w-14 h-14 rounded-full bg-[#0A66C2] flex items-center justify-center
-                        text-white text-[22px] shadow-md shadow-blue-200">
-              <i class="fa-brands fa-linkedin-in"></i>
-            </div>
-            <span class="text-[11px] text-slate-500 font-medium">LinkedIn</span>
+          <a id="link-li" href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <span class="dot dot-li"><svg class="ic"><use href="#i-linkedin"/></svg></span>
+            <span class="lbl">LinkedIn</span>
           </a>
-
-          <!-- Website -->
-          <a id="link-web" href="#" target="_blank" rel="noopener noreferrer"
-             class="social-pill flex flex-col items-center gap-1.5" aria-label="Website">
-            <div class="w-14 h-14 rounded-full bg-[#ff914d] flex items-center justify-center
-                        text-white text-[22px] shadow-md shadow-orange-200">
-              <i class="fa-solid fa-globe"></i>
-            </div>
-            <span class="text-[11px] text-slate-500 font-medium">Website</span>
+          <a id="link-web" href="#" target="_blank" rel="noopener noreferrer" aria-label="Website">
+            <span class="dot dot-web"><svg class="ic"><use href="#i-globe"/></svg></span>
+            <span class="lbl">Website</span>
           </a>
-
         </div>
 
-        <!-- ── EXCHANGE FORM ──────────────────────────────────── -->
-        <div class="flex items-center gap-3 mb-5">
-          <div class="flex-1 h-px bg-slate-100"></div>
-          <span id="exchange-title"
-                class="text-[10px] uppercase tracking-widest text-slate-400 font-semibold whitespace-nowrap">
-            Exchange Details
-          </span>
-          <div class="flex-1 h-px bg-slate-100"></div>
+        <!-- Exchange -->
+        <div class="divider">
+          <span class="ln"></span>
+          <span class="tx" id="exchange-title">Exchange Details</span>
+          <span class="ln"></span>
         </div>
 
-        <form id="exchangeForm" action="https://formspree.io/f/mqejqgll" method="POST">
+        <div class="segment" role="tablist" aria-label="Contact type">
+          <button id="tab-btn-prospect" class="active" onclick="switchTab('prospect')" role="tab">
+            <svg class="ic"><use href="#i-home"/></svg> Prospect
+          </button>
+          <button id="tab-btn-pro" onclick="switchTab('pro')" role="tab">
+            <svg class="ic"><use href="#i-users"/></svg> Professional
+          </button>
+        </div>
 
+        <form id="exchangeForm" action="https://formspree.io/f/mqejqgll" method="POST" novalidate>
           <input type="hidden" name="contact_type"   id="contact_type_field" value="client" />
           <input type="hidden" name="contact_source" value="digital_card" />
+          <!-- spam honeypot -->
+          <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
 
-          <!-- Contact Picker — revealed by JS only if browser supports it -->
-          <div id="contact-picker-row" class="hidden mb-3">
-            <button type="button" onclick="pickContact()" id="pick-btn"
-                    class="w-full py-3.5 rounded-2xl bg-slate-50 border border-slate-200
-                           text-sm font-semibold text-slate-700 flex items-center justify-center gap-2
-                           hover:bg-[#fff4ee] hover:border-[#ff914d] hover:text-[#ff914d] transition-colors">
-              <i class="fa-solid fa-address-book text-[#ff914d]"></i>
-              Pick from My Contacts
+          <!-- Contact Picker (Chrome Android only — revealed by JS) -->
+          <div id="contact-picker-row" class="hidden">
+            <button type="button" id="pick-btn" class="btn btn-ghost pickbtn" onclick="pickContact()">
+              <svg class="ic"><use href="#i-user"/></svg> Pick from My Contacts
             </button>
-            <p class="text-center text-[10px] text-slate-400 mt-1.5">One tap to pre-fill your details</p>
           </div>
 
-          <div class="space-y-3">
-
-            <!-- Industry dropdown — pro only -->
-            <div id="industry-row" class="relative hidden">
-              <i class="fa-solid fa-briefcase absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-              <select
-                name="industry"
-                id="industry-select"
-                class="w-full pl-9 pr-8 py-3 rounded-xl border border-slate-200 bg-slate-50
-                       text-sm text-slate-800 appearance-none"
-              >
-                <option value="" disabled selected>Your Industry *</option>
+          <!-- Pro-only -->
+          <div class="field hidden" id="industry-row">
+            <label for="industry-select">Your Industry *</label>
+            <div class="ctrl">
+              <svg class="ic"><use href="#i-briefcase"/></svg>
+              <select class="select" name="industry" id="industry-select">
+                <option value="" disabled selected>Select your industry…</option>
                 <option>Realtor / Real Estate Agent</option>
                 <option>Property Manager</option>
                 <option>Mortgage Broker / Lender</option>
@@ -299,960 +654,526 @@
                 <option>Surveyor / Appraiser</option>
                 <option>Other Professional</option>
               </select>
-              <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
             </div>
-
-            <!-- Company — pro only -->
-            <div id="company-row" class="relative hidden">
-              <i class="fa-solid fa-building absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-              <input
-                type="text"
-                name="company"
-                placeholder="Company / Brokerage"
-                autocomplete="organization"
-                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                       text-sm text-slate-800 placeholder-slate-400"
-              />
-            </div>
-
-            <div class="relative">
-              <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-              <input
-                type="text"
-                name="full_name"
-                placeholder="Your Full Name *"
-                required
-                autocomplete="name"
-                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                       text-sm text-slate-800 placeholder-slate-400"
-              />
-            </div>
-
-            <div class="relative">
-              <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-              <input
-                type="email"
-                name="email_address"
-                placeholder="Your Email Address *"
-                required
-                autocomplete="email"
-                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                       text-sm text-slate-800 placeholder-slate-400"
-              />
-            </div>
-
-            <div class="relative">
-              <i class="fa-solid fa-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-              <input
-                type="tel"
-                name="phone_number"
-                placeholder="Your Phone Number"
-                autocomplete="tel"
-                class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                       text-sm text-slate-800 placeholder-slate-400"
-              />
-            </div>
-
-            <textarea
-              id="message-field"
-              name="message"
-              placeholder="Quick note — e.g. buying, selling, investing, just browsing…"
-              rows="3"
-              class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                     text-sm text-slate-800 placeholder-slate-400 resize-none"
-            ></textarea>
-
           </div>
 
-          <div id="formStatus" class="hidden mt-3 p-3 rounded-xl text-sm text-center font-medium"></div>
+          <div class="field hidden" id="company-row">
+            <label for="f-company">Company / Brokerage</label>
+            <div class="ctrl">
+              <svg class="ic"><use href="#i-building"/></svg>
+              <input class="input" type="text" id="f-company" name="company" placeholder="Company / Brokerage" autocomplete="organization" />
+            </div>
+          </div>
 
-          <button
-            type="submit"
-            id="submitBtn"
-            class="btn-brand w-full py-3.5 rounded-2xl text-white font-semibold text-sm mt-4
-                   flex items-center justify-center gap-2"
-          >
-            <i class="fa-solid fa-paper-plane"></i>
-            Send My Info
+          <div class="field">
+            <label for="f-name">Full Name *</label>
+            <div class="ctrl">
+              <svg class="ic"><use href="#i-user"/></svg>
+              <input class="input" type="text" id="f-name" name="full_name" placeholder="Jane Doe" required autocomplete="name" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-email">Email Address *</label>
+            <div class="ctrl">
+              <svg class="ic"><use href="#i-mail"/></svg>
+              <input class="input" type="email" id="f-email" name="email_address" placeholder="jane@email.com" required autocomplete="email" inputmode="email" autocapitalize="off" spellcheck="false" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-phone">Phone Number</label>
+            <div class="ctrl">
+              <svg class="ic"><use href="#i-phone"/></svg>
+              <input class="input" type="tel" id="f-phone" name="phone_number" placeholder="(825) 555-0123" autocomplete="tel" inputmode="tel" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-msg">Quick Note</label>
+            <textarea class="textarea" id="message-field" name="message" rows="3"
+              placeholder="e.g. buying, selling, investing, just browsing…"></textarea>
+          </div>
+
+          <div class="consent">
+            <input type="checkbox" id="consent" required />
+            <label for="consent">I agree to be contacted by Rosh Issac about my inquiry. Your info goes directly to me — no spam, ever.</label>
+          </div>
+
+          <div id="formStatus" class="status hidden"></div>
+
+          <button type="submit" id="submitBtn" class="btn btn-primary" style="margin-top:16px">
+            <svg class="ic"><use href="#i-send"/></svg> Send My Info
           </button>
-
-          <p class="text-center text-[10px] text-slate-400 mt-2">
-            Your info goes directly to me — no spam, ever.
-          </p>
         </form>
 
-      </div><!-- /px-6 -->
+      </div><!-- /body -->
     </div><!-- /card -->
 
-    <!-- ════════════════════════════════════════════════════════════
-         PWA "Add to Home Screen" TIP
-         Dismissed state is saved in localStorage — won't re-appear.
-    ════════════════════════════════════════════════════════════ -->
-    <div id="pwa-tip"
-         class="mt-4 bg-white rounded-2xl card-shadow p-4 flex items-center gap-3 fade-up-delay">
-      <div class="shrink-0 w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center">
-        <i class="fa-solid fa-mobile-screen-button text-[#ff914d] text-sm"></i>
-      </div>
-      <p class="flex-1 text-[11px] text-slate-500 leading-relaxed">
-        <strong class="text-slate-700">Save this card:</strong> tap the Share icon
-        <i class="fa-solid fa-arrow-up-from-bracket text-[#ff914d] text-[10px]"></i>
-        and select <strong class="text-slate-700">"Add to Home Screen"</strong>
-      </p>
-      <button
-        onclick="dismissPwaTip()"
-        aria-label="Dismiss tip"
-        class="shrink-0 w-6 h-6 flex items-center justify-center rounded-full
-               text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors"
-      >
-        <i class="fa-solid fa-xmark text-xs"></i>
-      </button>
+    <!-- PWA tip -->
+    <div id="pwa-tip" class="tip reveal d2">
+      <span class="badge"><svg class="ic"><use href="#i-smartphone"/></svg></span>
+      <p><b>Save this card:</b> tap Share <svg class="ic" style="font-size:11px;color:var(--accent-deep)"><use href="#i-share-ios"/></svg> then <b>“Add to Home Screen.”</b></p>
+      <button class="x" onclick="dismissPwaTip()" aria-label="Dismiss"><svg class="ic"><use href="#i-x"/></svg></button>
     </div>
 
     <!-- Footer -->
-    <p class="text-center text-[11px] text-slate-400 mt-4 pb-6">
-      &copy; <span id="yr"></span>
-      <span class="font-semibold text-slate-600">Issac Realty Inc.</span> - <span class="font-semibold text-[#ff914d]">Rosh Issac</span>, Realtor®
-      &nbsp;·&nbsp; Associate, <span class="font-semibold text-slate-600">Dreamhouse Realty Ltd. (Brokerage)</span>
+    <p class="foot">
+      &copy; <span id="yr"></span> <b>Issac Realty Inc.</b> · <span class="a">Rosh Issac</span>, Realtor®<br>
+      Associate, <b>Dreamhouse Realty Ltd. (Brokerage)</b>
     </p>
 
-  </div><!-- /max-w-sm -->
+  </div><!-- /shell -->
 
-  <!-- ════════════════════════════════════════════════════════════
-       CAPTURE MODE OVERLAY  (Rosh-only — via FAB or ?cap URL)
-  ════════════════════════════════════════════════════════════ -->
-  <div id="capture-overlay"
-       class="hidden fixed inset-0 bg-slate-50 z-[200] overflow-y-auto">
-    <div class="max-w-sm mx-auto px-4 py-6 pb-24">
-
-      <!-- Header -->
-      <div class="flex items-center gap-3 mb-6">
-        <button onclick="closeCapture()"
-                class="w-9 h-9 rounded-full bg-white shadow-sm flex items-center justify-center
-                       text-slate-500 hover:text-[#ff914d] transition-colors">
-          <i class="fa-solid fa-arrow-left text-sm"></i>
-        </button>
-        <h2 class="text-lg font-bold text-slate-900">Capture a Contact</h2>
+  <!-- ═══ CAPTURE OVERLAY (Rosh only — FAB or ?cap) ═════════════════════ -->
+  <div id="capture-overlay" class="overlay capture hidden">
+    <div class="wrap">
+      <div class="cap-head">
+        <button class="iconbtn" onclick="closeCapture()" aria-label="Close"><svg class="ic"><use href="#i-arrow-left"/></svg></button>
+        <h2>Capture a Contact</h2>
       </div>
 
-      <!-- Step 1: Choose method -->
+      <!-- method select -->
       <div id="cap-method-select">
-        <p class="text-xs text-slate-400 font-medium mb-4">How are they sharing their info?</p>
-        <div class="space-y-3">
-
-          <button onclick="showCaptureMethod('scan')"
-                  class="w-full bg-white rounded-2xl p-4 flex items-center gap-4
-                         border border-slate-200 hover:border-[#ff914d] hover:bg-orange-50
-                         transition-all text-left shadow-sm">
-            <div class="w-11 h-11 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
-              <i class="fa-solid fa-camera text-[#ff914d] text-lg"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-slate-800 text-sm">Scan Business Card</p>
-              <p class="text-xs text-slate-400 mt-0.5">Point camera — fields fill automatically</p>
-            </div>
-          </button>
-
-          <button onclick="showCaptureMethod('paste')"
-                  class="w-full bg-white rounded-2xl p-4 flex items-center gap-4
-                         border border-slate-200 hover:border-[#ff914d] hover:bg-orange-50
-                         transition-all text-left shadow-sm">
-            <div class="w-11 h-11 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
-              <i class="fa-solid fa-paste text-[#ff914d] text-lg"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-slate-800 text-sm">Paste vCard / NFC Data</p>
-              <p class="text-xs text-slate-400 mt-0.5">From Haystack, digital card, or NFC tap</p>
-            </div>
-          </button>
-
-          <button onclick="showCaptureMethod('manual')"
-                  class="w-full bg-white rounded-2xl p-4 flex items-center gap-4
-                         border border-slate-200 hover:border-[#ff914d] hover:bg-orange-50
-                         transition-all text-left shadow-sm">
-            <div class="w-11 h-11 rounded-xl bg-orange-50 flex items-center justify-center shrink-0">
-              <i class="fa-solid fa-pen text-[#ff914d] text-lg"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-slate-800 text-sm">Enter Manually</p>
-              <p class="text-xs text-slate-400 mt-0.5">Type in their details yourself</p>
-            </div>
-          </button>
-
-        </div>
+        <p class="lede">How are they sharing their info?</p>
+        <button class="method" onclick="showCaptureMethod('scan')">
+          <span class="mi"><svg class="ic"><use href="#i-camera"/></svg></span>
+          <span><span class="mt">Scan Business Card</span><span class="ms">Point camera — fields fill automatically</span></span>
+        </button>
+        <button class="method" onclick="showCaptureMethod('paste')">
+          <span class="mi"><svg class="ic"><use href="#i-clipboard"/></svg></span>
+          <span><span class="mt">Paste vCard / NFC Data</span><span class="ms">From Haystack, digital card, or NFC tap</span></span>
+        </button>
+        <button class="method" onclick="showCaptureMethod('manual')">
+          <span class="mi"><svg class="ic"><use href="#i-pencil"/></svg></span>
+          <span><span class="mt">Enter Manually</span><span class="ms">Type in their details yourself</span></span>
+        </button>
       </div>
 
-      <!-- Step 2A: Camera scan -->
+      <!-- scan -->
       <div id="cap-scan" class="hidden">
-        <button onclick="backToCapMethods()" class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-[#ff914d] transition-colors mb-4">
-          <i class="fa-solid fa-chevron-left text-[9px]"></i> Back
-        </button>
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-          <p class="text-sm font-semibold text-slate-800 mb-1">
-            <i class="fa-solid fa-camera text-[#ff914d] mr-2"></i>Scan Their Business Card
-          </p>
-          <p class="text-xs text-slate-400 mb-4">Photo their card or QR code — fields fill automatically.</p>
-          <label class="btn-brand w-full py-3 rounded-xl text-white font-semibold text-sm
-                        flex items-center justify-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-camera"></i> Open Camera
-            <input type="file" accept="image/*" capture="environment"
-                   id="cardPhotoInput" class="hidden" onchange="handleCardPhoto(event)" />
+        <button class="back" onclick="backToCapMethods()"><svg class="ic"><use href="#i-chevron-left"/></svg> Back</button>
+        <div class="panel">
+          <p class="mt" style="font-weight:600;font-size:14px;margin-bottom:4px"><svg class="ic" style="color:var(--accent-deep)"><use href="#i-camera"/></svg> Scan Their Business Card</p>
+          <p class="ms" style="color:var(--muted);font-size:11.5px;margin-bottom:14px">Photo their card or QR code — fields fill automatically.</p>
+          <label class="btn btn-primary" style="cursor:pointer">
+            <svg class="ic"><use href="#i-camera"/></svg> Open Camera
+            <input type="file" accept="image/*" capture="environment" id="cardPhotoInput" class="hidden" onchange="handleCardPhoto(event)" />
           </label>
         </div>
-        <div id="ocr-status" class="hidden text-center text-sm text-slate-500 py-4">
-          <i class="fa-solid fa-circle-notch fa-spin mr-2 text-[#ff914d]"></i>Reading card…
-        </div>
+        <div id="ocr-status" class="hidden lede" style="text-align:center;padding:16px 0"><span class="spin"></span>&nbsp; Reading card…</div>
       </div>
 
-      <!-- Step 2B: vCard paste -->
+      <!-- paste -->
       <div id="cap-paste" class="hidden">
-        <button onclick="backToCapMethods()" class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-[#ff914d] transition-colors mb-4">
-          <i class="fa-solid fa-chevron-left text-[9px]"></i> Back
-        </button>
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
-          <p class="text-sm font-semibold text-slate-800 mb-1">
-            <i class="fa-solid fa-paste text-[#ff914d] mr-2"></i>Paste Their Card Data
-          </p>
-          <p class="text-xs text-slate-400 mb-3">From a Haystack link, NFC tap, or any vCard format.</p>
-          <textarea id="vcardInput" rows="5"
-                    placeholder="Paste vCard text (BEGIN:VCARD…) or any contact text…"
-                    class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50
-                           text-xs text-slate-700 placeholder-slate-400 resize-none font-mono mb-3"
-          ></textarea>
-          <button onclick="parseAndFill()"
-                  class="btn-brand w-full py-3 rounded-xl text-white font-semibold text-sm
-                         flex items-center justify-center gap-2">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Parse &amp; Fill Fields
-          </button>
+        <button class="back" onclick="backToCapMethods()"><svg class="ic"><use href="#i-chevron-left"/></svg> Back</button>
+        <div class="panel">
+          <p style="font-weight:600;font-size:14px;margin-bottom:4px"><svg class="ic" style="color:var(--accent-deep)"><use href="#i-clipboard"/></svg> Paste Their Card Data</p>
+          <p style="color:var(--muted);font-size:11.5px;margin-bottom:12px">From a Haystack link, NFC tap, or any vCard format.</p>
+          <textarea id="vcardInput" rows="5" class="textarea" style="font-family:ui-monospace,monospace;font-size:12px;margin-bottom:12px" placeholder="Paste vCard text (BEGIN:VCARD…) or any contact text…"></textarea>
+          <button class="btn btn-primary" onclick="parseAndFill()"><svg class="ic"><use href="#i-sparkles"/></svg> Parse &amp; Fill Fields</button>
         </div>
       </div>
 
-      <!-- Step 3: Review & tag (all methods land here) -->
+      <!-- review -->
       <div id="cap-review" class="hidden">
-        <button onclick="backToCapMethods()" class="flex items-center gap-1.5 text-xs text-slate-400 hover:text-[#ff914d] transition-colors mb-4">
-          <i class="fa-solid fa-chevron-left text-[9px]"></i> Start over
-        </button>
+        <button class="back" onclick="backToCapMethods()"><svg class="ic"><use href="#i-chevron-left"/></svg> Start over</button>
+        <p class="lede">Review &amp; tag before saving</p>
+        <div class="panel" style="margin-bottom:14px">
+          <div class="field"><div class="ctrl"><svg class="ic"><use href="#i-user"/></svg><input class="input" id="cap_name" placeholder="Full Name *" /></div></div>
+          <div class="field"><div class="ctrl"><svg class="ic"><use href="#i-mail"/></svg><input class="input" id="cap_email" type="email" placeholder="Email" /></div></div>
+          <div class="field"><div class="ctrl"><svg class="ic"><use href="#i-phone"/></svg><input class="input" id="cap_phone" type="tel" placeholder="Phone" /></div></div>
+          <div class="field" style="margin-bottom:0"><div class="ctrl"><svg class="ic"><use href="#i-building"/></svg><input class="input" id="cap_company" placeholder="Company / Brokerage" /></div></div>
+        </div>
 
-        <p class="text-xs text-slate-400 font-medium mb-3">Review &amp; tag before saving</p>
+        <p class="lede">Tag this contact as:</p>
+        <div class="tags">
+          <button id="tag-client" class="tag" onclick="setCapTag('client')"><svg class="ic"><use href="#i-home"/></svg> Client</button>
+          <button id="tag-pro" class="tag" onclick="setCapTag('professional')"><svg class="ic"><use href="#i-users"/></svg> Professional</button>
+        </div>
 
-        <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm space-y-3 mb-4">
-          <div class="relative">
-            <i class="fa-solid fa-user absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-            <input type="text" id="cap_name" placeholder="Full Name *"
-                   class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400" />
-          </div>
-          <div class="relative">
-            <i class="fa-solid fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-            <input type="email" id="cap_email" placeholder="Email"
-                   class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400" />
-          </div>
-          <div class="relative">
-            <i class="fa-solid fa-phone absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-            <input type="tel" id="cap_phone" placeholder="Phone"
-                   class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400" />
-          </div>
-          <div class="relative">
-            <i class="fa-solid fa-building absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-            <input type="text" id="cap_company" placeholder="Company / Brokerage"
-                   class="w-full pl-9 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-800 placeholder-slate-400" />
+        <div class="field hidden" id="cap-industry-row">
+          <div class="ctrl">
+            <svg class="ic"><use href="#i-briefcase"/></svg>
+            <select class="select" id="cap_industry">
+              <option value="" disabled selected>Their Industry</option>
+              <option>Realtor / Real Estate Agent</option>
+              <option>Property Manager</option>
+              <option>Mortgage Broker / Lender</option>
+              <option>Real Estate Lawyer / Notary</option>
+              <option>Home Inspector</option>
+              <option>Photographer / Stager</option>
+              <option>Trades (Plumber, Electrician, HVAC…)</option>
+              <option>Developer / Builder</option>
+              <option>Surveyor / Appraiser</option>
+              <option>Other Professional</option>
+            </select>
           </div>
         </div>
 
-        <!-- Tag buttons -->
-        <p class="text-xs text-slate-400 font-medium mb-2">Tag this contact as:</p>
-        <div class="grid grid-cols-2 gap-2 mb-3">
-          <button id="tag-client" onclick="setCapTag('client')"
-                  class="py-3 rounded-xl border-2 border-slate-200 text-sm font-semibold
-                         text-slate-500 transition-all">
-            <i class="fa-solid fa-house mr-1.5"></i>Client
-          </button>
-          <button id="tag-pro" onclick="setCapTag('professional')"
-                  class="py-3 rounded-xl border-2 border-slate-200 text-sm font-semibold
-                         text-slate-500 transition-all">
-            <i class="fa-solid fa-handshake mr-1.5"></i>Professional
-          </button>
-        </div>
-
-        <!-- Industry (pro only) -->
-        <div id="cap-industry-row" class="relative hidden mb-3">
-          <i class="fa-solid fa-briefcase absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-          <select id="cap_industry"
-                  class="w-full pl-9 pr-8 py-3 rounded-xl border border-slate-200 bg-slate-50
-                         text-sm text-slate-800 appearance-none">
-            <option value="" disabled selected>Their Industry</option>
-            <option>Realtor / Real Estate Agent</option>
-            <option>Property Manager</option>
-            <option>Mortgage Broker / Lender</option>
-            <option>Real Estate Lawyer / Notary</option>
-            <option>Home Inspector</option>
-            <option>Photographer / Stager</option>
-            <option>Trades (Plumber, Electrician, HVAC…)</option>
-            <option>Developer / Builder</option>
-            <option>Surveyor / Appraiser</option>
-            <option>Other Professional</option>
-          </select>
-          <i class="fa-solid fa-chevron-down absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-300 text-xs pointer-events-none"></i>
-        </div>
-
-        <textarea id="cap_notes" placeholder="Notes (optional)" rows="2"
-                  class="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50
-                         text-sm text-slate-800 placeholder-slate-400 resize-none mb-4"
-        ></textarea>
-
-        <div id="captureStatus" class="hidden mt-1 mb-3 p-3 rounded-xl text-sm text-center font-medium"></div>
-
-        <button onclick="saveCapture()" id="saveCaptureBtn"
-                class="btn-brand w-full py-3.5 rounded-2xl text-white font-semibold text-sm
-                       flex items-center justify-center gap-2">
-          <i class="fa-solid fa-floppy-disk"></i> Save to CRM
-        </button>
+        <div class="field"><textarea class="textarea" id="cap_notes" rows="2" placeholder="Notes (optional)"></textarea></div>
+        <div id="captureStatus" class="status hidden"></div>
+        <button class="btn btn-primary" id="saveCaptureBtn" onclick="saveCapture()"><svg class="ic"><use href="#i-save"/></svg> Save to CRM</button>
       </div>
 
     </div>
   </div>
 
-  <!-- ════════════════════════════════════════════════════════════
-       SHARE MODAL
-  ════════════════════════════════════════════════════════════ -->
-  <div id="share-overlay" class="hidden fixed inset-0 z-[300] flex items-end justify-center">
-    <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeShare()"></div>
-    <div class="relative w-full max-w-sm bg-white rounded-t-3xl p-6 pb-10 z-10">
-
-      <div class="flex items-center justify-between mb-5">
-        <h2 class="text-base font-bold text-slate-800">Share My Card</h2>
-        <button onclick="closeShare()"
-                class="w-7 h-7 flex items-center justify-center rounded-full bg-slate-100 text-slate-500">
-          <i class="fa-solid fa-xmark text-xs"></i>
-        </button>
+  <!-- ═══ SHARE MODAL ═══════════════════════════════════════════════════ -->
+  <div id="share-overlay" class="overlay sheet-overlay hidden">
+    <div class="scrim" onclick="closeShare()"></div>
+    <div class="sheet">
+      <div class="sheet-head">
+        <h2>Share My Card</h2>
+        <button class="iconbtn" style="width:30px;height:30px;box-shadow:none;background:var(--field)" onclick="closeShare()" aria-label="Close"><svg class="ic"><use href="#i-x"/></svg></button>
       </div>
-
-      <!-- QR code -->
-      <div class="flex flex-col items-center mb-6">
-        <div id="qr-container"
-             class="w-44 h-44 flex items-center justify-center bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden">
-          <i class="fa-solid fa-spinner animate-spin text-slate-300 text-xl"></i>
-        </div>
-        <p class="text-xs text-slate-400 mt-2">Scan to open on any phone</p>
-      </div>
-
-      <!-- Action buttons -->
-      <div class="space-y-2.5">
-        <button onclick="copyLink()" id="copy-btn"
-                class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50
-                       text-sm font-semibold text-slate-700 transition-colors hover:bg-orange-50">
-          <div class="w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-link text-[#ff914d] text-sm"></i>
-          </div>
-          Copy Link
-        </button>
-        <button onclick="nativeShare()"
-                class="w-full flex items-center gap-3 px-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50
-                       text-sm font-semibold text-slate-700 transition-colors hover:bg-orange-50">
-          <div class="w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
-            <i class="fa-solid fa-share-nodes text-[#ff914d] text-sm"></i>
-          </div>
-          AirDrop / Share
-        </button>
-      </div>
-
+      <div class="qrbox" id="qr-container"><svg width="156" height="156" viewBox="0 0 33 33" shape-rendering="crispEdges" role="img" aria-label="QR code linking to the card"><path stroke="#0f0f0f" d="M2 2.5h7m3 0h2m2 0h1m1 0h5m1 0h7M2 3.5h1m5 0h1m3 0h2m1 0h1m1 0h2m1 0h1m3 0h1m5 0h1M2 4.5h1m1 0h3m1 0h1m1 0h2m4 0h1m3 0h1m1 0h1m1 0h1m1 0h3m1 0h1M2 5.5h1m1 0h3m1 0h1m1 0h1m1 0h8m2 0h1m1 0h1m1 0h3m1 0h1M2 6.5h1m1 0h3m1 0h1m1 0h2m6 0h1m2 0h2m1 0h1m1 0h3m1 0h1M2 7.5h1m5 0h1m1 0h2m3 0h1m1 0h2m3 0h1m1 0h1m5 0h1M2 8.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M10 9.5h3m3 0h3M2 10.5h1m1 0h5m2 0h1m2 0h4m1 0h1m1 0h1m2 0h5M2 11.5h1m1 0h3m3 0h1m2 0h2m3 0h1m1 0h7m3 0h1M3 12.5h2m1 0h4m1 0h1m5 0h1m1 0h2m1 0h2m2 0h1M2 13.5h3m1 0h2m2 0h1m1 0h1m3 0h1m1 0h1m1 0h3m4 0h1m1 0h1M3 14.5h1m3 0h2m1 0h1m2 0h4m2 0h2m6 0h2M2 15.5h1m2 0h1m5 0h4m1 0h1m1 0h9m3 0h1M2 16.5h1m2 0h7m3 0h1m1 0h3m3 0h3m1 0h2M3 17.5h3m1 0h1m1 0h2m1 0h1m4 0h1m2 0h3m3 0h1m2 0h1M2 18.5h1m1 0h1m3 0h4m3 0h2m2 0h1m1 0h1m3 0h1m1 0h2M2 19.5h2m2 0h2m1 0h2m3 0h1m3 0h4m2 0h3m1 0h1m1 0h1M2 20.5h1m1 0h1m3 0h3m1 0h1m1 0h1m1 0h3m1 0h1m1 0h2m1 0h1m2 0h1M2 21.5h1m2 0h3m1 0h2m1 0h1m1 0h1m6 0h1m2 0h2m3 0h1M2 22.5h1m2 0h1m2 0h1m1 0h2m1 0h1m3 0h3m2 0h5m1 0h3M10 23.5h1m2 0h3m2 0h3m1 0h1m3 0h5M2 24.5h7m2 0h1m1 0h7m1 0h2m1 0h1m1 0h3M2 25.5h1m5 0h1m1 0h2m2 0h2m1 0h2m2 0h2m3 0h1M2 26.5h1m1 0h3m1 0h1m1 0h4m2 0h5m1 0h5m1 0h3M2 27.5h1m1 0h3m1 0h1m1 0h1m1 0h1m2 0h1m2 0h4m5 0h4M2 28.5h1m1 0h3m1 0h1m1 0h1m1 0h2m3 0h1m1 0h1m4 0h6M2 29.5h1m5 0h1m2 0h2m1 0h3m5 0h2m3 0h1m1 0h1M2 30.5h7m1 0h1m4 0h1m1 0h1m3 0h1m2 0h1m1 0h3"/></svg></div>
+      <p class="qr-cap">Scan to open on any phone</p>
+      <button class="row-btn" id="copy-btn" onclick="copyLink()">
+        <span class="ri"><svg class="ic"><use href="#i-link"/></svg></span> Copy Link
+      </button>
+      <button class="row-btn" onclick="nativeShare()">
+        <span class="ri"><svg class="ic"><use href="#i-share"/></svg></span> AirDrop / Share
+      </button>
     </div>
   </div>
 
-  <!-- Floating tab switcher — Prospect / Professional -->
-  <div id="floating-tabs"
-       class="fixed bottom-14 left-1/2 -translate-x-1/2 z-[100]
-              bg-white rounded-full shadow-lg border border-slate-100 p-1.5 flex gap-1">
-    <button id="tab-btn-prospect" onclick="switchTab('prospect')"
-            class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold
-                   transition-all bg-[#ff914d] text-white shadow-sm">
-      <i class="fa-solid fa-house"></i>Prospect
-    </button>
-    <button id="tab-btn-pro" onclick="switchTab('pro')"
-            class="flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-semibold
-                   transition-all text-slate-500 hover:text-slate-700">
-      <i class="fa-solid fa-handshake"></i>Professional
-    </button>
+  <!-- Capture FAB -->
+  <button class="fab" onclick="openCapture()" aria-label="Capture a contact"><svg class="ic"><use href="#i-user-plus"/></svg></button>
+
+  <!-- Brokerage bar (RECA compliance) -->
+  <div class="brokerage">
+    <img src="./dreamhouse-logo.png" alt="Dreamhouse Realty Ltd."
+         onerror="this.style.display='none';document.getElementById('brokerage-text').classList.remove('hidden')" />
+    <span id="brokerage-text" class="txt hidden">Dreamhouse Realty Ltd.</span>
+    <span class="lic">Licensed Brokerage</span>
   </div>
 
-  <!-- Capture FAB — only Rosh uses this -->
-  <button onclick="openCapture()" aria-label="Capture a contact"
-          class="fixed bottom-28 right-4 z-[150] w-12 h-12 btn-brand rounded-full
-                 flex items-center justify-center shadow-lg shadow-orange-200">
-    <i class="fa-solid fa-user-plus text-white"></i>
-  </button>
+  <!-- Toast -->
+  <div id="toast" role="status" aria-live="polite"></div>
 
-  <!-- ════════════════════════════════════════════════════════════
-       FLOATING BROKERAGE BAR (RECA compliance)
-       Save the logo as dreamhouse-logo.png in this folder, then
-       commit it — the bar will appear automatically.
-  ════════════════════════════════════════════════════════════ -->
-  <div id="brokerage-bar"
-       class="fixed bottom-0 left-0 right-0 z-50
-              bg-white/95 backdrop-blur-sm
-              border-t border-slate-200
-              flex items-center justify-center gap-3
-              py-2 px-4 shadow-[0_-2px_12px_rgba(0,0,0,0.06)]">
-    <img
-      src="./dreamhouse-logo.png"
-      alt="Dreamhouse Realty Ltd."
-      class="h-8 w-auto object-contain"
-      onerror="this.style.display='none';document.getElementById('brokerage-text').classList.remove('hidden')"
-    />
-    <!-- Fallback text shown only if logo file is missing -->
-    <span id="brokerage-text"
-          class="hidden text-xs font-bold uppercase tracking-widest text-slate-700">
-      Dreamhouse Realty Ltd.
-    </span>
-    <span class="text-[10px] text-slate-400 border-l border-slate-200 pl-3">
-      Licensed Brokerage
-    </span>
-  </div>
-
-  <!-- ════════════════════════════════════════════════════════════
-       TOAST NOTIFICATION
-  ════════════════════════════════════════════════════════════ -->
-  <div
-    id="toast"
-    role="status"
-    aria-live="polite"
-    class="fixed bottom-8 left-1/2 -translate-x-1/2 translate-y-2
-           bg-slate-900 text-white text-[13px] font-medium
-           px-5 py-3 rounded-full shadow-xl
-           opacity-0 pointer-events-none z-50
-           flex items-center gap-2 whitespace-nowrap"
-  ></div>
-
-
-  <!-- ════════════════════════════════════════════════════════════
-       JAVASCRIPT
-  ════════════════════════════════════════════════════════════ -->
+  <!-- ═══ JAVASCRIPT ════════════════════════════════════════════════════ -->
   <script>
-  // ╔══════════════════════════════════════════════════════════════════╗
-  // ║  [1]  FILL IN YOUR DETAILS — this is the only section to edit   ║
-  // ╚══════════════════════════════════════════════════════════════════╝
+  // ╔═══ [1] YOUR DETAILS — the only section to edit ═══════════════════╗
   const ME = {
     firstName    : 'Rosh',
     lastName     : 'Issac',
     phone        : '+18254495083',
+    phonePretty  : '(825) 449-5083',
     email        : 'rosh@issacrealty.com',
     linkedin     : 'https://www.linkedin.com/in/roshissac',
     website      : 'https://issacrealty.com',
     whatsapp     : '18254495083',
-    title        : 'Realtor® | Issac Realty Team',
     titleFull    : 'Realtor® | Issac Realty Team - Associates of Dreamhouse Realty Ltd.',
     company      : 'Issac Realty Inc',
     brokerage    : 'Dreamhouse Realty Ltd.',
     city         : 'Calgary, AB',
     address      : '2 - 2000 Pegasus Rd NE Unit 2, Calgary, AB T2E 8K7',
-    gravatarHash : '6b6ad47534b601e7c284fe67ebdb7921',
+    formspreeId  : 'mqejqgll',
+    cardUrl      : 'https://roshaissac.github.io/Businesscard',
   };
+  const FORMSPREE = 'https://formspree.io/f/' + ME.formspreeId;
   // ───────────────────────────────────────────────────────────────────
 
+  const $ = id => document.getElementById(id);
+  const icon = id => `<svg class="ic"><use href="#${id}"/></svg>`;
+  function haptic(ms = 12) { try { navigator.vibrate && navigator.vibrate(ms); } catch (_) {} }
 
-  // ── Hydrate card with data from ME object ───────────────────────────
+  // ── Hydrate ─────────────────────────────────────────────────────────
   (function hydrate() {
-    document.getElementById('card-name').textContent =
-      `${ME.firstName} ${ME.lastName}`;
+    $('card-name').textContent = `${ME.firstName} ${ME.lastName}`;
+    $('card-title').innerHTML = `Realtor® · <b>Issac Realty Team</b>`;
+    $('card-brokerage').textContent = `Associates of ${ME.brokerage}`;
+    $('card-city').innerHTML = `${icon('i-pin')}<span>${ME.city}</span>`;
 
-    document.getElementById('card-title').innerHTML =
-      `Realtor® | <span class="font-semibold text-[#ff914d]">Issac Realty Team</span>`;
+    $('label-phone').textContent = ME.phonePretty;
+    $('link-phone').href = `tel:${ME.phone}`;
+    $('label-email').textContent = ME.email;
+    $('link-email').href = `mailto:${ME.email}`;
 
-    document.getElementById('card-brokerage').textContent =
-      `Associates of ${ME.brokerage}`;
-
-    const cityEl = document.getElementById('card-city');
-    cityEl.innerHTML = `<i class="fa-solid fa-location-dot text-[#ff914d] text-[9px]"></i>${ME.city}`;
-
-    document.getElementById('label-phone').textContent = ME.phone;
-    document.getElementById('link-phone').href = `tel:${ME.phone}`;
-
-    document.getElementById('label-email').textContent = ME.email;
-    document.getElementById('link-email').href = `mailto:${ME.email}`;
-
-    document.getElementById('link-wa').href  = `https://wa.me/${ME.whatsapp}`;
-    document.getElementById('link-li').href  = ME.linkedin;
-    document.getElementById('link-web').href = ME.website;
-
-    document.getElementById('yr').textContent = new Date().getFullYear();
+    $('link-wa').href  = `https://wa.me/${ME.whatsapp}`;
+    $('link-li').href  = ME.linkedin;
+    $('link-web').href = ME.website;
+    $('yr').textContent = new Date().getFullYear();
   })();
 
+  // ── vCard ───────────────────────────────────────────────────────────
+  // Photo is embedded (base64) so the saved contact shows the face reliably,
+  // offline, with no network call. Generated from the self-hosted portrait.
+  const PHOTO_B64 = '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';
 
-  // ── VCF / Contact card download ────────────────────────────────────
-  function downloadVCF() {
-    const photoUrl =
-      `https://www.gravatar.com/avatar/${ME.gravatarHash}?s=400&d=mp`;
-
-    const vcf = [
+  function buildVCF() {
+    return [
       'BEGIN:VCARD',
       'VERSION:3.0',
-      `FN:${ME.firstName} ${ME.lastName}`,
       `N:${ME.lastName};${ME.firstName};;;`,
-      `TEL;TYPE=CELL,VOICE:${ME.phone}`,
-      `EMAIL;TYPE=INTERNET,PREF:${ME.email}`,
-      `URL;TYPE=LinkedIn:${ME.linkedin}`,
-      `URL;TYPE=Website:${ME.website}`,
+      `FN:${ME.firstName} ${ME.lastName}`,
       `ORG:${ME.company}`,
       `TITLE:${ME.titleFull}`,
+      `TEL;TYPE=CELL,VOICE:${ME.phone}`,
+      `EMAIL;TYPE=INTERNET,PREF:${ME.email}`,
+      // iOS-friendly labeled URLs
+      `item1.URL:${ME.website}`,
+      'item1.X-ABLabel:Website',
+      `item2.URL:${ME.linkedin}`,
+      'item2.X-ABLabel:LinkedIn',
       `ADR;TYPE=WORK:;;${ME.address};;;;`,
-      `PHOTO;VALUE=URL:${photoUrl}`,
+      `PHOTO;ENCODING=b;TYPE=JPEG:${PHOTO_B64}`,
       'END:VCARD'
     ].join('\r\n');
-
-    const blob = new Blob([vcf], { type: 'text/vcard;charset=utf-8' });
-    const url  = URL.createObjectURL(blob);
-    const a    = Object.assign(document.createElement('a'), {
-      href     : url,
-      download : `${ME.firstName}_${ME.lastName}.vcf`
-    });
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    showToast('📇 Contact saved to your device!');
   }
 
+  async function downloadVCF() {
+    haptic();
+    const vcf = buildVCF();
+    const fileName = `${ME.firstName}_${ME.lastName}.vcf`;
 
-  // ── Form submission (AJAX → Formspree → Zapier) ────────────────────
-  const form      = document.getElementById('exchangeForm');
-  const statusDiv = document.getElementById('formStatus');
-  const submitBtn = document.getElementById('submitBtn');
+    // Preferred on iOS 16+: share the file -> native "Add to Contacts" sheet
+    try {
+      const file = new File([vcf], fileName, { type: 'text/vcard' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: `${ME.firstName} ${ME.lastName}` });
+        showToast('Contact ready to add', 'i-check-circle');
+        return;
+      }
+    } catch (e) {
+      if (e && e.name === 'AbortError') return; // user dismissed sheet
+    }
+
+    // Fallback: blob download (Android Chrome, desktop, older iOS)
+    const blob = new Blob([vcf], { type: 'text/vcard;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = Object.assign(document.createElement('a'), { href: url, download: fileName });
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    showToast('Contact saved to your device', 'i-check-circle');
+  }
+
+  // ── Form submit ─────────────────────────────────────────────────────
+  const form = $('exchangeForm'), statusDiv = $('formStatus'), submitBtn = $('submitBtn');
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
     if (!form.checkValidity()) { form.reportValidity(); return; }
-
+    haptic();
     submitBtn.disabled = true;
-    submitBtn.innerHTML =
-      '<i class="fa-solid fa-circle-notch fa-spin"></i>&nbsp; Sending…';
+    submitBtn.innerHTML = `<span class="spin"></span>&nbsp; Sending…`;
 
     try {
-      const res = await fetch(form.action, {
-        method  : 'POST',
-        body    : new FormData(form),
-        headers : { Accept: 'application/json' }
+      const res = await fetch(FORMSPREE, {
+        method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }
       });
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error || 'fail'); }
 
-      if (res.ok) {
-        statusDiv.className =
-          'mt-3 p-3 rounded-xl text-sm text-center font-medium ' +
-          'bg-green-50 text-green-700 border border-green-100';
-        statusDiv.textContent = '✓ Got it! I\'ll be in touch very soon.';
-        statusDiv.classList.remove('hidden');
-        form.reset();
-        showToast('Message sent — thanks!');
-        submitBtn.innerHTML = '<i class="fa-solid fa-circle-check"></i>&nbsp; Sent!';
-        // Re-enable after 8 s in case they want to send again
-        setTimeout(() => {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML =
-            '<i class="fa-solid fa-paper-plane"></i>&nbsp; Send My Info';
-        }, 8000);
-      } else {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || 'Submission failed');
-      }
-    } catch {
-      statusDiv.className =
-        'mt-3 p-3 rounded-xl text-sm text-center font-medium ' +
-        'bg-red-50 text-red-600 border border-red-100';
-      statusDiv.textContent =
-        '✗ Something went wrong — please try again or contact me directly.';
+      statusDiv.className = 'status ok';
+      statusDiv.textContent = "✓ Got it! I'll be in touch very soon.";
+      statusDiv.classList.remove('hidden');
+      form.reset();
+      showToast('Message sent — thanks!', 'i-check-circle');
+      submitBtn.innerHTML = `${icon('i-check-circle')} Sent!`;
+      setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `${icon('i-send')} Send My Info`;
+      }, 8000);
+    } catch (_) {
+      statusDiv.className = 'status bad';
+      statusDiv.textContent = '✗ Something went wrong — please try again or contact me directly.';
       statusDiv.classList.remove('hidden');
       submitBtn.disabled = false;
-      submitBtn.innerHTML =
-        '<i class="fa-solid fa-paper-plane"></i>&nbsp; Send My Info';
+      submitBtn.innerHTML = `${icon('i-send')} Send My Info`;
     }
   });
 
-
-  // ── Contact Picker API ───────────────────────────────────────────────
-  (function () {
-    if ('contacts' in navigator && 'ContactsManager' in window) {
-      document.getElementById('contact-picker-row').classList.remove('hidden');
-    }
-  })();
-
+  // ── Contact Picker API (Chrome Android) ─────────────────────────────
+  if ('contacts' in navigator && 'ContactsManager' in window) {
+    $('contact-picker-row').classList.remove('hidden');
+  }
   async function pickContact() {
     try {
-      const contacts = await navigator.contacts.select(['name', 'email', 'tel'], { multiple: false });
-      if (!contacts.length) return;
-      const c = contacts[0];
-      if (c.name  && c.name[0])  document.querySelector('[name="full_name"]').value     = c.name[0];
-      if (c.email && c.email[0]) document.querySelector('[name="email_address"]').value  = c.email[0];
-      if (c.tel   && c.tel[0])   document.querySelector('[name="phone_number"]').value   = c.tel[0];
-      const btn = document.getElementById('pick-btn');
-      btn.innerHTML = '<i class="fa-solid fa-check"></i> Filled from your contacts';
-      btn.className = btn.className
-        .replace('bg-slate-50','bg-green-50')
-        .replace('border-slate-200','border-green-200')
-        .replace('text-slate-700','text-green-700');
+      const [c] = await navigator.contacts.select(['name', 'email', 'tel'], { multiple: false });
+      if (!c) return;
+      if (c.name?.[0])  $('f-name').value  = c.name[0];
+      if (c.email?.[0]) $('f-email').value = c.email[0];
+      if (c.tel?.[0])   $('f-phone').value = c.tel[0];
+      const b = $('pick-btn');
+      b.innerHTML = `${icon('i-check')} Filled from your contacts`;
+      b.style.cssText = 'background:var(--ok-soft);border-color:#cfe6da;color:var(--ok)';
     } catch (_) {}
   }
 
-  // ── Save & Share ─────────────────────────────────────────────────────
-  function saveAndShare() {
-    downloadVCF();
-    setTimeout(function () {
-      document.getElementById('exchangeForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      const title = document.getElementById('exchange-title');
-      const prev  = title.textContent;
-      title.textContent = 'NOW SHARE YOURS WITH ROSH';
-      title.style.color = '#ff914d';
-      setTimeout(function () {
-        title.textContent = prev;
-        title.style.color = '';
-      }, 3000);
-    }, 400);
-  }
-
-  // ── Share modal ──────────────────────────────────────────────────────
-  const CARD_URL = 'https://roshaissac.github.io/Businesscard';
-  let _qrReady = false;
-
-  function openShare() {
-    document.getElementById('share-overlay').classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    if (!_qrReady) loadQR();
-  }
-
-  function closeShare() {
-    document.getElementById('share-overlay').classList.add('hidden');
-    document.body.style.overflow = '';
-  }
-
-  function loadQR() {
-    const s = document.createElement('script');
-    s.src = 'https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js';
-    s.onload = function () {
-      const el = document.getElementById('qr-container');
-      el.innerHTML = '';
-      new QRCode(el, {
-        text: CARD_URL,
-        width: 160, height: 160,
-        colorDark: '#1e293b',
-        colorLight: '#f8fafc',
-        correctLevel: QRCode.CorrectLevel.M,
-      });
-      _qrReady = true;
-    };
-    document.head.appendChild(s);
-  }
+  // ── Share modal ─────────────────────────────────────────────────────
+  // QR is a static inline SVG baked into the markup — no library, no CDN.
+  function openShare() { haptic(); $('share-overlay').classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+  function closeShare() { $('share-overlay').classList.add('hidden'); document.body.style.overflow = ''; }
 
   function copyLink() {
-    navigator.clipboard.writeText(CARD_URL).then(function () {
-      const btn = document.getElementById('copy-btn');
-      btn.innerHTML =
-        '<div class="w-9 h-9 rounded-full bg-green-50 flex items-center justify-center shrink-0">' +
-        '<i class="fa-solid fa-check text-green-500 text-sm"></i></div> Copied!';
-      setTimeout(function () {
-        btn.innerHTML =
-          '<div class="w-9 h-9 rounded-full bg-orange-50 flex items-center justify-center shrink-0">' +
-          '<i class="fa-solid fa-link text-[#ff914d] text-sm"></i></div> Copy Link';
-      }, 2000);
+    navigator.clipboard.writeText(ME.cardUrl).then(() => {
+      haptic();
+      const b = $('copy-btn');
+      b.innerHTML = `<span class="ri" style="background:var(--ok-soft);color:var(--ok)">${icon('i-check')}</span> Copied!`;
+      setTimeout(() => { b.innerHTML = `<span class="ri">${icon('i-link')}</span> Copy Link`; }, 2000);
     });
   }
 
   function nativeShare() {
+    haptic();
     if (navigator.share) {
-      navigator.share({
-        title: 'Rosh Issac — Realtor® | Issac Realty Team',
-        text: 'Connect with Rosh Issac, Realtor® at Issac Realty Team',
-        url: CARD_URL,
-      });
-    } else {
-      copyLink();
-    }
+      navigator.share({ title: 'Rosh Issac — Realtor® | Issac Realty Team', text: 'Connect with Rosh Issac, Realtor® at Issac Realty Team', url: ME.cardUrl }).catch(() => {});
+    } else { copyLink(); }
   }
 
-  // ── Tab switcher ─────────────────────────────────────────────────────
+  // ── Segmented toggle ────────────────────────────────────────────────
   function switchTab(tab) {
     const isPro = tab === 'pro';
-
-    // Active / inactive button styles
-    const activeClasses   = ['bg-[#ff914d]', 'text-white', 'shadow-sm'];
-    const inactiveClasses = ['text-slate-500', 'hover:text-slate-700'];
-
-    const btnProspect = document.getElementById('tab-btn-prospect');
-    const btnPro      = document.getElementById('tab-btn-pro');
-
-    [btnProspect, btnPro].forEach(b => {
-      b.classList.remove(...activeClasses, ...inactiveClasses);
-    });
-    const activeBtn   = isPro ? btnPro      : btnProspect;
-    const inactiveBtn = isPro ? btnProspect : btnPro;
-    activeBtn.classList.add(...activeClasses);
-    inactiveBtn.classList.add(...inactiveClasses);
-
-    // Show / hide pro-only fields
-    document.getElementById('industry-row').classList.toggle('hidden', !isPro);
-    document.getElementById('company-row').classList.toggle('hidden', !isPro);
-    document.getElementById('industry-select').required = isPro;
-
-    // Update hidden contact_type value
-    document.getElementById('contact_type_field').value = isPro ? 'professional' : 'client';
-
-    // Update divider label and message placeholder
-    document.getElementById('exchange-title').textContent =
-      isPro ? "LET'S NETWORK" : 'EXCHANGE DETAILS';
-    document.getElementById('message-field').placeholder = isPro
-      ? 'How can we collaborate? (optional)'
-      : 'Quick note — e.g. buying, selling, investing, just browsing…';
+    $('tab-btn-prospect').classList.toggle('active', !isPro);
+    $('tab-btn-pro').classList.toggle('active', isPro);
+    $('industry-row').classList.toggle('hidden', !isPro);
+    $('company-row').classList.toggle('hidden', !isPro);
+    $('industry-select').required = isPro;
+    $('contact_type_field').value = isPro ? 'professional' : 'client';
+    $('exchange-title').textContent = isPro ? "Let's Network" : 'Exchange Details';
+    $('message-field').placeholder = isPro ? 'How can we collaborate? (optional)' : 'e.g. buying, selling, investing, just browsing…';
   }
 
-  // ── Capture Mode ────────────────────────────────────────────────────
+  // ── Capture mode ────────────────────────────────────────────────────
   let _capTag = null;
+  if (new URLSearchParams(location.search).has('cap')) openCapture();
 
-  // Auto-open if ?cap is in URL
-  (function() {
-    if (new URLSearchParams(window.location.search).has('cap')) openCapture();
-  })();
+  function openCapture() { haptic(); $('capture-overlay').classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+  function closeCapture() { $('capture-overlay').classList.add('hidden'); document.body.style.overflow = ''; backToCapMethods(); }
 
-  function openCapture() {
-    document.getElementById('capture-overlay').classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+  function showCaptureMethod(m) {
+    $('cap-method-select').classList.add('hidden');
+    if (m === 'scan')  $('cap-scan').classList.remove('hidden');
+    if (m === 'paste') $('cap-paste').classList.remove('hidden');
+    if (m === 'manual') showCapReview();
   }
-
-  function closeCapture() {
-    document.getElementById('capture-overlay').classList.add('hidden');
-    document.body.style.overflow = '';
-    backToCapMethods();
-  }
-
-  function showCaptureMethod(method) {
-    document.getElementById('cap-method-select').classList.add('hidden');
-    if (method === 'scan')   document.getElementById('cap-scan').classList.remove('hidden');
-    if (method === 'paste')  document.getElementById('cap-paste').classList.remove('hidden');
-    if (method === 'manual') showCapReview();
-  }
-
   function backToCapMethods() {
-    ['cap-scan','cap-paste','cap-review'].forEach(id =>
-      document.getElementById(id).classList.add('hidden'));
-    document.getElementById('cap-method-select').classList.remove('hidden');
-    ['cap_name','cap_email','cap_phone','cap_company','cap_notes'].forEach(id =>
-      { const el = document.getElementById(id); if (el) el.value = ''; });
-    document.getElementById('vcardInput').value = '';
-    document.getElementById('captureStatus').classList.add('hidden');
-    const btn = document.getElementById('saveCaptureBtn');
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>&nbsp; Save to CRM';
-    _capTag = null;
-    resetCapTags();
+    ['cap-scan','cap-paste','cap-review'].forEach(id => $(id).classList.add('hidden'));
+    $('cap-method-select').classList.remove('hidden');
+    ['cap_name','cap_email','cap_phone','cap_company','cap_notes'].forEach(id => { const el = $(id); if (el) el.value = ''; });
+    $('vcardInput').value = '';
+    $('captureStatus').classList.add('hidden');
+    const b = $('saveCaptureBtn'); b.disabled = false; b.innerHTML = `${icon('i-save')} Save to CRM`;
+    _capTag = null; resetCapTags();
   }
+  function showCapReview() { $('cap-review').classList.remove('hidden'); }
 
-  function showCapReview() {
-    document.getElementById('cap-review').classList.remove('hidden');
-  }
-
-  // Option A — Camera: QR first, Tesseract OCR fallback
   async function handleCardPhoto(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    document.getElementById('ocr-status').classList.remove('hidden');
-
+    const file = e.target.files[0]; if (!file) return;
+    $('ocr-status').classList.remove('hidden');
     try {
-      const qrData = await detectQR(file);
-      if (qrData) {
-        handleQRData(qrData);
-        document.getElementById('ocr-status').classList.add('hidden');
-        return;
-      }
+      const qr = await detectQR(file);
+      if (qr) { handleQRData(qr); $('ocr-status').classList.add('hidden'); return; }
     } catch (_) {}
-
     if (!window.Tesseract) {
-      await new Promise((res, rej) => {
-        const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';
-        s.onload = res; s.onerror = rej;
-        document.head.appendChild(s);
-      });
+      await new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
     }
-    try {
-      const { data: { text } } = await Tesseract.recognize(file, 'eng');
-      prefillFromText(text);
-    } catch {
-      showToast('Scan unclear — try paste or manual entry');
-    } finally {
-      document.getElementById('ocr-status').classList.add('hidden');
-    }
+    try { const { data: { text } } = await Tesseract.recognize(file, 'eng'); prefillFromText(text); }
+    catch { showToast('Scan unclear — try paste or manual'); }
+    finally { $('ocr-status').classList.add('hidden'); }
   }
 
   async function detectQR(file) {
     if (!window.jsQR) {
-      await new Promise((res, rej) => {
-        const s = document.createElement('script');
-        s.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
-        s.onload = res; s.onerror = rej;
-        document.head.appendChild(s);
-      });
+      await new Promise((res, rej) => { const s = document.createElement('script'); s.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js'; s.onload = res; s.onerror = rej; document.head.appendChild(s); });
     }
-    return new Promise((resolve) => {
-      const img = new Image();
-      const url = URL.createObjectURL(file);
-      img.onload = function () {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width; canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0);
-        const d = ctx.getImageData(0, 0, img.width, img.height);
+    return new Promise(resolve => {
+      const img = new Image(), url = URL.createObjectURL(file);
+      img.onload = () => {
+        const c = document.createElement('canvas'); c.width = img.width; c.height = img.height;
+        const x = c.getContext('2d'); x.drawImage(img, 0, 0);
+        const d = x.getImageData(0, 0, img.width, img.height);
         URL.revokeObjectURL(url);
-        const code = jsQR(d.data, d.width, d.height);
-        resolve(code ? code.data : null);
+        const code = jsQR(d.data, d.width, d.height); resolve(code ? code.data : null);
       };
-      img.onerror = () => resolve(null);
-      img.src = url;
+      img.onerror = () => resolve(null); img.src = url;
     });
   }
 
   function handleQRData(data) {
-    if (data.startsWith('BEGIN:VCARD')) {
-      prefillFromText(data);
-      return;
-    }
+    if (data.startsWith('BEGIN:VCARD')) { prefillFromText(data); return; }
     if (data.startsWith('MECARD:')) {
-      const get = (key) => { const m = data.match(new RegExp(key + ':([^;]+)')); return m ? m[1].trim() : ''; };
-      const raw = get('N'), parts = raw.split(',');
-      document.getElementById('cap_name').value    = parts.length > 1 ? `${parts[1].trim()} ${parts[0].trim()}` : raw;
-      document.getElementById('cap_email').value   = get('EMAIL');
-      document.getElementById('cap_phone').value   = get('TEL');
-      document.getElementById('cap_company').value = get('ORG');
-      showCapReview();
-      return;
+      const get = k => { const m = data.match(new RegExp(k + ':([^;]+)')); return m ? m[1].trim() : ''; };
+      const raw = get('N'), p = raw.split(',');
+      $('cap_name').value = p.length > 1 ? `${p[1].trim()} ${p[0].trim()}` : raw;
+      $('cap_email').value = get('EMAIL'); $('cap_phone').value = get('TEL'); $('cap_company').value = get('ORG');
+      showCapReview(); return;
     }
-    // URL or unknown — drop into notes
-    document.getElementById('cap_notes').value = data;
-    showToast('QR link saved to notes');
-    showCapReview();
+    $('cap_notes').value = data; showToast('QR link saved to notes'); showCapReview();
   }
 
-  // Option B — vCard / plain text paste
-  function parseAndFill() {
-    const text = document.getElementById('vcardInput').value.trim();
-    if (!text) return;
-    prefillFromText(text);
-    showCapReview();
-  }
+  function parseAndFill() { const t = $('vcardInput').value.trim(); if (!t) return; prefillFromText(t); showCapReview(); }
 
-  // Shared parser: vCard structured + regex fallback
   function prefillFromText(text) {
     const isVcard = text.includes('BEGIN:VCARD');
-    const getField = (field) => {
-      const m = text.match(new RegExp(field + '[^:\\r\\n]*:([^\\r\\n]+)'));
-      return m ? m[1].trim() : '';
-    };
-
-    let name    = isVcard ? getField('FN')    : '';
-    let email   = isVcard ? getField('EMAIL') : '';
-    let phone   = isVcard ? getField('TEL')   : '';
-    let company = isVcard ? getField('ORG')   : '';
-
-    if (!email) {
-      const m = text.match(/[\w.+\-]+@[\w.\-]+\.\w{2,}/);
-      if (m) email = m[0];
-    }
-    if (!phone) {
-      const m = text.match(/[\+]?1?[\s\-.]?\(?[0-9]{3}\)?[\s\-.]?[0-9]{3}[\s\-.]?[0-9]{4}/);
-      if (m) phone = m[0].trim();
-    }
-    if (!name) {
-      const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-      name = lines.find(l => !l.includes('@') && !/\d{7,}/.test(l) && !l.startsWith('http')) || '';
-    }
-    if (!company) {
-      const lines = text.split(/\r?\n/).map(l => l.trim());
-      company = lines.find(l => /Inc\b|Ltd\b|LLC|Corp|Realty|Group|Team|Agency/i.test(l) && !l.includes('@')) || '';
-    }
-
-    document.getElementById('cap_name').value    = name;
-    document.getElementById('cap_email').value   = email;
-    document.getElementById('cap_phone').value   = phone;
-    document.getElementById('cap_company').value = company;
+    const field = f => { const m = text.match(new RegExp(f + '[^:\\r\\n]*:([^\\r\\n]+)')); return m ? m[1].trim() : ''; };
+    let name = isVcard ? field('FN') : '', email = isVcard ? field('EMAIL') : '', phone = isVcard ? field('TEL') : '', company = isVcard ? field('ORG') : '';
+    if (!email) { const m = text.match(/[\w.+\-]+@[\w.\-]+\.\w{2,}/); if (m) email = m[0]; }
+    if (!phone) { const m = text.match(/[\+]?1?[\s\-.]?\(?[0-9]{3}\)?[\s\-.]?[0-9]{3}[\s\-.]?[0-9]{4}/); if (m) phone = m[0].trim(); }
+    if (!name)  { const ls = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean); name = ls.find(l => !l.includes('@') && !/\d{7,}/.test(l) && !l.startsWith('http')) || ''; }
+    if (!company){ const ls = text.split(/\r?\n/).map(l => l.trim()); company = ls.find(l => /Inc\b|Ltd\b|LLC|Corp|Realty|Group|Team|Agency/i.test(l) && !l.includes('@')) || ''; }
+    $('cap_name').value = name; $('cap_email').value = email; $('cap_phone').value = phone; $('cap_company').value = company;
     showCapReview();
   }
 
-  // Tag selection
   function setCapTag(tag) {
-    _capTag = tag;
-    resetCapTags();
-    document.getElementById(`tag-${tag === 'professional' ? 'pro' : tag}`)
-      .classList.add('border-[#ff914d]','text-[#ff914d]','bg-[#fff4ee]');
-    document.getElementById('cap-industry-row').classList.toggle('hidden', tag !== 'professional');
+    _capTag = tag; resetCapTags();
+    $(`tag-${tag === 'professional' ? 'pro' : tag}`).classList.add('on');
+    $('cap-industry-row').classList.toggle('hidden', tag !== 'professional');
   }
+  function resetCapTags() { ['tag-client','tag-pro'].forEach(id => $(id).classList.remove('on')); $('cap-industry-row').classList.add('hidden'); }
 
-  function resetCapTags() {
-    ['tag-client','tag-pro'].forEach(id => {
-      document.getElementById(id)
-        .classList.remove('border-[#ff914d]','text-[#ff914d]','bg-[#fff4ee]');
-    });
-    document.getElementById('cap-industry-row').classList.add('hidden');
-  }
-
-  // Save to CRM via Formspree → Zapier
   async function saveCapture() {
-    const name = document.getElementById('cap_name').value.trim();
+    const name = $('cap_name').value.trim();
     if (!name) { showToast('Name is required'); return; }
-
-    const btn = document.getElementById('saveCaptureBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>&nbsp; Saving…';
-
-    const data = new FormData();
-    data.append('full_name',     name);
-    data.append('email_address', document.getElementById('cap_email').value);
-    data.append('phone_number',  document.getElementById('cap_phone').value);
-    data.append('company',       document.getElementById('cap_company').value);
-    data.append('message',       document.getElementById('cap_notes').value);
-    data.append('contact_type',  _capTag || 'untagged');
-    data.append('industry',      document.getElementById('cap_industry').value || '');
-    data.append('contact_source','capture_mode');
-
+    haptic();
+    const b = $('saveCaptureBtn'); b.disabled = true; b.innerHTML = `<span class="spin"></span>&nbsp; Saving…`;
+    const d = new FormData();
+    d.append('full_name', name);
+    d.append('email_address', $('cap_email').value);
+    d.append('phone_number', $('cap_phone').value);
+    d.append('company', $('cap_company').value);
+    d.append('message', $('cap_notes').value);
+    d.append('contact_type', _capTag || 'untagged');
+    d.append('industry', $('cap_industry').value || '');
+    d.append('contact_source', 'capture_mode');
     try {
-      const res = await fetch('https://formspree.io/f/mqejqgll', {
-        method: 'POST', body: data, headers: { Accept: 'application/json' }
-      });
-      if (res.ok) {
-        const st = document.getElementById('captureStatus');
-        st.className = 'mt-1 mb-3 p-3 rounded-xl text-sm text-center font-medium bg-green-50 text-green-700 border border-green-100';
-        st.textContent = `✓ ${name} saved to CRM!`;
-        st.classList.remove('hidden');
-        btn.innerHTML = '<i class="fa-solid fa-circle-check"></i>&nbsp; Saved!';
-        showToast(`${name} saved!`);
-        setTimeout(closeCapture, 2000);
-      } else { throw new Error(); }
+      const res = await fetch(FORMSPREE, { method: 'POST', body: d, headers: { Accept: 'application/json' } });
+      if (!res.ok) throw new Error();
+      const st = $('captureStatus'); st.className = 'status ok'; st.textContent = `✓ ${name} saved to CRM!`; st.classList.remove('hidden');
+      b.innerHTML = `${icon('i-check-circle')} Saved!`; showToast(`${name} saved!`, 'i-check-circle');
+      setTimeout(closeCapture, 1800);
     } catch {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i>&nbsp; Save to CRM';
-      showToast('Save failed — check connection');
+      b.disabled = false; b.innerHTML = `${icon('i-save')} Save to CRM`; showToast('Save failed — check connection');
     }
   }
 
-  // ── PWA tip (dismiss + persist) ────────────────────────────────────
-  function dismissPwaTip() {
-    const tip = document.getElementById('pwa-tip');
-    tip.style.opacity = '0';
-    setTimeout(() => tip.remove(), 300);
-    try { localStorage.setItem('pwaTipDismissed', '1'); } catch {}
-  }
-  try {
-    if (localStorage.getItem('pwaTipDismissed')) {
-      document.getElementById('pwa-tip')?.remove();
-    }
-  } catch {}
+  // ── PWA tip ─────────────────────────────────────────────────────────
+  function dismissPwaTip() { const t = $('pwa-tip'); if (!t) return; t.style.opacity = '0'; setTimeout(() => t.remove(), 300); try { localStorage.setItem('pwaTipDismissed', '1'); } catch (_) {} }
+  try { if (localStorage.getItem('pwaTipDismissed')) $('pwa-tip')?.remove(); } catch (_) {}
 
+  // ── Esc closes overlays ─────────────────────────────────────────────
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Escape') return;
+    if (!$('share-overlay').classList.contains('hidden')) closeShare();
+    else if (!$('capture-overlay').classList.contains('hidden')) closeCapture();
+  });
 
   // ── Toast ───────────────────────────────────────────────────────────
   let _toastTimer;
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.style.opacity = '1';
-    t.style.transform = 'translateX(-50%) translateY(0)';
+  function showToast(msg, ic) {
+    const t = $('toast');
+    t.innerHTML = (ic ? icon(ic) : '') + `<span>${msg}</span>`;
+    t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)';
     clearTimeout(_toastTimer);
-    _toastTimer = setTimeout(() => {
-      t.style.opacity = '0';
-      t.style.transform = 'translateX(-50%) translateY(8px)';
-    }, 3200);
+    _toastTimer = setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(8px)'; }, 3200);
+  }
+
+  // ── Service worker (instant repeat loads + offline) ─────────────────
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(() => {}));
   }
   </script>
-
 </body>
 </html>
