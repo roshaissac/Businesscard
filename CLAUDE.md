@@ -33,4 +33,8 @@ in the `:root` CSS custom properties. Assets are generated with `sharp`.
 
 ## Privacy / performance
 - Visitor-facing path must stay zero third-party calls (no CDNs on first paint).
-  Capture Mode (Rosh-only) may lazy-load OCR libs on demand.
+  Capture Mode may lazy-load OCR libs on demand.
+- The Capture FAB (contact capture) is intentionally visible on ALL devices for
+  field reliability — do NOT gate it behind the `rosh` flag (that once made it
+  vanish on Rosh's phone in the field). Only the "Add to Home Screen" PWA tip is
+  Rosh-only (shown when the device is flagged via the private `?cap` link).
