@@ -832,8 +832,8 @@
     </div>
   </div>
 
-  <!-- Capture FAB (Rosh-only — revealed by JS on flagged device) -->
-  <button class="fab" onclick="openCapture()" aria-label="Capture a contact" style="display:none"><svg class="ic"><use href="#i-user-plus"/></svg></button>
+  <!-- Capture FAB (Rosh's contact-capture tool — always available) -->
+  <button class="fab" onclick="openCapture()" aria-label="Capture a contact"><svg class="ic"><use href="#i-user-plus"/></svg></button>
 
   <!-- Sticky brokerage / copyright band (RECA compliance) -->
   <div class="brokerage">
@@ -1161,26 +1161,18 @@
     }
   }
 
-  // ── Rosh-only surfaces (PWA tip + Capture FAB) — hidden from clients ────
-  //    A device is flagged 'rosh' once it opens the card via the private
-  //    ?cap link; clients on the plain shared link never see these.
-  const IS_ROSH = (() => {
+  // ── Capture FAB is always available on every device (field reliability).
+  //    The "Add to Home Screen" tip stays Rosh-only: shown only on a device
+  //    flagged via the private ?cap link; clients never see the tip. ────────
+  function dismissPwaTip() { const t = $('pwa-tip'); if (!t) return; t.style.opacity = '0'; setTimeout(() => t.remove(), 300); try { localStorage.setItem('pwaTipDismissed', '1'); } catch (_) {} }
+  (function () {
+    let isRosh = false;
     try {
       if (new URLSearchParams(location.search).has('cap')) localStorage.setItem('rosh', '1');
-      return localStorage.getItem('rosh') === '1';
-    } catch (_) { return false; }
+      isRosh = localStorage.getItem('rosh') === '1';
+      if (!isRosh || localStorage.getItem('pwaTipDismissed')) $('pwa-tip')?.remove();
+    } catch (_) { $('pwa-tip')?.remove(); }
   })();
-
-  function dismissPwaTip() { const t = $('pwa-tip'); if (!t) return; t.style.opacity = '0'; setTimeout(() => t.remove(), 300); try { localStorage.setItem('pwaTipDismissed', '1'); } catch (_) {} }
-
-  if (IS_ROSH) {
-    document.querySelector('.fab').style.display = 'flex';        // reveal capture FAB
-    let dismissed = false; try { dismissed = localStorage.getItem('pwaTipDismissed') === '1'; } catch (_) {}
-    if (dismissed) $('pwa-tip')?.remove();
-  } else {
-    document.querySelector('.fab')?.remove();                     // clients: no FAB
-    $('pwa-tip')?.remove();                                       // clients: no tip
-  }
 
   // ── Esc closes overlays ─────────────────────────────────────────────
   document.addEventListener('keydown', e => {
