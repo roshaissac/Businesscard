@@ -42,7 +42,6 @@ Open `index.html` and edit the **`ME` object** in the `<script>` (name, phone, e
 | `sw.js` | Service worker (network-first page, cache fallback). Bump `CACHE` to force an update |
 | `icon.svg` | Maskable monogram icon |
 | `dreamhouse-logo.png` | Brokerage bar logo (RECA compliance) |
-| `rental-signin-card.html` + `rental-signin-qr.png` + `og-rental-form.png` | Separate printable rental sign-in sheet |
 
 ## NFC setup
 
