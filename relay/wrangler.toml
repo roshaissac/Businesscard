@@ -1,0 +1,14 @@
+name = "digital-card-relay"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+
+# Service binding to the intake worker — a deployed Worker can't fetch() another
+# of the account's *.workers.dev Workers (CF error 1042), so call it directly.
+[[services]]
+binding = "INTAKE"
+service = "issac-realty-crm-intake"
+
+# Secret (set with `npx wrangler secret put INTAKE_TOKEN`, never in this file):
+#   INTAKE_TOKEN — bearer token for the CRM hub intake worker (= ~/.intake_token).
+#                  When set, card submissions forward to the CRM as the standard
+#                  contract. Unset → relay accepts but no-ops (card UX unaffected).

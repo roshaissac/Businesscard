@@ -877,6 +877,22 @@
   const FORMSPREE = 'https://formspree.io/f/' + ME.formspreeId;
   // ───────────────────────────────────────────────────────────────────
 
+  // ── CRM relay (hub intake) ──────────────────────────────────────────
+  // Best-effort forward to the CRM intake worker, ALONGSIDE Formspree. The
+  // relay Worker holds the intake token; nothing secret lives here. Fires
+  // only on submit (not first paint) and never blocks the UX. text/plain
+  // keeps it a CORS-simple request (no preflight).
+  const CRM_RELAY_URL = 'https://digital-card-relay.rosh-4d0.workers.dev';
+  function forwardToCRM(payload) {
+    try {
+      fetch(CRM_RELAY_URL, {
+        method: 'POST', mode: 'cors', keepalive: true,
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(payload),
+      }).catch(() => {});
+    } catch (_) {}
+  }
+
   const $ = id => document.getElementById(id);
   const icon = id => `<svg class="ic"><use href="#${id}"/></svg>`;
   function haptic(ms = 12) { try { navigator.vibrate && navigator.vibrate(ms); } catch (_) {} }
@@ -970,6 +986,9 @@
     haptic();
     submitBtn.disabled = true;
     submitBtn.innerHTML = `<span class="spin"></span>&nbsp; Sending…`;
+
+    // Mirror to the CRM hub (best-effort, alongside Formspree).
+    forwardToCRM(Object.fromEntries(new FormData(form)));
 
     try {
       const res = await fetch(FORMSPREE, {
@@ -1150,6 +1169,10 @@
     d.append('contact_type', _capTag || 'untagged');
     d.append('industry', $('cap_industry').value || '');
     d.append('contact_source', 'capture_mode');
+
+    // Mirror to the CRM hub (best-effort, alongside Formspree).
+    forwardToCRM(Object.fromEntries(d));
+
     try {
       const res = await fetch(FORMSPREE, { method: 'POST', body: d, headers: { Accept: 'application/json' } });
       if (!res.ok) throw new Error();
