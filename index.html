@@ -32,38 +32,48 @@
   <meta name="apple-mobile-web-app-capable"          content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title"            content="Rosh Issac" />
-  <meta name="theme-color"                           content="#0f0f0f" />
+  <meta name="theme-color"                           content="#09090b" />
   <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
   <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f0f0f'/%3E%3Ctext x='50%25' y='53%25' font-family='Georgia,serif' font-size='30' fill='%23f6f3ee' text-anchor='middle' dominant-baseline='middle'%3ER%3Ctspan fill='%23ee8a4e'%3EI%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316151b'/%3E%3Ctext x='50%25' y='53%25' font-family='Helvetica,Arial,sans-serif' font-weight='700' font-size='30' fill='%23f4eee2' text-anchor='middle' dominant-baseline='middle'%3ER%3Ctspan fill='%23c9a25e'%3EI%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
 
   <style>
-  /* ═══ DESIGN TOKENS — tweak the brand here ═══════════════════════════ */
+  /* ═══ DESIGN TOKENS — DARK / PREMIUM · TRUE GOLD ═════════════════════
+     Semantic palette is inverted for the dark theme: `--ink` is now the
+     warm-WHITE primary text (so `color:var(--ink)` reads light everywhere)
+     and `--paper` is the near-black page. Gold replaces the old orange as
+     the single accent. `--accent-deep` is a LIGHTER gold tuned for AA-legible
+     text/icons on the dark surface. ───────────────────────────────────── */
   :root {
-    --ink:        #0f0f0f;   /* deep black — dominant brand color   */
-    --ink-soft:   #232323;   /* hover / pressed black               */
-    --paper:      #f3efe9;   /* warm ivory page background          */
-    --card:       #ffffff;   /* card surface                        */
-    --field:      #f7f4ef;   /* input fill                          */
-    --line:       #e7e1d6;   /* warm hairline                       */
-    --muted:      #8a8378;   /* warm grey secondary text            */
-    --muted-2:    #aaa193;   /* warm grey tertiary text             */
-    --accent:     #ee8a4e;   /* brand light orange — jewel accent   */
-    --accent-deep:#d96f30;   /* orange for text on light (AA)       */
-    --accent-soft:#fbeee3;   /* orange tint surfaces                */
-    --ok:         #2f7d52;
-    --ok-soft:    #e9f4ee;
-    --err:        #b4452f;
-    --err-soft:   #f8ece8;
+    --ink:        #f4eee2;   /* warm-white — primary text on dark   */
+    --ink-soft:   #d9d3c6;   /* dimmer text / hover                 */
+    --paper:      #09090b;   /* near-black page background          */
+    --card:       #16151b;   /* charcoal-black card surface         */
+    --field:      #201f27;   /* input fill (raised charcoal)        */
+    --line:       rgba(244,238,226,.10);  /* neutral hairline       */
+    --muted:      #a79f91;   /* warm grey secondary text            */
+    --muted-2:    #786f62;   /* warm grey tertiary text             */
+    --accent:     #c9a25e;   /* champagne / true gold — primary accent */
+    --accent-deep:#dcbf86;   /* lighter gold — AA text/icons on dark */
+    --accent-soft:rgba(201,162,94,.13);  /* gold tint surfaces      */
+    --gold-line:  rgba(201,162,94,.34);  /* thin gold hairline      */
+    --orange:     #e08a47;   /* warm brand orange — secondary accent */
+    --orange-text:#ec9d5e;   /* lighter orange — legible on dark     */
+    --warm-line:  rgba(222,148,82,.32);  /* warm orange hairline    */
+    --grad-warm:  linear-gradient(120deg, #d4ab6a 0%, var(--accent) 42%, var(--orange) 100%);
+    --ok:         #6fcf97;
+    --ok-soft:    rgba(111,207,151,.13);
+    --err:        #e57b63;
+    --err-soft:   rgba(229,123,99,.14);
 
-    --radius:     20px;
+    --radius:     22px;
     --radius-md:  14px;
     --radius-sm:  11px;
-    --shadow:     0 1px 2px rgba(28,22,14,.05), 0 10px 34px rgba(28,22,14,.07);
-    --shadow-pop: 0 10px 40px rgba(28,22,14,.18);
+    --shadow:     0 1px 2px rgba(0,0,0,.4), 0 18px 50px rgba(0,0,0,.55);
+    --shadow-pop: 0 14px 46px rgba(0,0,0,.6);
 
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif;
-    --serif: ui-serif, Georgia, "Times New Roman", Cambria, serif;
+    --serif: var(--sans);  /* all-sans — serif retired per restyle */
 
     --safe-t: env(safe-area-inset-top, 0px);
     --safe-b: env(safe-area-inset-bottom, 0px);
@@ -83,7 +93,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: calc(var(--topbar-h, 132px) + 14px) 18px calc(var(--band-h, 60px) + 16px);
+    padding: calc(var(--safe-t) + 16px) 16px calc(var(--band-h, 64px) + 18px);
   }
   img { display: block; max-width: 100%; }
   button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
@@ -102,80 +112,66 @@
     background: var(--card);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
+    border: 1px solid var(--line);
     overflow: hidden;
   }
 
-  /* ═══ FIXED TOP HEADER (floating) ════════════════════════════════════ */
-  .topbar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 55;
-    background: var(--ink);
-    padding: calc(16px + var(--safe-t)) 18px 16px;
-    box-shadow: 0 4px 18px rgba(15,15,15,.18);
+  /* ═══ PHOTO-LED HERO — portrait fades into the black ═════════════════ */
+  .hero { position: relative; }
+  .hero-photo {
+    width: 100%; height: 340px;
+    object-fit: cover; object-position: 50% 22%;
+    background: #1d1c22; display: block;
   }
-  .topbar::after {                 /* thin orange baseline accent */
-    content: "";
-    position: absolute; left: 0; right: 0; bottom: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), transparent 70%);
+  /* gradient mask — no hard border; the photo dissolves into the card */
+  .hero::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 72%;
+    background: linear-gradient(to bottom,
+      rgba(22,21,27,0) 0%, rgba(22,21,27,.35) 38%,
+      rgba(22,21,27,.82) 72%, var(--card) 100%);
+    pointer-events: none;
   }
-  .topbar-inner {
-    width: 100%; max-width: 384px; margin: 0 auto;
-    display: flex; align-items: center; gap: 18px;
-    color: var(--paper);
+  .hero-fade {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 1;
+    text-align: center; padding: 0 20px 18px;
   }
-  .avatar-ring {
-    flex: none;
-    padding: 2.5px;
-    border-radius: 50%;
-    background: linear-gradient(140deg, var(--accent), #b8541f);
+  .hero-name {
+    font-family: var(--sans);
+    font-size: 33px; font-weight: 600; line-height: 1.05; letter-spacing: .005em;
+    color: var(--ink);
+    text-shadow: 0 2px 18px rgba(0,0,0,.55);
   }
-  .avatar {
-    width: 72px; height: 72px;
-    border-radius: 50%;
-    object-fit: cover;
-    background: #2a2a2a;
-    display: block;
+  .hero-role {
+    margin-top: 7px; font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .26em; text-indent: .26em;
+    color: var(--orange-text);
   }
-  .header-id { min-width: 0; }
-  .header-id .name-h {
-    font-family: var(--serif);
-    font-size: 26px; font-weight: 700; line-height: 1.05; letter-spacing: .01em;
-    color: var(--accent);
-  }
-  .header-id .role-h {
-    margin-top: 5px;
-    font-size: 12px; letter-spacing: .02em;
-    color: #cfc7b9; font-weight: 600;
-  }
-  .header-id .contact-h {
-    margin-top: 9px; display: flex; flex-direction: column; align-items: flex-start; gap: 5px;
-    font-size: 11.5px;
-  }
-  .header-id .contact-h a { display: inline-flex; align-items: center; gap: 6px; transition: opacity .15s ease; }
-  .header-id .contact-h a:active { opacity: .7; }
-  .header-id .contact-h .ic { font-size: 11px; }
-  .header-id #link-phone { color: var(--accent); font-weight: 700; }
-  .header-id #link-phone .ic { color: var(--accent); }
-  .header-id #link-email { color: #cfc7b9; font-weight: 400; }
-  .header-id #link-email .ic { color: #cfc7b9; }
 
-  /* Identity block */
-  .body { padding: 24px 26px 28px; }
+  /* ═══ IDENTITY (team + brokerage) ════════════════════════════════════ */
+  .body { padding: 18px 24px 26px; }
   .identity { text-align: center; }
   .identity .team {
-    font-family: var(--serif);
-    font-size: 20px; font-weight: 600; letter-spacing: .01em;
-    line-height: 1.15; color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px; font-weight: 700; line-height: 1.3; letter-spacing: .01em;
+    color: var(--ink);
   }
   .identity .affiliation {
-    margin-top: 5px; font-size: 12px; color: var(--muted); letter-spacing: .02em;
+    margin-top: 5px; font-size: 11.5px; color: var(--muted); letter-spacing: .02em;
   }
-  .identity .city {
-    margin-top: 9px;
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 12px; color: var(--muted);
+
+  /* ═══ CONTACT ROWS — centered, gold line icons ══════════════════════ */
+  .contact-rows {
+    display: flex; flex-direction: column; align-items: center; gap: 11px;
+    margin-top: 18px;
   }
-  .identity .city .ic { color: var(--accent); font-size: 12px; }
+  .crow {
+    display: inline-flex; align-items: center; gap: 9px;
+    font-size: 13px; color: var(--ink-soft); transition: opacity .15s ease;
+  }
+  .crow:active { opacity: .65; }
+  .crow .ic { color: var(--accent); font-size: 14px; }
+  .crow#link-phone { color: var(--accent-deep); font-weight: 700; letter-spacing: .01em; font-size: 14px; }
+  .crow#card-city { color: var(--muted); }
 
   /* ═══ BUTTONS ═════════════════════════════════════════════════════════ */
   .btn {
@@ -188,16 +184,22 @@
   }
   .btn:active { transform: scale(.978); }
   .btn .ic { font-size: 16px; }
+  .actions .btn { white-space: nowrap; padding-left: 12px; padding-right: 12px; gap: 7px; }
 
-  .btn-primary { background: var(--ink); color: var(--paper); }
-  .btn-primary:hover { background: var(--ink-soft); }
-  .btn-primary:disabled { opacity: .6; pointer-events: none; }
-
-  .btn-outline {
-    background: transparent; color: var(--ink);
-    border: 1.5px solid var(--ink);
+  /* Primary = warm gold→orange gradient (Save Contact, Send, Save to CRM) */
+  .btn-primary {
+    background: var(--grad-warm); color: #1a1408; font-weight: 700;
+    box-shadow: 0 6px 18px rgba(214,138,69,.26);
   }
-  .btn-outline:hover { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: linear-gradient(120deg, #ddb578 0%, #d2a866 42%, #e8965a 100%); }
+  .btn-primary:disabled { opacity: .55; pointer-events: none; }
+
+  /* Outline = gold hairline (Exchange details) */
+  .btn-outline {
+    background: transparent; color: var(--accent-deep);
+    border: 1.5px solid var(--accent);
+  }
+  .btn-outline:hover { background: var(--accent); color: #1a1408; }
 
   .btn-ghost {
     background: var(--field); color: var(--ink);
@@ -207,40 +209,44 @@
 
   .btn-icon {
     width: 52px; flex: none; padding: 15px 0;
-    background: transparent; color: var(--ink);
-    border: 1.5px solid var(--ink);
+    background: transparent; color: var(--accent-deep);
+    border: 1.5px solid var(--accent);
     border-radius: var(--radius-md);
   }
-  .btn-icon:hover { background: var(--ink); color: var(--paper); }
+  .btn-icon:hover { background: var(--accent); color: #1a1408; }
 
-  .actions { display: flex; gap: 10px; margin-bottom: 22px; }
+  .actions { display: flex; gap: 10px; margin: 20px 0 22px; }
   .actions .btn { flex: 1; }
 
-  /* ═══ SOCIAL ROW — brand colors ═══════════════════════════════════════ */
+  /* ═══ SOCIAL ROW — circular gold-outline icons ════════════════════════ */
   .social {
-    display: flex; align-items: flex-start; justify-content: center; gap: 26px;
+    display: flex; align-items: flex-start; justify-content: center; gap: 30px;
     margin-bottom: 26px;
   }
-  .social a { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .social a, .social button { display: flex; flex-direction: column; align-items: center; gap: 8px; background: none; }
   .social .dot {
     width: 54px; height: 54px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    color: #fff; font-size: 23px;
-    box-shadow: 0 6px 16px rgba(28,22,14,.12);
-    transition: transform .18s ease, box-shadow .18s ease;
+    color: var(--accent-deep); font-size: 22px;
+    background: transparent; border: 1.5px solid var(--gold-line);
+    transition: transform .18s ease, border-color .18s ease, background .18s ease, color .18s ease;
   }
-  .social a:hover .dot, .social a:active .dot { transform: translateY(-3px); box-shadow: 0 10px 22px rgba(28,22,14,.18); }
+  .social a:hover .dot, .social a:active .dot,
+  .social button:hover .dot, .social button:active .dot {
+    transform: translateY(-3px); border-color: var(--accent);
+    background: var(--accent-soft); color: var(--accent);
+  }
   .social .lbl { font-size: 11px; color: var(--muted); font-weight: 500; }
-  .dot-wa  { background: #25D366; }
-  .dot-li  { background: #0A66C2; }
-  .dot-web { background: var(--accent); }
 
   /* ═══ DIVIDER WITH LABEL ══════════════════════════════════════════════ */
   .divider { display: flex; align-items: center; gap: 14px; margin: 4px 0 18px; }
-  .divider .ln { flex: 1; height: 1px; background: var(--line); }
+  .divider .ln { flex: 1; height: 1px; background: var(--gold-line); }
+  /* warm fade toward the label — gold edge, orange near the title */
+  .divider .ln:first-child { background: linear-gradient(90deg, var(--gold-line), var(--warm-line)); }
+  .divider .ln:last-child  { background: linear-gradient(90deg, var(--warm-line), var(--gold-line)); }
   .divider .tx {
-    font-size: 10px; letter-spacing: .2em; text-transform: uppercase;
-    color: var(--muted-2); font-weight: 700; white-space: nowrap;
+    font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--orange-text); font-weight: 700; white-space: nowrap;
     transition: color .25s ease;
   }
 
@@ -258,8 +264,8 @@
   }
   .segment button .ic { font-size: 13px; }
   .segment button.active {
-    background: var(--ink); color: var(--paper);
-    box-shadow: 0 2px 8px rgba(28,22,14,.18);
+    background: var(--accent); color: #1a1408;
+    box-shadow: 0 2px 10px rgba(201,162,94,.28);
   }
 
   /* ═══ FORM FIELDS ═════════════════════════════════════════════════════ */
@@ -286,7 +292,7 @@
   .textarea { padding-left: 14px; resize: none; min-height: 78px; }
   .input::placeholder, .textarea::placeholder { color: var(--muted-2); }
   .input:focus, .select:focus, .textarea:focus {
-    outline: none; background: #fff;
+    outline: none; background: #26242e;
     border-color: var(--accent);
     box-shadow: 0 0 0 3px var(--accent-soft);
   }
@@ -350,31 +356,34 @@
   /* ═══ STICKY BROKERAGE / COPYRIGHT BAND (RECA compliance) ═════════════ */
   .brokerage {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
-    background: rgba(255,255,255,.95);
-    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-    border-top: 1px solid var(--line);
+    background: rgba(9,9,11,.9);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    border-top: 1px solid var(--gold-line);
     padding: 9px 18px calc(9px + var(--safe-b));
-    box-shadow: 0 -2px 14px rgba(28,22,14,.05);
+    box-shadow: 0 -4px 18px rgba(0,0,0,.4);
   }
   .brokerage .bar-inner {
     width: 100%; max-width: 384px; margin: 0 auto;
-    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 14px;
   }
   .brokerage .copy { flex: 1; min-width: 0; font-size: 9.5px; line-height: 1.5; color: var(--muted); text-align: left; }
   .brokerage .copy b { color: var(--ink); font-weight: 600; }
   .brokerage .copy .a { color: var(--accent-deep); font-weight: 600; }
-  .brokerage picture { flex: none; }
-  .brokerage img { height: 34px; width: auto; object-fit: contain; display: block; }
+  .brokerage picture {
+    flex: none; background: #fff; padding: 4px 7px; border-radius: 7px;
+    line-height: 0; box-shadow: 0 1px 4px rgba(0,0,0,.45);
+  }
+  .brokerage img { height: 30px; width: auto; object-fit: contain; display: block; }
   .brokerage .txt { flex: none; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
 
   /* ═══ CAPTURE FAB (Rosh only) ═════════════════════════════════════════ */
   .fab {
     position: fixed; right: 16px; z-index: 60;
-    bottom: calc(var(--band-h, 60px) + 14px);
+    bottom: calc(var(--band-h, 64px) + 14px);
     width: 50px; height: 50px; border-radius: 50%;
-    background: var(--ink); color: var(--paper);
+    background: var(--grad-warm); color: #1a1408;
     display: flex; align-items: center; justify-content: center; font-size: 19px;
-    box-shadow: var(--shadow-pop);
+    box-shadow: var(--shadow-pop), 0 6px 18px rgba(214,138,69,.34);
     transition: transform .15s ease;
   }
   .fab:active { transform: scale(.92); }
@@ -444,9 +453,10 @@
   .sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
   .sheet-head h2 { font-family: var(--serif); font-size: 19px; font-weight: 600; }
   .qrbox {
-    width: 176px; height: 176px; margin: 0 auto 8px;
+    width: 184px; height: 184px; margin: 0 auto 8px;
     display: flex; align-items: center; justify-content: center;
-    background: var(--field); border: 1px solid var(--line); border-radius: var(--radius-md);
+    background: #ffffff; border: 1px solid var(--gold-line); border-radius: var(--radius-md);
+    box-shadow: 0 0 0 4px rgba(201,162,94,.1);
     overflow: hidden;
   }
   .qrbox img, .qrbox canvas { width: 156px; height: 156px; }
@@ -467,9 +477,9 @@
 
   /* ═══ TOAST ═══════════════════════════════════════════════════════════ */
   #toast {
-    position: fixed; left: 50%; bottom: calc(var(--band-h, 60px) + 18px);
+    position: fixed; left: 50%; bottom: calc(var(--band-h, 64px) + 18px);
     transform: translateX(-50%) translateY(8px);
-    background: var(--ink); color: var(--paper);
+    background: #2a2832; color: var(--ink); border: 1px solid var(--gold-line);
     font-size: 13px; font-weight: 500;
     padding: 12px 20px; border-radius: 999px;
     box-shadow: var(--shadow-pop);
@@ -500,12 +510,12 @@
 
   /* ═══ SMALL SCREENS (iPhone SE ≈ 375px) ═══════════════════════════════ */
   @media (max-width: 360px) {
-    .body { padding: 20px 20px 24px; }
-    .header-id .name-h { font-size: 23px; }
-    .header-id .contact-h { font-size: 10.5px; }
-    .identity .team { font-size: 18px; }
-    .social { gap: 20px; }
-    .social .dot { width: 50px; height: 50px; font-size: 21px; }
+    .body { padding: 16px 20px 24px; }
+    .hero-photo { height: 300px; }
+    .hero-name { font-size: 29px; }
+    .identity .team { font-size: 15px; }
+    .social { gap: 24px; }
+    .social .dot { width: 50px; height: 50px; font-size: 20px; }
   }
   </style>
 </head>
@@ -547,68 +557,67 @@
     </defs>
   </svg>
 
-  <!-- ═══ FIXED TOP HEADER (floating) ═══════════════════════════════════ -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <span class="avatar-ring">
-        <picture>
-          <source srcset="./portrait.webp" type="image/webp" />
-          <img id="avatar" class="avatar" alt="Rosh Issac" src="./portrait.jpg" width="72" height="72" />
-        </picture>
-      </span>
-      <div class="header-id">
-        <h1 class="name-h" id="card-name"></h1>
-        <p class="role-h">Realtor&reg;</p>
-        <p class="contact-h">
-          <a id="link-phone" href="#"><svg class="ic"><use href="#i-phone"/></svg><span id="label-phone"></span></a>
-          <a id="link-email" href="#"><svg class="ic"><use href="#i-mail"/></svg><span id="label-email"></span></a>
-        </p>
-      </div>
-    </div>
-  </header>
-
   <div class="shell">
 
     <!-- ═══ MAIN CARD ═════════════════════════════════════════════════ -->
     <div class="card reveal">
 
+      <!-- Photo-led hero — portrait fades into the black, name in the fade -->
+      <div class="hero">
+        <picture>
+          <source srcset="./portrait.webp" type="image/webp" />
+          <img id="avatar" class="hero-photo" alt="Rosh Issac" src="./portrait.jpg" />
+        </picture>
+        <div class="hero-fade">
+          <h1 class="hero-name" id="card-name"></h1>
+          <p class="hero-role">Realtor&reg;</p>
+        </div>
+      </div>
+
       <div class="body">
 
-        <!-- Affiliation -->
+        <!-- Affiliation (RECA: team always shown with brokerage) -->
         <div class="identity">
           <p class="team">Issac Realty Team</p>
           <p class="affiliation" id="card-brokerage"></p>
-          <p class="city" id="card-city"></p>
+        </div>
+
+        <!-- Contact rows — centered, gold line icons -->
+        <div class="contact-rows">
+          <a class="crow" id="link-phone" href="#"><svg class="ic"><use href="#i-phone"/></svg><span id="label-phone"></span></a>
+          <a class="crow" id="link-email" href="#"><svg class="ic"><use href="#i-mail"/></svg><span id="label-email"></span></a>
+          <a class="crow" id="link-web" href="#" target="_blank" rel="noopener noreferrer"><svg class="ic"><use href="#i-globe"/></svg><span>issacrealty.com</span></a>
+          <p class="crow" id="card-city"></p>
         </div>
 
         <!-- Primary actions -->
-        <div class="actions" style="margin-top:22px">
+        <div class="actions">
           <button class="btn btn-primary" onclick="downloadVCF()" aria-label="Save contact">
             <svg class="ic"><use href="#i-card"/></svg> Save Contact
           </button>
-          <button class="btn btn-icon" onclick="openShare()" aria-label="Share card">
-            <svg class="ic"><use href="#i-share"/></svg>
+          <button class="btn btn-outline" onclick="document.getElementById('exchange').scrollIntoView({behavior:'smooth',block:'start'})" aria-label="Exchange details">
+            <svg class="ic"><use href="#i-send"/></svg> Exchange
           </button>
         </div>
 
-        <!-- Social -->
+        <!-- Social — circular gold-outline icons -->
         <div class="social">
           <a id="link-wa" href="#" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-            <span class="dot dot-wa"><svg class="ic"><use href="#i-whatsapp"/></svg></span>
+            <span class="dot"><svg class="ic"><use href="#i-whatsapp"/></svg></span>
             <span class="lbl">WhatsApp</span>
           </a>
           <a id="link-li" href="#" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-            <span class="dot dot-li"><svg class="ic"><use href="#i-linkedin"/></svg></span>
+            <span class="dot"><svg class="ic"><use href="#i-linkedin"/></svg></span>
             <span class="lbl">LinkedIn</span>
           </a>
-          <a id="link-web" href="#" target="_blank" rel="noopener noreferrer" aria-label="Website">
-            <span class="dot dot-web"><svg class="ic"><use href="#i-globe"/></svg></span>
-            <span class="lbl">Website</span>
-          </a>
+          <button type="button" onclick="openShare()" aria-label="Share card">
+            <span class="dot"><svg class="ic"><use href="#i-share"/></svg></span>
+            <span class="lbl">Share</span>
+          </button>
         </div>
 
         <!-- Exchange -->
-        <div class="divider">
+        <div class="divider" id="exchange">
           <span class="ln"></span>
           <span class="tx" id="exchange-title">Exchange Details</span>
           <span class="ln"></span>
@@ -839,8 +848,9 @@
   <div class="brokerage">
     <div class="bar-inner">
       <p class="copy">
-        &copy; <span id="yr"></span> <b>Issac Realty Inc.</b> · <span class="a">Rosh Issac</span>, Realtor®<br>
-<b>Issac Realty Team</b>, Associates of <b>Dreamhouse Realty Ltd.</b>, Calgary AB
+        <span class="a">Rosh Issac</span> · Realtor®<br>
+        <b>Issac Realty Team</b> — Associates of <b>Dreamhouse Realty Ltd.</b>, Calgary AB<br>
+        &copy; <span id="yr"></span> · <b>Issac Realty Inc.</b>
       </p>
       <picture>
         <source srcset="./dreamhouse-logo.webp" type="image/webp" />
@@ -928,7 +938,7 @@
   // ── vCard ───────────────────────────────────────────────────────────
   // Photo is embedded (base64) so the saved contact shows the face reliably,
   // offline, with no network call. Generated from the self-hosted portrait.
-  const PHOTO_B64 = '/9j/2wBDAAkJCQkKCQoLCwoODw0PDhUTERETFR8WGBYYFh8wHiMeHiMeMCozKScpMypMOzU1O0xXSUVJV2pfX2qFf4Wurur/2wBDAQkJCQkKCQoLCwoODw0PDhUTERETFR8WGBYYFh8wHiMeHiMeMCozKScpMypMOzU1O0xXSUVJV2pfX2qFf4Wurur/wgARCADIAMgDASIAAhEBAxEB/8QAHAAAAQUBAQEAAAAAAAAAAAAAAAIDBAUGAQcI/8QAGQEAAwEBAQAAAAAAAAAAAAAAAAIDAQQF/9oADAMBAAIQAxAAAAD3A4S3pw07m2shPodgnIdiBRji+8Dshju5rtb5XpLcmyT3lORKeoDieI06lLeiyOblwNdRnKaxwC1jQ1s83dzqVj9FhqRQalQoHJTUh11N5hNbbgktparzLS2jccaSgOjIF53nVbOZawrObvaaeZndCuOYyhRu9Q62HB13Tsth91lWlfKpG8bWm/mI4oBtDydIw+BaxJlRN8ew+1zekyzGoNXSJxTNE3z2MtErpGo0Ia6MbR25/UnfNbbU9QnYnba89XetxN8d4K0OANDgFjndJmEes8v3mIy9NGuoVEqGkynSQ25YpSSjXsR6slU6Wm6OWRoKDZ4z2V0trjeiIrrI5k8eBGR4BkdAlUUjziXRZUF/Uw7cpJXJvLPxbo1YUi6cV7R5M+PXnc9tIt+Wl0MKxxm3ajXBeQLavfNKOj+a0OANjgZG8V9180j6DkCQmNq+n0LY+ZbuKN1sdJWQs29s8vd49rgtIWnn7KDpk3t4xZUWeqJeU5OgbygAAAGb0gtPLlx5XL6EZhUIesrneuk+kto1IxLyledNRNqJi0qbOnnTrsbrO3FV0b3O088AxQAAAAiS8PNGtbXQ7chGksJWgZsMraWjjov9etlSZWWaZv5Wp5pf2Fcs97NYsa5ogN4QAAAAAM3NekwZhxbznlNdsMTLsYobKE2abjbC2r1sqrG+1OUtloiqtLNpyJMHE2n6Js/jy53k+qzzX0hWUHMOgBGdUxLZFb5D5FVfWjxbVlNkMOx6ZrsPhsxER7GsJtJNdLKyol0S88523jLLEZkxr8U9yrczZVln0B6weWi76fh4tauphqbYXYQLDcs9J55dSvqRMeVpXIvNyzOtm2drAsIdVZ5lq8l2ee6w63fmSrnA4xKiAoSA02E3AMHpINkZIBrLoOXvWgJ2myQVpj4K3k0YPS8ZwB1SAA2AMAB//8QAORAAAgIBAgMECAQEBwEAAAAAAQIAAxEEEiExUQUQE0EgIjJSYXGBkSMwQmIGFLHRM0NTcoKhwZL/2gAIAQEAAT8B9HUa3HCv7x7STCfSViJptXtwrcV/pAQRkcvyMzPo6vVfoXl5x2z+Ss0up2HDeyfzdZfsXYOZjHMMz6YgizSXf5Z+ndmZmZmZmZnvdwiFj5Sxy7FjzMP5Igi85nDcJXZvQNMzP5Gvs9lB8zDD3j0cQc4IsxNO2Dt6+liY77332M0PoDuHcIBMQQQTkQZz/IvbZS5+HoGEzcJuEDDu3Yi2L1hurHnBenCLbWTziDMUcYvL8jXHFQHVoe67U1VHbuy3ujiZZrn8kx8z/aNrLOi/cwauz3R94mrU8OR6GLdEYkQky+7bwHPpC90R78czj5CL43+p91/tKNbZSv4te9BzZOY+hmm1On1C5ptVvlOIYj6+lju1x4oPgYmmZ24nAna2ovr1T0o5VPhz4wAIuxf+R6mN0mxvdMG4HiJwI5cIqXG0VrYQpGc/CLo68+vbcf8AliazRvpq/Epvs+RM8MVLhjlzzMcoDxyZTZVjLUHbnGR15w1lahfUd9WcHqJptrYOec1WmNHada059fayhfjOY58RMd+PQ1zpU4ssHAJwHU5l1upuHteGvurNfplFW/zQg5lyhOXOFPDwPaub/qWNYGIZjkStS6sdx4Y5xImBenyaIikcprRt07A/pwR8szUV+s3PnLqi20r0xNHS1diuy5xKktDvYgWtGADV8w0pHhN0zNPtftRn5lNMB/8ARlty6fNmwsWAX7RTuUNjGe7Ho9oIrV1HzDxpqFDq6nkQRKs2KjH2gMfUcItIRvEDNullCM5YqSTNoHqiU0ZPKNXnUYH6VA+rcYgmqoS8BXPqkbT9Yamt06WfqxtcfuXgYaWzzlasP0ytvhDxM7M9Zr7v9R8L/tThNUVWg2MM7eOOs7Hd7KLS5yd+fv6WuuNGlssHlKL/ABXDbic9Y0dY34Dl/wDLb2v2nrGU9Y1WfMxKhC6UJnGWPsr1M09BVdz+2xyfmYIq7ucYtprHZuNT+38P3f3llan1lwQeWInAzMuLWOaKj659s+4v9+k09YQIqjAAwBNQhfSuv7Z2GPwbv9w78d+q03j6W6v3l4TRjY1mRxBEaMJt+EOnev8AwXG33G5fQ+UJvHPTfZxC+o9xE+JO7+k01QYluLNyLn/zpCOEErU44S2ouBgkMORj5qscKTU2eIHFD9IjatuXg/ZhBRqX/wATU7R0qXb/ANmU0V1LtrXAlI4iXvsrU/vUfedmU+Fp/mx9PtCn+X1d7KODqGlOTTUfhGmIRHlhycSl1SkdYe0KlbabBmfzEXVV0U77HwJp+1q7nwu76ia1EusLqPISqzjiVtmIIgmqUvQoH+osQbVA9PtmrdSr9OH3mnOawOgEbn3OeEsMqG5iYVBGI9FQz6uT1iPsAzylWo3nkMQVV7t4SBhLa9tmRKWlRnKKu5R+Rqqjbp7EHPHCV4VyOv8AWWQmWHhLZUeHCFozg5li5QDbNOGHErEboZw25M1DYwRNO2ZVlYh3NE5fk6nHj2tjGGMY76ww6QmNLecVtuYbUniHyUcYL28wIth6gRd23I4/SWX2j1VpJMvtsBxZWVwc4mjO4iEZAmnHrQcvTXUCCwGanszx7CyXbQ3tcJqdEmlSta87cefWPw7rxjiJZuLYEo7PwQxsY/Wfy1HuzwqF5V5i4HJVEA38MieAqjI5zU071M0q7TF4oJpx+QKjFVhA5EtUXUsuOPMSzznKWecRAbfrE4CNZGbcT6xgyvHMoc5+MD8Octz5RVIYcOf0iNy+U1Grr0Wma9uPQdTNP/EuhtXLhq+vnKdRReu6q1XHwPprGTMVcTtPT+HZvHstGJjkxQd8Q+UIzGrs8liVW+eJUmOcXOJwbm0WoFMH+sQetO39xsRM+wgbHziuUOQZTe6uHpfwn+HAGdmfxCT+FrPa9+V6zS2+xeh+syOveFmO7Ua/SaQZutA+HnNf/FHjMESkeDu8/aM3o6B0OVPIwjM2DmIMcJ5mZmTEcTJI4RRnaZv2rzlTesDO1rg/aF37VVf+o449y2nr8obmz8Z47+8Zp+0NTQQUtYfWVfxJrE54but1On06F7rAonaX8RWvlNN6i9f1S253JLMSevdotT4KhX9gn7Qv9or585u6wPt6mbsYJ8+M3RW45HGVtluXlxHWeIBjiDw8puzFfYpc8lGTGtNtj2Hm7FvvG7+Y7wZqe3tXdwU+Gv7Zdez82JjsTDBP0iaXV7Pw7D6vkekIm48Mw2DHQ/Cb9x/b5TcRkcOHxiWhMk4PEfXEfV7zhRw/9lWecWdqWbNC494hYsPeIw72OIzwknuEMaaTUkfhueHlOcKzZNnHnDWmJsHkJWMQTtq3JoqHlljB6PMQ9xJ9BeYjMJzmJpb9w2nnOcxNrdIA232YgYjlFEewIpYzV2Gy8sfSBjjz7v/EACgQAQACAgEEAQQDAQEBAAAAAAEAESExQRBRYXGhIIGRwTCx0fDh8f/aAAgBAQABPxD6FAtlVb2/1Hzat7YrlZiVcDUJVMVj2L8kAkFFidGMYsWXGH6d1r5O8VRzKldAnMVILFThjk1/F5giCNjFixYsWLFiy5cuDc4s+COoy+gtlQ9RJoubgZhMEmlf+8RYwwwwywxcua9hH9yR5jCDCEzBjURdTSC4ESqSkYBW3fuMMLFixYvVSIWOheonPR6L4VLVNyGfuXa1/Yj1qJGHoJm7C49HQkZU7um2okEywPBBTGTNgPIXZBAJzH6EidHD3ge3EYkSCCbYd6HejIIlxFG4FyI4YxJlKkZSsRF32INezUZUqVKlQJ3GD46NoR6h2X8oaiDGPGfFo/8ARDYUPH+5WJX8F+oFbmJixyjZMFs9DK+iXlce234lRhXb9zLkxfA/sS7cwNh3c0D8hRZPY5gIDYCVKlSpXQEO/wAJCT/dsPcgowXkyg3N8nMsNAneg3Fi/wAjNQwKaFbIu+A2QSsPPEiFfzfw9mK6D521f8IEzexEnA97kQyXCNxpmOxgxJe2HIJjJZ6TteYxUroqV0Xomq2tAIQFseT7sFFVgstXmCKFTg7rERmxWyLIspBgSWvdtdywglLxLr/3iHrglJvu4KkfIZJiYArEtQCAzAbuHT4C0OW9LBpQCsDQ/qFfQT4XiVsVTWzVzPygadkroqVKhHprspn1GyLb9yUsu18ZjFYzEXDdxx0Wt1bHAaOwrEOFv8O+y3wSqgjWBdHaHAY+CjageklYPZqIFFY7Ci2Lso+hrKDHH3DRFEWfumpUqVKlg1gCvMAEGwrRhywstZitilL/AGT1eYj27ZjbpBOoDekDfaP2y6VofvB04gFNUg4NRqWoKCfE1DhWlYjyJCpm8wwwRQtWHTbXz0JR3btAILi1XwLMM6ZVK6KlRkNrTzsj2QtD8jAKPcmxiWxCJkckfxPLT6sxhrnzz5qJKD+W/EJVd3GuwMCYGIIkoUJbotlwzj27je9+/cihd3y/EFmFJd3D+Zhs29NqvKuVi2MsPSz1hB87H7NH14gDHtYljbS2fswVyoiKZUCY0wiU22lmSN4jAl/P6CIC96pUaQvaQyzEKhAZUjUHDLEx+D66zMpfqD4GhD0U4TfGViGyLAtmuUoFAeJi1cEHtMWBp1iUU+xO0S2kfEF1UKpzgmc9xf4CEzv7mSVYUEajBuWJUVoMvCAd9SrQjKheXVbjkUfEtaDcAKRzlYYcN1viPcXxUugOz5mBbzqP6IKP8KowFh6hphGxGv7wrcOhztgHywLzKBdKujmVJn8mY5XTZMnGTtcYAH3IKJuEEP7glkAem/UtjjLLhrWYm8FA/hHU1OsN09S0pjtWyGEUio7mY7XStLPQvQa0HdRWFagHfBLf4xIrKAcbi0NwDkpqIREUd1cPD2/gDz0BLMAv7QgrTlGLapREywcEJi4vJ7nxAlhLaCJtk7oaRpG7uUfeLjTaoWheSkE+xjXfohFd4VJ50pd9Q+IhgZEAR6WrU98kMscMMU75jZUzpcU86mj80YDF9S82MBER3xWpUC9Nlt6SEUDJ95dePtsjUDFQj3KP1MC0NAgQ3fjMV0qCOnqhOj1nxupVsAXaCFAbCCtypwFRYMjZnsQcHbzLOvmJPa2IC6uLHY7ePLEtODKBaTPDDUuZy3Bfj8DFCgoyoCituSXGYf8A12eMpWggP2QKhZ5wuX0Tw++aj9k2ptZast8qnveUl8tJBDQuD0rc5eYIRuaUCKSQpSZrz4iYMVo1QI9nl0sMXqil17WL2+0FvTE8GZtnB91zNYy6js5Ol1B7wtL2NosrndbiWIO7Dmf1y6f3P/yANk0rXf5lKGGm7IpbbE8iLtzirXxHc9uYCthSbLLVuFZywtPdu42C2w0kp9T73bbFROPV1KHwxgynlqHwXNo9WgdglJSXOV48RaPqJMtwqeEoWhohuolAIVfHLDVf/AJiEWyNdGVcdBFXb1ILLzDMU1yyw2bIu9GyAZE0ofzLO71HPJfOIIsEE23EY0RPrWDiD1ZQzJ2PT//EACYRAAICAAYCAQUBAAAAAAAAAAABAhEDEBIgIUExURMEImFxgWL/2gAIAQIBAT8AynOuENt52Qn0983SG9qRB3wUUUUUTdt7UnlDze1+GMjhSZ8DHBroUSOG2hwXbIw2tWiGhSSqxOzmhukyGJJyS/IiWkg6tDfOyUq4LpmvtGv2yU3TZB0zU/4xzE3/AFk7+WHqnsxY+JDFaE/8oaciMXY+E6Yn+ERXNsauf6WySuLWcURVHA0SjRDwPZaHB8vKHKOPZ9o2l0OVoira22K2NU6Io8MTVDbIxtGGuRw9DVZpWRgyeHatCTHEoirLUUYL1N5UaV6NCFFLJE4doUl2XE1+iUm2fTqoft7XsxElLKzsgqitv//EACkRAAICAQMEAQMFAQAAAAAAAAECABEDEiAhBBAxQWETQnEUMlFSgZH/2gAIAQMBAT8A7YsN8mKoEqVCLmbB7XdcxJqNnwIBK2GdQmk6h4Pe5fbEtIBBsJ7ZAGUrtUWwEEbKi+TP1K3Fyg+4WqPmowZWPgGHIDH/AHHYhprjfVK3dfE0waSaECgkfmPhQYyao1GuuBE11yKmTHdRkZRdcbMWJmBf0DALECeQRyIcfPAi4gSB82Y6BlozQPFciBJQJ+BKU9DnPsOuzo3FZMR9ixF4NQgNCtfcYCqCFxXE4NWIUHz/ANjGhQjNp6fSDyz8/wCbMT6Mit8z7j2ZxHa5bXUGQgRMt8RzGNk7RlQhADzAZkPMRWPNATSfbCFV/tAhV45pTuuI1gGMbInkCoQbgAAjNzcyvSGBtpMxZNJo+DCRA1TVHfjzFtjOpGlVHs9rlmXCexmLJ9rQqfU0tPon2YihROqa8tfwNo7+JhJKC5UAnhTMpJc/nb//2Q==';
+  const PHOTO_B64 = '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';
 
   function buildVCF() {
     return [
