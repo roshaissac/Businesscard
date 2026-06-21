@@ -38,12 +38,12 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2316151b'/%3E%3Ctext x='50%25' y='53%25' font-family='Helvetica,Arial,sans-serif' font-weight='700' font-size='30' fill='%23f4eee2' text-anchor='middle' dominant-baseline='middle'%3ER%3Ctspan fill='%23c9a25e'%3EI%3C/tspan%3E%3C/text%3E%3C/svg%3E" />
 
   <style>
-  /* ═══ DESIGN TOKENS — DARK / PREMIUM · TRUE GOLD ═════════════════════
+  /* ═══ DESIGN TOKENS — DARK / PREMIUM · BRAND ORANGE ══════════════════
      Semantic palette is inverted for the dark theme: `--ink` is now the
      warm-WHITE primary text (so `color:var(--ink)` reads light everywhere)
-     and `--paper` is the near-black page. Gold replaces the old orange as
-     the single accent. `--accent-deep` is a LIGHTER gold tuned for AA-legible
-     text/icons on the dark surface. ───────────────────────────────────── */
+     and `--paper` is the near-black page. Brand light orange (#ee8a4e) is
+     the single accent; `--accent-deep` is a LIGHTER orange tuned for
+     AA-legible text/icons on the dark surface. ─────────────────────────── */
   :root {
     --ink:        #f4eee2;   /* warm-white — primary text on dark   */
     --ink-soft:   #d9d3c6;   /* dimmer text / hover                 */
@@ -53,14 +53,14 @@
     --line:       rgba(244,238,226,.10);  /* neutral hairline       */
     --muted:      #a79f91;   /* warm grey secondary text            */
     --muted-2:    #786f62;   /* warm grey tertiary text             */
-    --accent:     #c9a25e;   /* champagne / true gold — primary accent */
-    --accent-deep:#dcbf86;   /* lighter gold — AA text/icons on dark */
-    --accent-soft:rgba(201,162,94,.13);  /* gold tint surfaces      */
-    --gold-line:  rgba(201,162,94,.34);  /* thin gold hairline      */
-    --orange:     #e08a47;   /* warm brand orange — secondary accent */
-    --orange-text:#ec9d5e;   /* lighter orange — legible on dark     */
-    --warm-line:  rgba(222,148,82,.32);  /* warm orange hairline    */
-    --grad-warm:  linear-gradient(120deg, #d4ab6a 0%, var(--accent) 42%, var(--orange) 100%);
+    --accent:     #ee8a4e;   /* brand light orange — primary accent */
+    --accent-deep:#f3a463;   /* lighter orange — AA text/icons on dark */
+    --accent-soft:rgba(238,138,78,.14);  /* orange tint surfaces    */
+    --gold-line:  rgba(238,138,78,.34);  /* thin orange hairline     */
+    --orange:     #ee8a4e;   /* brand light orange                   */
+    --orange-text:#f3a463;   /* lighter orange — legible on dark     */
+    --warm-line:  rgba(238,138,78,.32);  /* warm orange hairline     */
+    --grad-warm:  linear-gradient(120deg, #f3a463 0%, var(--accent) 50%, #e0712f 100%);
     --ok:         #6fcf97;
     --ok-soft:    rgba(111,207,151,.13);
     --err:        #e57b63;
