@@ -5,10 +5,10 @@ Edit the `ME` object in the `<script>` for contact details; brand colors live
 in the `:root` CSS custom properties. Assets are generated with `sharp`.
 
 ## ⚠️ RECA COMPLIANCE — non-negotiable
-- **"Issac Realty Team" must ALWAYS appear together with "Dreamhouse Realty Ltd."**
+- **"Sheena & Rosh Issac Property Group" must ALWAYS appear together with "Dreamhouse Realty Ltd."**
   Whenever the team name is shown (card, OG banner, README, any new surface),
   it must be immediately followed/accompanied by the brokerage line, e.g.
-  *"Issac Realty Team — Associates of Dreamhouse Realty Ltd."*
+  *"Sheena & Rosh Issac Property Group — Associates of Dreamhouse Realty Ltd."*
   Never show the team name alone. This is a real-estate licensing requirement.
 - The brokerage (Dreamhouse Realty Ltd.) must remain visibly disclosed on the
   card — currently the sticky bottom band (logo + copyright) and the body

@@ -2,7 +2,7 @@
 
 **Live card:** https://roshaissac.github.io/Businesscard
 
-A mobile-first, NFC-ready digital business card for **Rosh Issac, Realtor® | Issac Realty Team** (Associates of Dreamhouse Realty Ltd.). Built as a single, self-contained `index.html` with **no build step and no render-blocking CDNs** — it deploys exactly as written on GitHub Pages.
+A mobile-first, NFC-ready digital business card for **Rosh Issac, Realtor® | Sheena & Rosh Issac Property Group** (Associates of Dreamhouse Realty Ltd.). Built as a single, self-contained `index.html` with **no build step and no render-blocking CDNs** — it deploys exactly as written on GitHub Pages.
 
 ---
 
