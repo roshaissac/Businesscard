@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Issac House Style — Suite Mockups</title>
+<style>
+:root{--orange:#ee8a4e;--gold:#c9a25e}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#09090b;color:#f4eee2;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;padding:40px 20px 80px}
+.head{max-width:1100px;margin:0 auto 8px;text-align:center}
+.eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--orange);font-weight:600}
+h1{font-size:clamp(28px,5vw,42px);font-weight:600;letter-spacing:-.01em;margin:10px 0}
+.sub{color:#a79f91;max-width:60ch;margin:0 auto;font-size:15px;line-height:1.6}
+.legend{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:22px auto 0;max-width:900px;font-size:12.5px;color:#d9d3c6}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:11px;height:11px;border-radius:50%}
+.group{max-width:1180px;margin:46px auto 0}
+.group h2{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#a79f91;font-weight:600;
+  border-bottom:1px solid rgba(244,238,226,.12);padding-bottom:10px;margin-bottom:22px}
+.group h2 b{color:#f4eee2}
+.row{display:flex;flex-wrap:wrap;gap:26px}
+.frame{width:288px}
+.phone{width:288px;height:600px;border-radius:30px;overflow:hidden;border:1px solid rgba(244,238,226,.14);
+  background:#000;box-shadow:0 20px 60px rgba(0,0,0,.5);position:relative}
+.phone iframe{width:360px;height:750px;border:0;transform:scale(.8);transform-origin:top left}
+.cap{display:flex;align-items:center;gap:9px;margin-top:13px}
+.cap .id{font-size:11px;font-weight:700;color:#09090b;background:var(--gold);border-radius:5px;padding:2px 7px}
+.cap .nm{font-size:14px;font-weight:600}
+.cap .ac{margin-left:auto;width:13px;height:13px;border-radius:50%;border:1px solid rgba(244,238,226,.2)}
+.note{max-width:1100px;margin:50px auto 0;padding:20px 22px;border:1px solid rgba(244,238,226,.12);
+  border-radius:14px;color:#d9d3c6;font-size:13.5px;line-height:1.7}
+.note b{color:#f4eee2}
+a.open{font-size:11px;color:#a79f91;margin-left:auto}
+@media(max-width:640px){.phone{width:100%;height:560px}.frame{width:100%}.phone iframe{transform:scale(1);width:100%;height:700px}}
+</style></head><body>
+<div class="head">
+  <div class="eyebrow">Design Review · Dummy Mockups</div>
+  <h1>The Issac House Style</h1>
+  <p class="sub">Ten apps, one family. Each opens with its own dark cinematic hero, then settles into a light ivory workspace.
+  Imagery only — no functionality. Judge the balance: do they feel like one regiment, while each keeps its own face?</p>
+  <div class="legend">
+    <span><i class="dot" style="background:#ee8a4e"></i>Cards · brand orange</span>
+    <span><i class="dot" style="background:#f0825a"></i>Sign-ins · coral/ember</span>
+    <span><i class="dot" style="background:#e3a049"></i>Number tools · amber/gold</span>
+    <span><i class="dot" style="background:#d97047"></i>Field &amp; leads · terracotta/clay</span>
+    <span><i class="dot" style="background:#ef9a52"></i>Reputation · coral-gold</span>
+  </div>
+</div>
+
+<section class="group"><h2>Group A — <b>Door &amp; sign-in moments</b></h2><div class="row">
+  <div class="frame"><div class="phone"><iframe src="a1-open-house.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">A-1</span><span class="nm">Open House Sign-In</span><span class="ac" style="background:#f0825a"></span></div></div>
+  <div class="frame"><div class="phone"><iframe src="a2-rental-viewing.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">A-2</span><span class="nm">Rental Viewing Sign-In</span><span class="ac" style="background:#cf6b3e"></span></div></div>
+</div></section>
+
+<section class="group"><h2>Group B — <b>Number tools</b></h2><div class="row">
+  <div class="frame"><div class="phone"><iframe src="b3-affordability.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">B-3</span><span class="nm">Affordability Calculator</span><span class="ac" style="background:#e3a049"></span></div></div>
+  <div class="frame"><div class="phone"><iframe src="b4-investment-analysis.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">B-4</span><span class="nm">Rental Investment Analysis</span><span class="ac" style="background:#d8973f"></span></div></div>
+  <div class="frame"><div class="phone"><iframe src="b5-rent-vs-own.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">B-5</span><span class="nm">Rent vs Ownership</span><span class="ac" style="background:#c98a4a"></span></div></div>
+</div></section>
+
+<section class="group"><h2>Group C — <b>Field &amp; lead activity</b></h2><div class="row">
+  <div class="frame"><div class="phone"><iframe src="c6-buyer-intake.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">C-6</span><span class="nm">Buyer Intake Form</span><span class="ac" style="background:#d97047"></span></div></div>
+  <div class="frame"><div class="phone"><iframe src="c7-door-knock.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">C-7</span><span class="nm">Door Knock Tracking</span><span class="ac" style="background:#c56a44"></span></div></div>
+</div></section>
+
+<section class="group"><h2>Group D — <b>Reputation</b></h2><div class="row">
+  <div class="frame"><div class="phone"><iframe src="d8-review-request.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">D-8</span><span class="nm">Google Review Request</span><span class="ac" style="background:#ef9a52"></span></div></div>
+</div></section>
+
+<section class="group"><h2>Group E — <b>The reference cards</b> (stay full-dark by design)</h2><div class="row">
+  <div class="frame"><div class="phone"><iframe src="e9-card-rosh.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">E-9</span><span class="nm">Business Card — Rosh</span><span class="ac" style="background:#ee8a4e"></span></div></div>
+  <div class="frame"><div class="phone"><iframe src="e10-card-sheena.html" loading="lazy"></iframe></div>
+    <div class="cap"><span class="id">E-10</span><span class="nm">Business Card — Sheena</span><span class="ac" style="background:#ee8a4e"></span></div></div>
+</div></section>
+
+<div class="note">
+  <b>What ties them together (the regiment):</b> the near-black cinematic hero · the warm-white text · the gold pill CTA ·
+  the "dawn seam" gradient into the ivory workspace · the sticky Dreamhouse brokerage band · one type system (system-sans + Fraunces for the single hero moment).<br><br>
+  <b>What makes each its own (the individuality):</b> a signature accent rotated a few degrees around the brand orange, and a hero motif that says what the tool is —
+  the living number (calculator), the threshold arch (intake), the porch-light marquee (open house), the five stars (reviews), the route tally (door-knock).<br><br>
+  <b>Note:</b> these are static dummies for look approval only. Fraunces is loaded from a CDN here for preview — production self-hosts one woff2 to keep the zero-CDN rule. The cards (E-9/E-10) are shown as the reference and won't change.
+</div>
+</body></html>

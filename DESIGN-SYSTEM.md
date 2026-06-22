@@ -22,18 +22,25 @@ paint (the card's hard rule, kept).
 
 ---
 
-## 1. The apps in scope
+## 1. The apps in scope — the full family (nobody left behind)
 
-| App | Repo | Job to be done | Today |
-|---|---|---|---|
-| Rosh card | `Businesscard` | Share contact / capture leads | ✅ Reference — do not change look |
-| Sheena card | `SheenaCard` | Share contact | ✅ Reference — do not change look |
-| Affordability calculator | `affordability-calculator` | "What can I afford?" | 🔧 Restyle |
-| Buyer intake form | `buyer-intake-form` | Qualify a buyer | 🔧 Restyle |
-| Open house | `issac-openhouse` | Sign-in / property moment | 🔧 Restyle |
-| Rental viewing | `rental-viewing` | Book / confirm a viewing | 🔧 Restyle |
+Grouped as Rosh organized them. The grouping is meaningful: apps in a group share
+a *motif family* and adjacent accents, so the suite reads in "chapters."
 
-The two cards are the **tuning fork**. Everything else is tuned to them — not
+| # | App | Group | Job to be done | Status |
+|---|---|---|---|---|
+| **A-1** | Open-house sign-in | A · Door/sign-in | Greet & capture walk-ins | 🔧 Restyle |
+| **A-2** | Rental viewing sign-in | A · Door/sign-in | Check in a viewing | 🔧 Restyle |
+| **B-3** | Affordability calculator | B · Number tools | "What can I afford?" | 🔧 Restyle (proof app) |
+| **B-4** | Rental investment analysis | B · Number tools | Deal read / returns | 🔧 Restyle |
+| **B-5** | Rent vs Ownership comparison | B · Number tools | Buy-or-rent decision | 🔧 Restyle |
+| **C-6** | Buyer intake form | C · Field & leads | Qualify a buyer | 🔧 Restyle |
+| **C-7** | Door-knock tracking | C · Field & leads | Log a canvassing route | 🔧 Restyle |
+| **D-8** | Google review request | D · Reputation | Ask for a review | 🔧 Restyle |
+| **E-9** | Business card — Rosh | E · Reference | Share contact / capture | ✅ Reference — keep look |
+| **E-10** | Business card — Sheena | E · Reference | Share contact | ✅ Reference — keep look |
+
+The two cards (E) are the **tuning fork**. Everything else is tuned to them — not
 the reverse.
 
 ---
@@ -98,13 +105,17 @@ Each app shifts the brand orange a controlled few degrees around the same hue
 family — same warmth, same energy, just enough to give each its own pulse. All
 remain legible as "orange-ish on black," so the family never breaks.
 
-| App | `--app-accent` | Feeling | Why |
+| # | App | `--app-accent` | Feeling |
 |---|---|---|---|
-| Cards (reference) | `#ee8a4e` | The brand orange | The tuning fork |
-| Affordability calc | `#e3a049` **amber/gold** | Money, optimism, warmth | It's about affordability — lean gold |
-| Buyer intake | `#d97047` **terracotta** | Grounded, trustworthy | A qualifying conversation — earth it |
-| Open house | `#f0825a` **coral** | Bright, welcoming, event | A doorway moment — make it inviting |
-| Rental viewing | `#cf6b3e` **ember** | Decisive, focused | A booking — slightly deeper, settled |
+| E-9/10 | Cards (reference) | `#ee8a4e` brand orange | The tuning fork |
+| A-1 | Open house | `#f0825a` **coral** | Bright, welcoming — a doorway |
+| A-2 | Rental viewing | `#cf6b3e` **ember** | Decisive, settled — an appointment |
+| B-3 | Affordability | `#e3a049` **amber/gold** | Money, optimism, warmth |
+| B-4 | Investment analysis | `#d8973f` **honey** | Deeper gold — serious money |
+| B-5 | Rent vs Own | `#c98a4a` **bronze** | Balanced, comparative |
+| C-6 | Buyer intake | `#d97047` **terracotta** | Grounded, trustworthy |
+| C-7 | Door-knock | `#c56a44` **clay** | Field-tough, utilitarian |
+| D-8 | Review request | `#ef9a52` **coral-gold** | Warm gratitude |
 
 Gold CTA, warm-white text, near-black hero: **constant**. Only the accent moves.
 That single shifting note is what lets each hero feel custom while the chord
@@ -191,17 +202,22 @@ Moderate distinctiveness = each hero gets a motif that says *what this tool is*
 in one glance, rendered in that app's accent. All are CSS/SVG/inline — no heavy
 assets, no CDN.
 
-- **Affordability calculator** — *the living number.* A large Fraunces figure
-  that counts up / re-tallies as the sliders move below. The number is the hero
-  *and* the result — the workspace literally drives the hero.
-- **Buyer intake** — *the threshold.* A quiet keyline doorway/arch motif in
-  amber-terracotta behind the headline; a thin progress ribbon for the form
-  steps. Feels like being welcomed in.
-- **Open house** — *the marquee.* The property address set large with a
-  date·time strip; a soft coral "open" glow, like a porch light. Most inviting
-  of the four (it greets walk-ins).
-- **Rental viewing** — *the appointment.* A focused slot/clock motif in ember;
-  the confirmed date/time is the display moment. Calm, decisive, done.
+- **A-1 Open house** — *the marquee.* Address set large with a date·time strip
+  and a soft coral "porch-light" glow. The most inviting hero — it greets walk-ins.
+- **A-2 Rental viewing** — *the appointment.* A focused slot/clock motif in ember;
+  the booked time is the display moment. Calm, decisive.
+- **B-3 Affordability** — *the living number.* A large Fraunces figure that
+  re-tallies as the sliders move below — the number is hero *and* result.
+- **B-4 Investment analysis** — *the verdict.* A big cap-rate %, with a compact
+  three-metric strip (cash flow / cap / cash-on-cash). A quick deal read.
+- **B-5 Rent vs Own** — *the crossover.* A small five-year bar climb in the hero
+  ("owning pulls ahead in year 4"); two A/B columns in the workspace.
+- **C-6 Buyer intake** — *the threshold.* A quiet keyline arch behind the
+  headline + a step progress ribbon. Feels like being welcomed in.
+- **C-7 Door-knock** — *the route tally.* Doors / spoke / follow-up counts in the
+  hero; a status-pinned address list below. The most utilitarian, still on-family.
+- **D-8 Review request** — *the five stars.* An oversized serif quote mark and a
+  five-star row; a one-tap Google button. Warm, grateful, ~20 seconds.
 
 ---
 
