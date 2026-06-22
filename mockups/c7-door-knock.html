@@ -1,0 +1,32 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>C-7 · Door Knock Tracking</title><link rel="stylesheet" href="kit.css">
+<style>:root{--app-accent:#c56a44;--app-accent-soft:rgba(197,106,68,.18)}
+.tally{display:inline-flex;gap:20px;margin-top:20px}
+.tally b{display:block;font-family:var(--serif);font-size:26px;color:var(--c-ink);font-weight:500}
+.tally span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--c-muted)}
+.door{display:flex;align-items:center;gap:11px;padding:11px 4px;border-bottom:1px solid var(--c-hair-l)}
+.door:last-child{border-bottom:none}
+.pin{width:9px;height:9px;border-radius:50%;flex:none}
+.s-spoke{background:var(--ok)}.s-no{background:var(--c-muted)}.s-fu{background:var(--app-accent)}
+.door .a{font-weight:600;font-size:14px}.door .st{margin-left:auto;font-size:12px;color:var(--c-muted-l)}</style>
+</head><body><div class="app">
+  <header class="hero">
+    <div class="eyebrow">Door Knock · Maple Ridge</div>
+    <h1 class="display">Today's route.</h1>
+    <div class="tally"><div><b>32</b><span>doors</span></div><div><b>11</b><span>spoke</span></div><div><b>4</b><span>follow‑up</span></div></div>
+  </header>
+  <div class="seam"></div>
+  <main class="work">
+    <div class="panel" style="padding:6px 16px">
+      <div class="door"><span class="pin s-spoke"></span><span class="a">14 Maple Ridge Dr</span><span class="st">Spoke · warm</span></div>
+      <div class="door"><span class="pin s-fu"></span><span class="a">16 Maple Ridge Dr</span><span class="st">Follow‑up Tue</span></div>
+      <div class="door"><span class="pin s-no"></span><span class="a">18 Maple Ridge Dr</span><span class="st">No answer</span></div>
+      <div class="door"><span class="pin s-spoke"></span><span class="a">22 Maple Ridge Dr</span><span class="st">Spoke · listing?</span></div>
+    </div>
+    <button class="cta">Log next door</button>
+    <p class="muted" style="text-align:center">Tap a door to set status, add a note, or drop a card.</p>
+  </main>
+  <footer class="band"><img src="../dreamhouse-logo.png" alt="Dreamhouse Realty Ltd.">
+    <div class="b-txt"><b>Sheena &amp; Rosh Issac Property Group</b> — Associates of Dreamhouse Realty Ltd.</div></footer>
+</div></body></html>

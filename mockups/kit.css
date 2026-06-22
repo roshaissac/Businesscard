@@ -1,0 +1,114 @@
+/* ════════════════════════════════════════════════════════════════════════
+   THE ISSAC HOUSE STYLE — shared mockup kit
+   One file, pasted into every app. Each app turns ONE knob: --app-accent
+   (plus an optional hero motif). Everything else here is the family contract.
+   NOTE: mockups load Fraunces from a CDN for preview ONLY; production self-hosts
+         one woff2 to keep the zero-CDN-on-first-paint rule.
+   ════════════════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap');
+
+:root{
+  /* ── GLOBAL (identical in every app) ─────────────────────────────────── */
+  --c-paper:#09090b; --c-card:#16151b; --c-ink:#f4eee2; --c-ink-soft:#d9d3c6;
+  --c-ivory:#f3efe9; --c-ivory-card:#fbf9f5; --c-charcoal:#1c1b20;
+  --c-muted:#a79f91; --c-muted-l:#857c6f;
+  --c-orange:#ee8a4e; --c-gold:#c9a25e;
+  --c-hair-d:rgba(244,238,226,.12); --c-hair-l:rgba(28,27,32,.10);
+  --ok:#3f9d6d; --grad-gold:linear-gradient(120deg,#dcbf86,#c9a25e 50%,#b08438);
+
+  /* ── PER-APP (the one knob) — default = brand orange (the cards) ──────── */
+  --app-accent:#ee8a4e;
+  --app-accent-soft:rgba(238,138,78,.16);
+
+  --radius:22px; --radius-md:14px; --radius-sm:11px;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,Roboto,Helvetica,Arial,sans-serif;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:#000;color:var(--c-ink);line-height:1.5;
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+
+/* ── SHELL ──────────────────────────────────────────────────────────────── */
+.app{position:relative;width:100%;max-width:412px;min-height:100dvh;margin:0 auto;
+  background:var(--c-ivory);display:flex;flex-direction:column;overflow:hidden}
+
+/* ── ZONE 1 · DARK CINEMATIC HERO ───────────────────────────────────────── */
+.hero{position:relative;background:var(--c-paper);color:var(--c-ink);
+  padding:46px 26px 30px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;
+  background:radial-gradient(120% 80% at 78% 8%,var(--app-accent-soft),transparent 60%);
+  pointer-events:none}
+.hero::after{content:"";position:absolute;left:-30%;top:-40%;width:80%;height:90%;
+  background:radial-gradient(circle,var(--app-accent),transparent 65%);
+  opacity:.22;filter:blur(36px);pointer-events:none}
+.hero>*{position:relative;animation:rise .6s var(--ease) both}
+.eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;font-weight:600;
+  color:var(--app-accent);display:flex;align-items:center;gap:8px}
+.eyebrow::before{content:"";width:18px;height:1px;background:var(--app-accent);opacity:.7}
+.display{font-family:var(--serif);font-weight:500;line-height:1.02;letter-spacing:-.01em;
+  font-size:clamp(34px,9vw,46px);margin:14px 0 0}
+.display .num{font-variant-numeric:tabular-nums}
+.hero-sub{color:var(--c-ink-soft);font-size:14.5px;margin-top:12px;max-width:30ch}
+.hero-motif{margin-top:22px}
+
+/* ── ZONE 2 · DAWN SEAM (paper → ivory) — a shared signature ────────────── */
+.seam{height:30px;background:linear-gradient(var(--c-paper),var(--c-ivory));
+  margin-bottom:-1px}
+
+/* ── ZONE 3 · LIGHT WORKSPACE ───────────────────────────────────────────── */
+.work{flex:1;background:var(--c-ivory);color:var(--c-charcoal);
+  padding:6px 22px 26px;display:flex;flex-direction:column;gap:14px}
+.work>*{animation:rise .6s var(--ease) both;animation-delay:.08s}
+.panel{background:var(--c-ivory-card);border:1px solid var(--c-hair-l);
+  border-radius:var(--radius-md);padding:16px 16px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 12px 26px rgba(28,27,32,.06)}
+.label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--c-muted-l);font-weight:600}
+.field{margin-top:7px;background:#fff;border:1px solid var(--c-hair-l);border-radius:var(--radius-sm);
+  padding:12px 13px;color:var(--c-charcoal);font-size:15px;display:flex;align-items:center;justify-content:space-between}
+.field.ph{color:#9a9486}
+.field:focus-within,.field.active{border-color:var(--app-accent);box-shadow:0 0 0 3px var(--app-accent-soft)}
+.h-title{font-size:13px;font-weight:700;letter-spacing:.01em}
+.muted{color:var(--c-muted-l);font-size:13px}
+
+/* slider (visual only) */
+.slider{height:6px;border-radius:6px;background:var(--c-hair-l);margin:16px 2px 8px;position:relative}
+.slider .fill{position:absolute;left:0;top:0;height:100%;border-radius:6px;background:var(--app-accent)}
+.slider .thumb{position:absolute;top:50%;width:20px;height:20px;border-radius:50%;
+  background:var(--grad-gold);transform:translate(-50%,-50%);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+
+/* CTA — gold pill, identical everywhere */
+.cta{margin-top:4px;background:var(--grad-gold);color:#241a07;font-weight:700;font-size:15px;
+  border:none;border-radius:999px;padding:15px;text-align:center;letter-spacing:.01em;
+  box-shadow:0 8px 22px rgba(176,132,56,.32);transition:transform .12s var(--ease)}
+.cta:active{transform:scale(.98)}
+.btn-ghost{border:1px solid var(--c-hair-l);border-radius:999px;padding:13px;text-align:center;
+  font-weight:600;font-size:14px;color:var(--c-charcoal);background:#fff}
+.accent{color:var(--app-accent)}
+
+/* progress ribbon (intake) */
+.ribbon{display:flex;gap:6px;margin-top:14px}
+.ribbon i{flex:1;height:4px;border-radius:4px;background:var(--c-hair-l)}
+.ribbon i.on{background:var(--app-accent)}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.chip{font-size:13px;padding:8px 13px;border-radius:999px;border:1px solid var(--c-hair-l);background:#fff;color:var(--c-charcoal)}
+.chip.on{background:var(--app-accent-soft);border-color:var(--app-accent);color:#7a3d12;font-weight:600}
+
+/* stars (reviews) */
+.stars{display:flex;gap:6px;font-size:30px;color:var(--app-accent)}
+
+/* ── BAND · brokerage disclosure (shared, RECA) ─────────────────────────── */
+.band{position:sticky;bottom:0;background:var(--c-paper);color:var(--c-ink-soft);
+  padding:11px 20px calc(11px + env(safe-area-inset-bottom,0px));
+  display:flex;align-items:center;gap:10px;border-top:1px solid var(--c-hair-d);font-size:11px}
+.band img{height:20px;width:auto;opacity:.95;filter:brightness(0) invert(1)}
+.band .b-txt{line-height:1.35}
+.band b{color:var(--c-ink);font-weight:600}
+
+@keyframes rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
