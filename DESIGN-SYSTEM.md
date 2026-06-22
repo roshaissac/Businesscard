@@ -264,6 +264,11 @@ luxury-motion note). Same easing everywhere ties the family together.
   in §3 are tuned for warm-white on near-black and charcoal on ivory); 44px tap
   targets; visible focus; reduced-motion honored.
 - **RECA compliance:** brokerage disclosure on every surface (§5.3).
+- **Cards' photo hero is frozen (Rosh's note):** the business cards (E-9/E-10)
+  keep their *current* photo/portrait hero exactly as it is today. Even the
+  optional token-backport (§10.5) must **not** restyle the card's hero image,
+  ring, or avatar treatment — name/photo/CTA stay verbatim. The cards lend their
+  DNA to the suite; the suite does not re-skin the cards.
 - **PWA-ready:** each app keeps its own `manifest.json` + `theme-color #09090b`
   so installs look like one suite on the home screen.
 
