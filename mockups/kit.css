@@ -56,9 +56,10 @@ a{color:inherit;text-decoration:none}
 .hero-sub{color:var(--c-ink-soft);font-size:14.5px;margin-top:12px;max-width:30ch}
 .hero-motif{margin-top:22px}
 
-/* ── ZONE 2 · DAWN SEAM (paper → ivory) — a shared signature ────────────── */
-.seam{height:30px;background:linear-gradient(var(--c-paper),var(--c-ivory));
-  margin-bottom:-1px}
+/* ── ZONE 2 · SOLID SEAM-EDGE (paper meets ivory crisply) — a shared signature
+   Updated 2026-06-26: the dark hero meets the ivory workspace at one clean edge
+   (no gradient feather), retired suite-wide on the B-3 proof app. ─────────── */
+.seam{height:0}
 
 /* ── ZONE 3 · LIGHT WORKSPACE ───────────────────────────────────────────── */
 .work{flex:1;background:var(--c-ivory);color:var(--c-charcoal);

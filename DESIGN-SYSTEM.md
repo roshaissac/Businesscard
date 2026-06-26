@@ -96,8 +96,8 @@ the orange from getting noisy).
 > **New vs. the card:** the card is dark *top to bottom*. The apps add a
 > **light ivory workspace** (`--c-ivory`) below the hero so forms, sliders and
 > numbers are effortless to read in daylight, on-site, one-handed. The ivory and
-> warm-white are deliberately the same temperature — the seam should feel like
-> dawn, not a hard cut.
+> warm-white are deliberately the same temperature, so the dark→ivory transition
+> reads as one clean, intentional edge.
 
 ### Per-app signature accent (the "many faces")
 
@@ -152,26 +152,25 @@ once per app** — on the single hero moment that defines that screen.
 
 ---
 
-## 5. The shared anatomy — dark hero → light workspace
+## 5. The shared anatomy — app-shell: dark hero → light workspace
 
-Every app is one vertical scroll with the same three zones. This *is* the
-family resemblance.
+Every app is an **app-shell** (matching the cards): a **stationary dark top**
+(hero), a **scrolling light middle** (the workspace — the only part that
+scrolls), and a **stationary brokerage band** pinned to the bottom. This *is*
+the family resemblance.
 
 ```
-┌──────────────────────────────┐  ← --c-paper (near-black)
+┌──────────────────────────────┐  ← --c-paper (near-black) — STATIONARY top
 │   ●  HERO  (cinematic)        │
 │                               │     • the ONE display-face moment
 │   <app's signature motif>     │     • soft orange glow = --app-accent
 │   one line of intent          │     • measured into --hero-h
-│                               │
-│   ╲  dawn seam (gradient)  ╱  │  ← paper → ivory, ~24px feather
-├──────────────────────────────┤  ← --c-ivory (light workspace)
-│                               │
-│   WORKSPACE                   │     • the actual task lives here
+│   ──── clean solid edge ────  │  ← paper meets ivory crisply (no feather)
+├──────────────────────────────┤  ← --c-ivory (light workspace) — SCROLLS
+│   WORKSPACE   ▲ scrolls       │     • the actual task lives here
 │   forms · sliders · results   │     • ivory cards, charcoal text
-│   gold CTA                    │     • high legibility, daylight-proof
-│                               │
-├──────────────────────────────┤  ← sticky --c-paper band
+│   gold CTA    ▼               │     • high legibility, daylight-proof
+├──────────────────────────────┤  ← stationary --c-paper band
 │  ▣ Dreamhouse Realty Ltd. · © │  ← RECA brokerage band (shared, required)
 └──────────────────────────────┘
 ```
@@ -179,9 +178,12 @@ family resemblance.
 **Shared, non-negotiable signals (the "same regiment" markers):**
 
 1. **Dark cinematic hero** with a soft `--app-accent` radial glow.
-2. **The dawn seam** — a ~24px paper→ivory gradient feather. Same transition
-   everywhere; it's a signature in its own right.
-3. **Sticky brokerage band** — `Dreamhouse Realty Ltd.` logo + © — reused from
+2. **The solid seam-edge** — the dark hero meets the ivory workspace at one
+   clean, crisp horizontal edge (no gradient feather). Same transition
+   everywhere; it's a signature in its own right. *(Updated 2026-06-26: the
+   earlier dawn-seam gradient is retired suite-wide in favour of this solid
+   edge — decided on the B-3 proof app.)*
+3. **Stationary brokerage band** — `Dreamhouse Realty Ltd.` logo + © — reused from
    the card verbatim. *(RECA: where any team/brokerage name appears it must read
    "Sheena & Rosh Issac Property Group — Associates of Dreamhouse Realty Ltd."
    Never the team name alone.)*
@@ -247,7 +249,7 @@ luxury-motion note). Same easing everywhere ties the family together.
 
 - **Easing:** `cubic-bezier(.22,.61,.36,1)` (gentle ease-out) for everything.
 - **Hero entrance:** content fades up 8px over ~500ms on load.
-- **Dawn seam:** the accent glow drifts ~2% on a slow loop (optional, respectful).
+- **Hero glow:** the accent glow drifts ~2% on a slow loop (optional, respectful).
 - **CTA:** 120ms press-scale + shadow lift.
 - **Calculator number:** ~400ms count-tween on change.
 - **Respect `prefers-reduced-motion`** — collapse all of the above to instant.
