@@ -967,32 +967,24 @@
     haptic();
     const vcf = buildVCF();
     const fileName = `${ME.firstName}_${ME.lastName}.vcf`;
+    // base64 data-URI declares its own MIME type, so it doesn't depend on
+    // server headers; unescape(encodeURIComponent()) keeps "Realtor®" + accents.
+    const dataUri = 'data:text/vcard;charset=utf-8;base64,' +
+      btoa(unescape(encodeURIComponent(vcf)));
 
-    // High-compatibility download via a base64 data-URI. Survives in-app
-    // webviews (Instagram / LinkedIn / Facebook) where blob: URLs are blocked,
-    // and encodeURIComponent/unescape keeps "Realtor®" + accents intact.
-    const saveViaDataUri = () => {
-      const dataUri = 'data:text/vcard;charset=utf-8;base64,' +
-        btoa(unescape(encodeURIComponent(vcf)));
-      try {
-        const a = document.createElement('a');
-        a.href = dataUri;
-        a.download = fileName;
-        a.style.display = 'none';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        showToast('Contact saved to your device', 'i-check-circle');
-      } catch (_) {
-        // Last resort: navigate to the data-URI so the OS opens the card.
-        window.location.href = dataUri;
-      }
-    };
+    const isIOS = /iP(hone|od|ad)/.test(navigator.userAgent) ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
-    // Preferred on iOS 16+: share the file -> native "Add to Contacts" sheet.
-    // Inside in-app browsers canShare can return true while share() then throws
-    // or fails — any failure (other than the user dismissing) drops to the
-    // data-URI fallback below instead of leaving the contact unsaved.
+    // iOS: NAVIGATE to the vCard so Safari renders the inline "Add to Contacts"
+    // card (one tap). Using a download attribute here instead dumps a .vcf into
+    // Downloads that the user must hunt for and open — the field failure we hit.
+    // QR scans on iPhone open in Safari, so this is the path that matters there.
+    if (isIOS) { window.location.href = dataUri; return; }
+
+    // Android / desktop: try the native share sheet first (gives a contact
+    // preview), then fall back to a data-URI download. Android handles the
+    // download cleanly, and the data-URI also survives the Instagram/LinkedIn/
+    // Facebook in-app webviews where blob: URLs are blocked.
     try {
       const file = new File([vcf], fileName, { type: 'text/vcard' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -1002,11 +994,21 @@
       }
     } catch (e) {
       if (e && e.name === 'AbortError') return; // user dismissed the share sheet
-      saveViaDataUri();
-      return;
+      // any other share() failure: fall through to the download below
     }
 
-    saveViaDataUri();
+    try {
+      const a = document.createElement('a');
+      a.href = dataUri;
+      a.download = fileName;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      showToast('Contact saved to your device', 'i-check-circle');
+    } catch (_) {
+      window.location.href = dataUri; // last resort
+    }
   }
 
   // ── Form submit ─────────────────────────────────────────────────────
