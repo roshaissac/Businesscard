@@ -968,7 +968,31 @@
     const vcf = buildVCF();
     const fileName = `${ME.firstName}_${ME.lastName}.vcf`;
 
-    // Preferred on iOS 16+: share the file -> native "Add to Contacts" sheet
+    // High-compatibility download via a base64 data-URI. Survives in-app
+    // webviews (Instagram / LinkedIn / Facebook) where blob: URLs are blocked,
+    // and encodeURIComponent/unescape keeps "Realtor®" + accents intact.
+    const saveViaDataUri = () => {
+      const dataUri = 'data:text/vcard;charset=utf-8;base64,' +
+        btoa(unescape(encodeURIComponent(vcf)));
+      try {
+        const a = document.createElement('a');
+        a.href = dataUri;
+        a.download = fileName;
+        a.style.display = 'none';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        showToast('Contact saved to your device', 'i-check-circle');
+      } catch (_) {
+        // Last resort: navigate to the data-URI so the OS opens the card.
+        window.location.href = dataUri;
+      }
+    };
+
+    // Preferred on iOS 16+: share the file -> native "Add to Contacts" sheet.
+    // Inside in-app browsers canShare can return true while share() then throws
+    // or fails — any failure (other than the user dismissing) drops to the
+    // data-URI fallback below instead of leaving the contact unsaved.
     try {
       const file = new File([vcf], fileName, { type: 'text/vcard' });
       if (navigator.canShare && navigator.canShare({ files: [file] })) {
@@ -977,16 +1001,12 @@
         return;
       }
     } catch (e) {
-      if (e && e.name === 'AbortError') return; // user dismissed sheet
+      if (e && e.name === 'AbortError') return; // user dismissed the share sheet
+      saveViaDataUri();
+      return;
     }
 
-    // Fallback: blob download (Android Chrome, desktop, older iOS)
-    const blob = new Blob([vcf], { type: 'text/vcard;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = Object.assign(document.createElement('a'), { href: url, download: fileName });
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(() => URL.revokeObjectURL(url), 1500);
-    showToast('Contact saved to your device', 'i-check-circle');
+    saveViaDataUri();
   }
 
   // ── Form submit ─────────────────────────────────────────────────────
